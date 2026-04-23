@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AI Chat</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="index.css">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                    'primary': '#4F46E5',
+                    'primary-dim': '#4338CA',
+                    'primary-container': '#E0E7FF',
+                    'on-primary': '#FFFFFF',
+                    'on-primary-container': '#1E1B4B',
+                    'secondary': '#6366F1',
+                    'secondary-container': '#EEF2FF',
+                    'on-secondary-container': '#312E81',
+                    'surface': '#F9FAFB',
+                    'surface-dim': '#F3F4F6',
+                    'surface-bright': '#FFFFFF',
+                    'surface-container-lowest': '#FFFFFF',
+                    'surface-container-low': '#F9FAFB',
+                    'surface-container': '#F3F4F6',
+                    'surface-container-high': '#E5E7EB',
+                    'surface-container-highest': '#D1D5DB',
+                    'on-surface': '#111827',
+                    'on-surface-variant': '#4B5563',
+                    'outline': '#9CA3AF',
+                    'outline-variant': '#E5E7EB',
+                    'background': '#F9FAFB',
+                    'on-background': '#111827',
+                },
+                fontFamily: {
+                    'headline': ['Manrope', 'sans-serif'],
+                    'body': ['Inter', 'sans-serif'],
+                    'label': ['Inter', 'sans-serif']
+                },
+                borderRadius: { 'DEFAULT': '0.5rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' },
+                },
+            },
+        }
+    </script>
+    <script src="index.js"></script>
+</head>
+
+<body class="font-body overflow-hidden">
+    <!-- TopNavBar Shell -->
+    <header
+        class="fixed top-0 right-0 left-0 h-16 z-40 bg-white/80 dark:bg-white/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-8 w-auto">
+        <div class="flex items-center gap-8 flex-1 min-w-0">
+            <h2 class="text-lg font-black tracking-tighter text-on-surface shrink-0">Chat IA</h2>
+            <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative py-1 custom-scrollbar">
+                <div class="flex items-center gap-6 whitespace-nowrap font-['Inter'] text-xs font-semibold px-2 uppercase models"></div>
+            </nav>
+        </div>
+        <div class="flex items-center gap-4 shrink-0 ml-4">
+            <div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+                <img alt="User Profile" class="w-full h-full object-cover"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7ixWQhYnDBHKlRTwqo1dyCQKZfgCmnk45h6nl1PCbVbs6doP0ocFMtIMD1MV4fzBP96H_gAt0ps6p0-oGG5HhgTfhuCV1F07myVjKo3nU7-B2tHYLstgpZFu0Czx6XqQ96y4eQy2-fUc8Frrpl2KvmLS8TAOMWa9DlOQum7gF5noBw1IVA7vtpqz-Xs9WCHY9nTU3K4frDB_1S34Gxi0X40WWYXkeB7AIxpnTQG4QVQcAsEICuaKwvqlR_qhxKqMfCPyj9sATaNE" />
+            </div>
+        </div>
+    </header>
+    <!-- Main Content Canvas -->
+    <main class="ml-0 mt-16 h-[calc(100dvh-64px)] relative flex flex-col glow-accent">
+        <!-- Message Stream Area -->
+        <div class="flex-1 overflow-y-auto custom-scrollbar px-8 lg:px-24 py-12 space-y-10 messages">
+        </div>
+        <!-- Input Shell Area -->
+        <div class="px-2 lg:px-24 pb-8 pt-4 bg-gradient-to-t from-background via-background to-transparent">
+            <div class="max-w-4xl mx-auto">
+                <div
+                    class="bg-white rounded-2xl p-2 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-outline-variant focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/5 transition-all duration-500">
+                    <form id="form_chat_api">
+                        <div class="flex items-end gap-2 px-2 py-1">
+                            <textarea
+                                name="textarea_prompt"
+                                class="flex-1 bg-transparent border-none focus:ring-0 text-sm py-3 px-2 mb-1 resize-none max-h-48 custom-scrollbar placeholder:text-outline text-on-surface font-medium"
+                                placeholder="Escreva a questão a ser enviada para o modelo de IA" rows="1"
+                                onkeydown="handle_enter(event)"></textarea>
+                            <div class="flex items-center gap-1 mb-1">
+                                <button
+                                    type="submit"
+                                    class="ml-2 w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/20 hover:bg-primary-dim hover:scale-105 active:scale-95 transition-all">
+                                    <span class="material-symbols-outlined"
+                                        style="font-variation-settings: 'FILL' 1;">send</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="mt-3 group relative flex justify-center gap-6">
+                    <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold">
+                        <span class="material-symbols-outlined text-[14px] text-primary">bolt</span>
+                        <span class="uppercase model"></span>
+                    </p>
+                    <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold">
+                        <span class="material-symbols-outlined text-[14px] text-primary">history_edu</span>
+                        <span class="token">0 TOKENS REMAINING</span>
+                    </p>
+                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-300 p-4 bg-white shadow-lg rounded-lg w-100 z-10 border border-gray-200 model_tooltip">
+                    </span>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Floating Background Decorative Elements -->
+    <div
+        class="fixed top-[-10%] left-[-5%] w-[40%] h-[40%] bg-primary/3 rounded-full blur-[120px] pointer-events-none -z-10">
+    </div>
+    <div
+        class="fixed bottom-[-10%] right-[-5%] w-[40%] h-[40%] bg-secondary/3 rounded-full blur-[120px] pointer-events-none -z-10">
+    </div>
+</body>
+
+</html>

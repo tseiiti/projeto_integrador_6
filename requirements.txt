@@ -1,0 +1,10 @@
+ollama
+langchain_ollama
+langchain_chroma
+langchain_text_splitters
+PyPDF2
+langserve[all]
+langchain_community
+# unstructured[all-docs]
+langchain_unstructured
+pandas

@@ -1,0 +1,20 @@
+docker run -d -v projeto_integrador_6_ollama:/root/.ollama --name ollama ollama/ollama
+docker exec -it ollama bash
+
+ollama pull embeddinggemma:300m
+ollama pull qwen3-embedding:0.6b
+ollama pull gemma3:1b
+ollama pull llama3.2:3b
+ollama pull phi4-mini:3.8b
+ollama pull qwen3.5:2b
+ollama pull mistral:7b
+ollama pull llama3:8b
+
+
+
+docker run -itd -v .:/home --name python projeto_integrador_6-python
+docker exec -it python bash 
+
+
+docker run -itd --name node ollama_teste_3-node
+docker exec -it node sh
