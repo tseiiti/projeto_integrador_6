@@ -4,6 +4,7 @@
 const cl = arg => console.log(arg);
 const ce = error => { console.error(error); alert(error); }
 const qs = arg => document.querySelector(arg);
+const qsa = arg => document.querySelectorAll(arg);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const handle_enter = ev => {
   if (ev.key === 'Enter' && !ev.shiftKey) {
@@ -11,20 +12,6 @@ const handle_enter = ev => {
     ev.target.form.requestSubmit();
   }
 }
-const copyText = async (text) => {
-  const textArea = document.createElement("textarea");
-  textArea.value = text;
-  document.body.appendChild(textArea);
-  textArea.select();
-  try {
-    document.execCommand('copy');
-    if (text.length > 100) text = `${text.substring(0, 97).trim()}...`
-    cl(`Texto "${text}" copiado!`);
-  } catch (err) {
-    ce(error);
-  }
-  document.body.removeChild(textArea);
-};
 
 const get = (key, defaultValue) => {
   const data = localStorage.getItem(key);
@@ -89,6 +76,7 @@ class StorageArray {
       es[i] = {...es[i], ...e};
       set(this.key, es);
     }
+    return this.lst()[i];
   }
 
   clr() {
@@ -165,7 +153,7 @@ const select_model = (cur_mod) => {
 const insert_user_message = (msg) => {
   let html = `
     <!-- User Message -->
-    <div class="flex flex-col items-end group">
+    <div class="flex flex-col items-end group" id="msg_usr_${msg.id}">
       <div class="max-w-[80%] flex items-start gap-4 flex-row-reverse">
         <div
           class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
@@ -174,7 +162,7 @@ const insert_user_message = (msg) => {
         </div>
         <div class="relative">
           <div class="border-l-4 border-primary pl-4 py-1">
-            <p class="text-on-surface leading-relaxed text-sm font-medium" id="msg_usr_${msg.id}">${msg.prompt}</p>
+            <p class="text-on-surface leading-relaxed text-sm font-medium">${msg.prompt}</p>
           </div>
           <span
             class="text-[10px] text-on-surface-variant mt-2 block opacity-0 group-hover:opacity-100 transition-opacity font-bold">
@@ -190,7 +178,7 @@ const insert_user_message = (msg) => {
 const insert_ia_message = (msg) => {
   let html = `
     <!-- AI Message -->
-    <div class="flex flex-col items-start group">
+    <div class="flex flex-col items-start group" id="msg_ia_${msg.id}">
       <div class="max-w-[85%] flex items-start gap-4">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-1 shadow-md shadow-primary/10">
           <span class="material-symbols-outlined text-white text-xs"
@@ -198,30 +186,33 @@ const insert_ia_message = (msg) => {
         </div>
         <div class="bg-white rounded-lg rounded-tl-none p-5 space-y-4 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-outline-variant/50">
           <div class="prose prose-sm max-w-none">
-            <p class="text-on-surface" id="msg_ia_${msg.id}">${msg.content}</p>
+            <p class="text-on-surface content">${msg.content}</p>
           </div>
-          <div class="flex items-center gap-3 pt-2">
-            <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-on-surface-variant hover:text-primary">
-              <span class="material-symbols-outlined text-sm">thumb_up</span>
+          <div class="flex items-center gap-3">
+            <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background">
+              <span class="material-symbols-outlined text-[24px] like" style="font-variation-settings: 'FILL' ${msg.like == 1 ? 1 : 0};" onclick="messages_like(this, '${msg.id}', 1);">thumb_up</span>
             </button>
-            <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-on-surface-variant hover:text-primary">
-              <span class="material-symbols-outlined text-sm">thumb_down</span>
+            <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background">
+              <span class="material-symbols-outlined text-[24px] like" style="font-variation-settings: 'FILL' ${msg.like == -1 ? 1 : 0};" onclick="messages_like(this, '${msg.id}', -1);">thumb_down</span>
             </button>
-            <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-on-surface-variant hover:text-primary"
-              onclick="copyText('${msg.content}')">
-              <span class="material-symbols-outlined text-sm">content_copy</span>
+            <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background"
+              onclick="copy_text('${msg.id}')">
+              <span class="material-symbols-outlined text-[24px]">content_copy</span>
             </button>
             <p class="text-[10px] text-on-surface-variant/80 mb-2">${msg.created_at}</p>
           </div>
         </div>
       </div>
-      <span class="ml-12 text-[10px] text-on-surface-variant mt-2 block opacity-0 group-hover:opacity-100 transition-opacity font-bold">
+      <span class="ml-12 text-[10px] text-on-surface-variant mt-2 block opacity-0 group-hover:opacity-100 transition-opacity font-bold tokens">
         tokens enviados: ${msg.up_tokens} | tokens recebidos: ${msg.dw_tokens}
       </span>
     </div>
   `;
 
   qs('.messages').innerHTML += html;
+  qs(`#msg_ia_${msg.id} p`).scrollIntoView({
+    behavior: 'smooth',
+  });
 }
 
 const ia_thinking_state = (cur_mod) => {
@@ -244,9 +235,57 @@ const ia_thinking_state = (cur_mod) => {
   qs('.messages').innerHTML += html;
   qs('.ia_thinking_state').scrollIntoView({
     behavior: 'smooth',
-    block: 'center'
   });
 }
+
+const messages_clear = () => {
+  MESSAGES.clr();
+  qs('.messages').innerHTML = '';
+  set(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
+  qs('.up_tokens').innerHTML = '0 TOKENS ENVIADO';
+  qs('.dw_tokens').innerHTML = '0 TOKENS RECEBIDOS';
+}
+
+const messages_like = (element, id, value) => {
+  let msg = MESSAGES.get(id);
+  if (value == msg.like) value = 0;
+  MESSAGES.upd(id, { ...msg, like: value });
+
+  qsa(`#msg_ia_${id} .like`).forEach(e => {
+    e.style.fontVariationSettings = "'FILL' 0";
+  });
+  element.style.fontVariationSettings = `'FILL' ${value == 0 ? 0 : 1}`;
+}
+
+const show_toast = (title, text) => {
+  qs('#toast span').innerHTML = title;
+  qs('#toast p').innerHTML = text;
+
+  const toast = qs('#toast');
+  toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
+  toast.classList.add('opacity-80', 'translate-y-0');
+  setTimeout(() => {
+    toast.classList.remove('opacity-80', 'translate-y-0');
+    toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+  }, 3000);
+}
+
+const copy_text = (id) => {
+  let text = qs(`#msg_ia_${id} p.content`).innerHTML;
+
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.select();
+  try {
+    document.execCommand('copy');
+    if (text.length > 50) text = `${text.substring(0, 47).trim()}...`
+    show_toast('Copiado:', `Texto "${text}" copiado!`);
+  } catch (err) {
+    ce(error);
+  }
+  document.body.removeChild(textArea);
+};
 
 
 
@@ -255,12 +294,16 @@ const ia_thinking_state = (cur_mod) => {
  */
 
 const set_assitent_messages = (id) => {
-  let content = qs(`#msg_ia_${id}`).innerHTML;
-  MESSAGES.upd(id, { role: 'assistant', content: content });
+  let e = qs(`#msg_ia_${id} p.content`);
+  MESSAGES.upd(id, { role: 'assistant', content: e.innerHTML });
 
   qs('.ia_thinking_state').remove();
   qs('[name=textarea_prompt]').readOnly = false;
   qs('[name=textarea_prompt]').focus();
+  
+  e.scrollIntoView({
+    behavior: 'smooth',
+  });
 }
 
 const get_content = (id, value) => {
@@ -268,13 +311,25 @@ const get_content = (id, value) => {
     let rjson = new TextDecoder().decode(value);
     let json = JSON.parse(rjson);
     if (json.done) {
-      TOKENS += json.prompt_eval_count;
-      TOKENS += json.eval_count;
+      let msg = MESSAGES.get(id);
+      MESSAGES.upd(id, { 
+        ...msg, 
+        up_tokens: json.prompt_eval_count,
+        dw_tokens: json.eval_count, 
+      });
+      qs(`#msg_ia_${id} span.tokens`).innerHTML = `tokens enviados: ${json.prompt_eval_count} | tokens recebidos: ${json.eval_count}`;
 
-      qs('.token').innerHTML = `${TOKENS} TOKENS SPENT`;
+      let tk = get(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
+      set(KEYS.TOKENS, {
+        ...tk,
+        up_tokens: tk.up_tokens + json.prompt_eval_count,
+        dw_tokens: tk.dw_tokens + json.eval_count,
+      });
+      qs('.up_tokens').innerHTML = `${tk.up_tokens + json.prompt_eval_count} TOKENS ENVIADO`;
+      qs('.dw_tokens').innerHTML = `${tk.dw_tokens + json.eval_count} TOKENS RECEBIDOS`;
     } else {
       let content = json.message.content;
-      qs(`#msg_ia_${id}`).innerHTML += content;
+      qs(`#msg_ia_${id} p.content`).innerHTML += content;
     }
   } catch (error) {
     ce(error);
@@ -340,6 +395,9 @@ const send_query = async () => {
   // armazena a questão do usuário
   let e = qs('[name=textarea_prompt]');
   if (e.value.length == 0) return;
+
+  show_toast('Envio:', 'Mensagem sendo enviada...');
+
   e.readOnly = true;
 
   // cria lista inicial de mensagens
@@ -371,11 +429,6 @@ const send_query = async () => {
   call_chat_api(cur_mod, msgs);
 }
 
-const messages_clear = () => {
-  MESSAGES.clr();
-  qs('.messages').innerHTML = '';
-}
-
 
 
 const KEYS = {
@@ -395,7 +448,6 @@ const KEYS = {
 
 var MESSAGES = new StorageArray(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
 var MODELS = [];
-var TOKENS = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
   qs('#form_chat_api').addEventListener('submit', function(e) {
@@ -404,19 +456,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   });
 
-  fetch(KEYS.API_TAGS_URL)
-  .then(response => { return response.json(); })
-  .then(json => { 
-    MODELS = json.models.filter(m => !m.model.includes('embedding')).sort(
-      (a, b) => a.name.localeCompare(b.name)
-    );
-    let cur_mod = get(KEYS.CURRENT_MODEL);
-    if (!cur_mod) cur_mod = MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model;
-    if (!cur_mod) cur_mod = MODELS[0]?.model;
-    select_model(cur_mod);
-  })
-  .catch(error => ce(error));
-
   for (let msg of MESSAGES.lst()) {
     if (msg.role == 'user') {
       insert_user_message(msg);
@@ -424,4 +463,25 @@ document.addEventListener('DOMContentLoaded', () => {
       insert_ia_message(msg);
     }
   }
+
+  fetch(KEYS.API_TAGS_URL)
+  .then(response => { return response.json(); })
+  .then(json => { 
+    MODELS = json.models.filter(m => !m.model.includes('embedding')).sort(
+      (a, b) => a.name.localeCompare(b.name)
+    );
+    let cur_mod = get(
+      KEYS.CURRENT_MODEL, 
+      MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
+    select_model(cur_mod);
+
+    qs(`#msg_ia_${MESSAGES.lst().findLast(e => e.role == 'assistant')?.id}`)?.scrollIntoView({
+      behavior: 'smooth',
+    });
+    
+    let tk = get(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
+    qs('.up_tokens').innerHTML = `${tk.up_tokens} TOKENS ENVIADO`;
+    qs('.dw_tokens').innerHTML = `${tk.dw_tokens} TOKENS RECEBIDOS`;
+  })
+  .catch(error => ce(error));
 });

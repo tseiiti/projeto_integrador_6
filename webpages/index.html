@@ -87,7 +87,7 @@
                             <textarea
                                 name="textarea_prompt"
                                 class="flex-1 bg-transparent border-none focus:ring-0 text-sm py-3 px-2 resize-none max-h-48 custom-scrollbar placeholder:text-outline text-on-surface font-medium"
-                                placeholder="Escreva a questão a ser enviada para o modelo de IA" rows="1"
+                                placeholder="Escreva a mensagem a ser enviada para o Assistente" rows="1"
                                 onkeydown="handle_enter(event)"></textarea>
                             <div class="flex items-center gap-1 mb-1">
                                 <button
@@ -107,11 +107,11 @@
                     </p>
                     <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold">
                         <span class="material-symbols-outlined text-[24px] text-primary">move_selection_up</span>
-                        <span class="token">0 TOKENS ENVIADO</span>
+                        <span class="up_tokens">0 TOKENS ENVIADO</span>
                     </p>
                     <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold">
                         <span class="material-symbols-outlined text-[24px] text-primary">move_selection_down</span>
-                        <span class="token">0 TOKENS RECEBIDOS</span>
+                        <span class="dw_tokens">0 TOKENS RECEBIDOS</span>
                     </p>
                     <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-300 p-4 bg-white shadow-lg rounded-lg w-100 z-10 border border-gray-200 model_tooltip">
                     </span>
@@ -122,10 +122,18 @@
     <!-- Floating Background Decorative Elements -->
     <div class="fixed top-20 left-5"> 
       <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1 font-bold cursor-pointer" title="Limpar a conversa" onclick="messages_clear();">
-        <span class="material-symbols-outlined text-[24px] text-primary">contract_delete</span>
+        <span class="material-symbols-outlined text-[32px] text-primary">contract_delete</span>
         <span class="token">NOVO CHAT</span>
       </p>
     </div>
+    <!-- Alert Container -->
+    <div id="toast" class="fixed top-24 px-4 py-3 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 
+            gap-2 rounded-lg bg-green-100 px-4 py-3 text-green-800 shadow-lg border border-green-300 transition-all duration-300
+            transition-all duration-300 ease-in-out
+            opacity-0 -translate-y-4 pointer-events-none">
+        <span class="font-semibold">Successo</span>
+        <p>Action completed successfully.</p>
+    </div>
+</div>
 </body>
-
 </html>
