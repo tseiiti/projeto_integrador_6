@@ -1,0 +1,77 @@
+POST http://localhost:11434/api/generate
+
+{
+  "model": "gemma3:1b",
+  "prompt": "como são os ambientes?"
+}
+
+###
+
+POST http://localhost:11434/api/chat
+
+{
+  "model": "gemma3:1b",
+  "messages": [{
+    "role": "user",
+    "content": "o que é a declaração de nova delhi?"
+  }]
+}
+
+
+###
+
+POST http://localhost:8000/context
+Content-Type: application/json
+
+{
+  "query": "o que é a declaração de nova déli?"
+}
+
+###
+
+POST http://localhost:8000/query
+Content-Type: application/json
+
+{
+  "query": "dê mais detalhes"
+}
+
+###
+
+GET  http://localhost:8000/models
+
+
+###
+
+POST http://localhost:8000/chat
+Content-Type: application/json
+
+{
+  "model": "gemma3:1b",
+  "messages": [{
+    "role": "user",
+    "content": "o que é a declaração de nova delhi?"
+  }],
+  "stream": true
+}
+
+###
+
+POST http://localhost:8000/context
+Content-Type: application/json
+
+{
+  "query": "o que é a declaração de nova delhi?"
+}
+
+###
+
+POST http://localhost:11434/api/chat
+
+{
+  "model": "gemma3:1b",
+  "messages": [{
+    "role": "user",
+    "content": "oi"
+  }]
+}
