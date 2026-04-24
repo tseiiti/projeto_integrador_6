@@ -397,7 +397,6 @@ const send_query = async () => {
   if (e.value.length == 0) return;
 
   show_toast('Envio:', 'Mensagem sendo enviada...');
-
   e.readOnly = true;
 
   // cria lista inicial de mensagens
