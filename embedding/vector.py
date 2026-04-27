@@ -5,10 +5,11 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 import pandas as pd
 import PyPDF2
 import os
+import re
 
 from config import (
   EMBEDDING_MODEL, OLLAMA_BASE_URL, CHUNK_SIZE, CHUNK_OVERLAP, 
-  CHROMA_DB_PATH, STORAGE_PATH, TOP_K
+  CHROMA_DB_PATH, STORAGE_PATH
 )
 
 def load_and_split(docs):  
@@ -18,41 +19,46 @@ def load_and_split(docs):
   )
   vector_store.add_documents(documents=splitter.split_documents(docs))
 
-def load_pdf(path):
+def load_pdf(path, fn):
   docs = []
   with open(path, "rb") as f:
     pdf = PyPDF2.PdfReader(f)
     for i, p in enumerate(pdf.pages):
       content = p.extract_text()
+      content = re.sub(r'\n\s{2,}', "\n ", content)
+      content = re.sub(r'\s{2,}', " ", content)
       docs.append(Document(
         page_content=content,
         metadata={
+          "file_name": fn,
           "source": path,
           "page": i + 1,
           "file_type": "pdf",
         }))
   load_and_split(docs)
 
-def load_csv(path):
+def load_csv(path, fn):
   docs = []
   df = pd.read_csv(path)
   for i, row in df.iterrows():
     docs.append(Document(
       page_content=row.content,
       metadata={
+        "file_name": fn,
         "source": path,
         "page": i + 1,
         "file_type": "csv",
       }))
   load_and_split(docs)
 
-def load_txt(path):
+def load_txt(path, fn):
   docs = []
   with open(path, "r", encoding="utf-8") as f:
     content = f.read()
   docs.append(Document(
     page_content=content,
     metadata={
+      "file_name": fn,
       "source": path,
       "page": 1,
       "file_type": "txt",
@@ -70,18 +76,17 @@ vector_store = Chroma(
   persist_directory=CHROMA_DB_PATH,
 )
 
+
+filenames = [fn for fn in os.listdir(STORAGE_PATH)]
+
 if is_add:
   loaders = {
     ".pdf": load_pdf,
     ".csv": load_csv,
     ".txt": load_txt,
   }
-  for fn in os.listdir(STORAGE_PATH):
+  for fn in filenames:
     path = os.path.join(STORAGE_PATH, fn)
     loader = loaders.get(os.path.splitext(path)[1])
-    loader(path)
+    loader(path, fn)
     print("adicionado o arquivo:", fn)
-
-retriever = vector_store.as_retriever(
-  search_kwargs={"k": TOP_K}
-)

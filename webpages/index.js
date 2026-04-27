@@ -1,11 +1,15 @@
-/**
+
+/******************************************************************************
  * Funções básicas
- */
+ ******************************************************************************/
+
 const cl = arg => console.log(arg);
 const ce = error => { console.error(error); alert(error); }
 const qs = arg => document.querySelector(arg);
 const qsa = arg => document.querySelectorAll(arg);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// evento enter
 const handle_enter = ev => {
   if (ev.key === 'Enter' && !ev.shiftKey) {
     ev.preventDefault();
@@ -13,6 +17,7 @@ const handle_enter = ev => {
   }
 }
 
+// funções de armazenamento
 const get = (key, defaultValue) => {
   const data = localStorage.getItem(key);
   return data ? JSON.parse(data) : defaultValue;
@@ -21,25 +26,6 @@ const get = (key, defaultValue) => {
 const set = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
-
-class Storage {
-  constructor(key, init = {}) {
-    this.key = key;
-    this.init = init;
-  }
-
-  get() {
-    return get(this.key, this.init);
-  }
-
-  set(e) {
-    set(this.key, e);
-  }
-
-  clr() {
-    set(this.key, this.init);
-  }
-}
 
 class StorageArray {
   constructor(key, init = []) {
@@ -84,12 +70,27 @@ class StorageArray {
   }
 }
 
+// mostra alerta (toast)
+const show_toast = (title, text) => {
+  qs('#toast span').innerHTML = title;
+  qs('#toast p').innerHTML = text;
+
+  const toast = qs('#toast');
+  toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
+  toast.classList.add('opacity-80', 'translate-y-0');
+  setTimeout(() => {
+    toast.classList.remove('opacity-80', 'translate-y-0');
+    toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+  }, 3000);
+}
 
 
-/**
+
+/******************************************************************************
  * Funções acopladas ao html
- */
+ ******************************************************************************/
 
+// seleção, lista e detalhes informativos de models de ia
 const select_model = (cur_mod) => {
   set(KEYS.CURRENT_MODEL, cur_mod);
 
@@ -98,29 +99,37 @@ const select_model = (cur_mod) => {
     <h4 class="font-semibold mb-2 text-[12px] text-gray-800 uppercase">${cm.name}</h4>
     <div class="text-[10px]">
       <p class="p-1">
+        <span class="text-gray-500">tokens enviados:</span><br>
+        <span class="text-green-600 up_tokens">0</span>
+      </p>
+      <p class="p-1">
+        <span class="text-gray-500">tokens recebidos:</span><br>
+        <span class="text-green-600 dw_tokens">0</span>
+      </p>
+      <p class="p-1">
         <span class="text-gray-500">family:</span><br>
         <span class="text-gray-900">${cm.details.family}</span>
       </p>
       <p class="p-1">
         <span class="text-gray-500">modified_at:</span><br>
-        <span class="text-gray-900">${cm.modified_at}</span>
+        <span class="text-gray-900">${(new Date(cm.modified_at)).toLocaleString()}</span>
       </p>
       <p class="p-1">
         <span class="text-gray-500">size:</span><br>
-        <span class="text-green-600">${(cm.size / 1024 ** 2).toFixed(2)}MB</span>
+        <span class="text-gray-900">${(cm.size / 1024 ** 2).toFixed(2)}MB</span>
       </p>
       <p class="p-1">
         <span class="text-gray-500">parameter_size:</span><br>
-        <span class="text-green-600">${cm.details.parameter_size}</span>
+        <span class="text-gray-900">${cm.details.parameter_size}</span>
       </p>
       <p class="p-1">
         <span class="text-gray-500">quantization_level:</span><br>
         <span class="text-gray-900">${cm.details.quantization_level}</span>
       </p>
-      <p class="p-1">
+      <!-- <p class="p-1">
         <span class="text-gray-500">digest:</span><br>
         <span class="text-gray-600">${cm.digest}</span>
-      </p>
+      </p> -->
       <p class="p-1">
         <span class="text-gray-500">format:</span><br>
         <span class="text-gray-600">${cm.details.format}</span>
@@ -128,6 +137,10 @@ const select_model = (cur_mod) => {
       <p class="p-1">
         <span class="text-gray-500">parent_model:</span><br>
         <span class="text-gray-600">${cm.details.parent_model}</span>
+      </p>
+      <p class="p-1 text-gray-400 italic">
+        - botão "NOVO CHAT" permite limpar a conversa<br>
+        - "score" define o valor de precisão do contexto
       </p>
     </div>
   `;
@@ -150,6 +163,7 @@ const select_model = (cur_mod) => {
   qs('[name=textarea_prompt]').focus();
 }
 
+// insere mensagem do usuário
 const insert_user_message = (msg) => {
   let html = `
     <!-- User Message -->
@@ -175,6 +189,7 @@ const insert_user_message = (msg) => {
   qs('.messages').innerHTML += html;
 }
 
+// insere mensagem do assistante
 const insert_ia_message = (msg) => {
   let html = `
     <!-- AI Message -->
@@ -199,7 +214,8 @@ const insert_ia_message = (msg) => {
               onclick="copy_text('${msg.id}')">
               <span class="material-symbols-outlined text-[24px]">content_copy</span>
             </button>
-            <p class="text-[10px] text-on-surface-variant/80 mb-2">${msg.created_at}</p>
+            <p class="text-[10px] text-on-surface-variant/80 mb-1">${msg.created_at}</p>
+            <p class="text-[14px] text-on-surface-variant/80 ml-auto mr-4">${ msg.contexts[0] ? Math.round(1800 - msg.contexts[0].score * 1000) + ' | ' + msg.contexts.length  : ''}</p>
           </div>
         </div>
       </div>
@@ -215,6 +231,7 @@ const insert_ia_message = (msg) => {
   });
 }
 
+// mostra icone em pensamento (loading)
 const ia_thinking_state = (cur_mod) => {
   let html = `
     <div class="flex items-start gap-4 ia_thinking_state">
@@ -238,6 +255,7 @@ const ia_thinking_state = (cur_mod) => {
   });
 }
 
+// limpar conversa
 const messages_clear = () => {
   MESSAGES.clr();
   qs('.messages').innerHTML = '';
@@ -246,6 +264,7 @@ const messages_clear = () => {
   qs('.dw_tokens').innerHTML = '0 TOKENS RECEBIDOS';
 }
 
+// marca mensagem ia com like
 const messages_like = (element, id, value) => {
   let msg = MESSAGES.get(id);
   if (value == msg.like) value = 0;
@@ -257,19 +276,7 @@ const messages_like = (element, id, value) => {
   element.style.fontVariationSettings = `'FILL' ${value == 0 ? 0 : 1}`;
 }
 
-const show_toast = (title, text) => {
-  qs('#toast span').innerHTML = title;
-  qs('#toast p').innerHTML = text;
-
-  const toast = qs('#toast');
-  toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
-  toast.classList.add('opacity-80', 'translate-y-0');
-  setTimeout(() => {
-    toast.classList.remove('opacity-80', 'translate-y-0');
-    toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
-  }, 3000);
-}
-
+// copia texto para área de transferência
 const copy_text = (id) => {
   let text = qs(`#msg_ia_${id} p.content`).innerHTML;
 
@@ -289,10 +296,11 @@ const copy_text = (id) => {
 
 
 
-/**
+/******************************************************************************
  * Funções de acesso a APIs
- */
+ ******************************************************************************/
 
+// finaliza mensagem resposta do assistente
 const set_assitent_messages = (id) => {
   let e = qs(`#msg_ia_${id} p.content`);
   MESSAGES.upd(id, { role: 'assistant', content: e.innerHTML });
@@ -306,6 +314,7 @@ const set_assitent_messages = (id) => {
   });
 }
 
+// trata conteúdo picado (stream do chat) e contagem de tokens
 const get_content = (id, value) => {
   try {
     let rjson = new TextDecoder().decode(value);
@@ -329,18 +338,23 @@ const get_content = (id, value) => {
       qs('.dw_tokens').innerHTML = `${tk.dw_tokens + json.eval_count} TOKENS RECEBIDOS`;
     } else {
       let content = json.message.content;
-      qs(`#msg_ia_${id} p.content`).innerHTML += content;
+      let e = qs(`#msg_ia_${id} p.content`);
+      e.innerHTML += content;
+      e.scrollIntoView({
+        behavior: 'smooth',
+      });
     }
   } catch (error) {
     ce(error);
   }
 }
 
-const call_chat_api = async (cur_mod, msgs) => {
+// consome serviço de chat
+const call_api_chat = async (cur_mod, msgs, score, file, contexts) => {
   let msg;
 
   try {
-    const response = await fetch(KEYS.CHAT_API_URL, {
+    const response = await fetch(KEYS.API_CHAT_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -354,7 +368,7 @@ const call_chat_api = async (cur_mod, msgs) => {
     const reader = response.body?.getReader();
     if (!reader) return;
 
-    msg = MESSAGES.add({ role: 'assistant', content: '', up_tokens: 0, dw_tokens: 0 });
+    msg = MESSAGES.add({ role: 'assistant', content: '', up_tokens: 0, dw_tokens: 0, score: score, file: file, contexts: contexts });
     insert_ia_message(msg);
     
     while (true) {
@@ -369,7 +383,8 @@ const call_chat_api = async (cur_mod, msgs) => {
   }
 }
 
-const get_context = async (prompt) => {
+// pega contexto embedding da pergunta
+const get_context = async (prompt, score, file) => {
   try {
     const response = await fetch(KEYS.CONTEXT_URL, {
       method: 'POST',
@@ -377,7 +392,9 @@ const get_context = async (prompt) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        query: prompt
+        query: prompt,
+        score: score,
+        file: file
       })
     });
 
@@ -391,13 +408,16 @@ const get_context = async (prompt) => {
   }
 }
 
+// função principal de envio de pergunta
 const send_query = async () => {
   // armazena a questão do usuário
-  let e = qs('[name=textarea_prompt]');
-  if (e.value.length == 0) return;
+  let prompt = qs('[name=textarea_prompt]');
+  let score = (1800 - Number(qs('.score').value)) / 1000;
+  let file = FILENAMES[qs('.filenames').value];
+  if (prompt.value.length == 0) return;
 
   show_toast('Envio:', 'Mensagem sendo enviada...');
-  e.readOnly = true;
+  prompt.readOnly = true;
 
   // cria lista inicial de mensagens
   let msgs = MESSAGES.lst().map((e) => {
@@ -407,54 +427,83 @@ const send_query = async () => {
   });
 
   // define o contexto da questão
-  let context = await get_context(e.value);
+  let contexts = await get_context(prompt.value, score, file);
   let content = `
-    Pergunta: ${e.value}
+    Pergunta: ${prompt.value}
     
-    Contexto: ${context}
+    Contexto: ${contexts.map(e => { return e.content; })}
   `;
 
   // adiciona o conteúdo da questão do usuário
   msgs.push({ role: 'user', content: content })
-  let msg = MESSAGES.add({ role: 'user', prompt: e.value, content: content });
+  let msg = MESSAGES.add({ role: 'user', prompt: prompt.value, content: content });
   insert_user_message(msg);
-  e.value = '';
+  prompt.value = '';
 
   // ícone de espera do assistente
   let cur_mod = get(KEYS.CURRENT_MODEL);
   ia_thinking_state(cur_mod);
 
   // chamada da api do assistente
-  call_chat_api(cur_mod, msgs);
+  call_api_chat(cur_mod, msgs, score, file, contexts);
+}
+
+// alguns processos iniciais
+const init = () => {
+  let cur_mod = get(
+    KEYS.CURRENT_MODEL, 
+    MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
+  select_model(cur_mod);
+
+  qs(`#msg_ia_${MESSAGES.lst().findLast(e => e.role == 'assistant')?.id}`)?.scrollIntoView({
+    behavior: 'smooth',
+  });
+  
+  let tk = get(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
+  qs('.up_tokens').innerHTML = `${tk.up_tokens} TOKENS ENVIADO`;
+  qs('.dw_tokens').innerHTML = `${tk.dw_tokens} TOKENS RECEBIDOS`;
 }
 
 
+/******************************************************************************
+ * Variáveis globais
+ ******************************************************************************/
 
 const KEYS = {
-  MODELS: 'models',
+  MODELS:        'models',
   CURRENT_MODEL: 'current_model',
-  MESSAGES: 'messages',
-  TOKENS: 'tokens',
-  CHAT_API_URL: `http://${window.location.hostname}:11434/api/chat`,
-  CONTEXT_URL: `http://${window.location.hostname}:8000/context`,
-  API_TAGS_URL: `http://${window.location.hostname}:11434/api/tags`,
-  API_PS_URL: `http://${window.location.hostname}:11434/api/ps`,
+  MESSAGES:      'messages',
+  TOKENS:        'tokens',
+  API_CHAT_URL:  `http://${window.location.hostname}:11434/api/chat`,
+  API_TAGS_URL:  `http://${window.location.hostname}:11434/api/tags`,
+  API_PS_URL:    `http://${window.location.hostname}:11434/api/ps`,
+  CONTEXT_URL:   `http://${window.location.hostname}:8000/context`,
+  FILENAMES_URL: `http://${window.location.hostname}:8000/filenames`,
   DEFAULT_MESSAGE: {
     role: 'system',
-    content: 'Responda a pergunta com base somente no contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português de forma clara e objetiva, e sem formatação. A resposta deve ser em um único parágrafo bem elaborado e completo, a menos que esteja explícito outro formato na pergunta.'
+    content: 'Responda a pergunta com base somente no contexto. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema PCP Master, e diga também que a seleção do arquivo pode influenciar na geração do contexto, por fim informe que é possível reduzir o score para obter contextos mais abrangente. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português de forma clara e objetiva, e sem formatação. A resposta deve ser em um único parágrafo bem elaborado e completo, a menos que esteja explícito outro formato na pergunta.'
   },
 }
 
-var MESSAGES = new StorageArray(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
-var MODELS = [];
+var MESSAGES  = new StorageArray(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
+var MODELS    = [];
+var FILENAMES = [];
+
+
+
+/******************************************************************************
+ * Processo principal
+ ******************************************************************************/
 
 document.addEventListener('DOMContentLoaded', () => {
+  // evento submit
   qs('#form_chat_api').addEventListener('submit', function(e) {
     e.preventDefault();
     send_query();
     return;
   });
 
+  // carrega histórico de mensagens
   for (let msg of MESSAGES.lst()) {
     if (msg.role == 'user') {
       insert_user_message(msg);
@@ -462,25 +511,29 @@ document.addEventListener('DOMContentLoaded', () => {
       insert_ia_message(msg);
     }
   }
+  
+  // carrega nome de arquivos
+  fetch(KEYS.FILENAMES_URL)
+  .then(response => { return response.json(); })
+  .then(json => {
+    FILENAMES = ['Todos'].concat(json);
+    let html = '';
+    for (let i in FILENAMES) {
+      html += `<option class="bg-transparent border-none" value="${i}">${FILENAMES[i]}</option>`;
+    }
+    qs('.filenames').innerHTML = html;
+  })
+  .catch(error => ce(error));
 
+  // carrega lista de modelos
   fetch(KEYS.API_TAGS_URL)
   .then(response => { return response.json(); })
   .then(json => { 
     MODELS = json.models.filter(m => !m.model.includes('embedding')).sort(
       (a, b) => a.name.localeCompare(b.name)
     );
-    let cur_mod = get(
-      KEYS.CURRENT_MODEL, 
-      MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
-    select_model(cur_mod);
 
-    qs(`#msg_ia_${MESSAGES.lst().findLast(e => e.role == 'assistant')?.id}`)?.scrollIntoView({
-      behavior: 'smooth',
-    });
-    
-    let tk = get(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
-    qs('.up_tokens').innerHTML = `${tk.up_tokens} TOKENS ENVIADO`;
-    qs('.dw_tokens').innerHTML = `${tk.dw_tokens} TOKENS RECEBIDOS`;
+    init();
   })
   .catch(error => ce(error));
 });
