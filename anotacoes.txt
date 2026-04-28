@@ -28,3 +28,26 @@ tasklist /fi "imagename eq nginx.exe"
 .\nginx.exe -s reopen #	re-opening log files
 
 alias ll='ls -AlFv --color --group-directories-first'
+
+
+
+
+===============================================================================
+
+Kotlin é uma linguagem de programação moderna, concisa e de código aberto, desenvolvida pela JetBrains. Ela é amplamente utilizada para o desenvolvimento Android, sendo a linguagem oficial preferida pelo Google. Kotlin é totalmente interoperável com Java, roda na Máquina Virtual Java (JVM) e permite criar aplicativos para Android, servidores, web e desktop, focando em segurança e produtividade. 
+
+O Docker é uma plataforma de código aberto que automatiza a criação, implantação e execução de aplicações em contêineres. Ele empacota o código e todas as suas dependências (bibliotecas, configurações) em um ambiente isolado, garantindo que o software funcione de forma rápida, consistente e portátil em qualquer servidor, eliminando o problema de "funciona na minha máquina".
+
+NGINX (pronunciado "engine-x") é um software de servidor web de alto desempenho, código aberto e gratuito, amplamente utilizado como proxy reverso, balanceador de carga, cache HTTP e servidor de e-mail. Criado em 2004 por Igor Sysoev, destaca-se por sua arquitetura assíncrona orientada a eventos, capaz de lidar com milhares de conexões simultâneas consumindo pouca memória, sendo ideal para sites com alto tráfego. 
+
+O Ollama é uma ferramenta open-source que permite baixar, instalar e executar Grandes Modelos de Linguagem (LLMs), como Llama 3, Mistral e Gemma, diretamente no seu computador pessoal (macOS, Linux e Windows). Ele simplifica o uso de IA local, garantindo privacidade de dados, operando sem internet e eliminando custos com APIs de nuvem. 
+
+LangChain é um framework open-source projetado para simplificar a criação de aplicações baseadas em Grandes Modelos de Linguagem (LLMs), como GPT, Claude e Llama. Ele facilita a conexão desses modelos a fontes de dados externas, memória e ferramentas, permitindo desenvolver chatbots avançados, RAG (Geração Aumentada de Recuperação) e agentes inteligentes. 
+
+O EmbeddingGemma é um modelo de embedding de texto, leve e aberto, desenvolvido pelo Google DeepMind, projetado especificamente para ser executado em dispositivos locais (on-device), como smartphones, laptops e tablets. Ele faz parte da família Gemma 3 e é treinado para converter texto em representações numéricas (vetores) que capturam o significado semântico, permitindo buscas e análises de dados com alta eficiência e privacidade.
+
+O ChromaDB é um banco de dados vetorial open-source projetado especificamente para facilitar o uso de dados com Grandes Modelos de Linguagem (LLMs), como no RAG (Retrieval-Augmented Generation). Ele armazena representações numéricas de dados (embeddings) e metadados, permitindo buscas semânticas rápidas e eficientes para fornecer contexto relevante a aplicações de IA.
+
+O FastAPI é um framework web moderno, de alto desempenho e assíncrono para Python, projetado para criar APIs (RESTful/GraphQL) de forma rápida, simples e com validação automática de dados. Baseado no Starlette (backend) e Pydantic (dados), é considerado um dos frameworks Python mais rápidos, comparável a NodeJS e Go.
+
+O Uvicorn é um servidor web ASGI (Asynchronous Server Gateway Interface) de altíssima performance para Python, ideal para frameworks assíncronos modernos como FastAPI e Django. Ele é projetado para lidar com conexões HTTP/1.1 e WebSockets, utilizando bibliotecas rápidas como uvloop e httptools para gerenciar requisições assíncronas.
