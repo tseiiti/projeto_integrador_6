@@ -67,7 +67,9 @@
     <main class="ml-0 mt-16 h-[calc(100dvh-64px)] relative flex flex-col glow-accent">
         
         <!-- Message Stream Area -->
-        <div class="flex-1 overflow-y-auto custom-scrollbar p-8 lg:px-24 space-y-8 messages">
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-8 lg:px-24 space-y-8">
+            <div class="messages"></div>
+            <div class="messages-end"></div>
         </div>
 
         <!-- Shell Area -->
@@ -77,10 +79,10 @@
                 <!-- Input Area -->
                 <div class="bg-white rounded-2xl px-2 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-outline-variant focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/5 transition-all duration-500">
                     <form id="form_chat_api">
-                        <div class="flex items-end gap-2 px-2 py-1">
-                            <span class="material-symbols-outlined ml-2 mb-[11px] text-outline text-on-surface">article</span>
+                        <div class="flex items-center gap-2 px-2 py-1">
+                            <span class="material-symbols-outlined ml-2 text-outline text-on-surface">article</span>
                             <textarea name="textarea_prompt"
-                                class="flex-1 bg-transparent border-none focus:outline-none focus:ring-0 text-sm py-3 px-2 resize-none max-h-48 custom-scrollbar placeholder:text-outline text-on-surface font-medium"
+                                class="flex-1 bg-transparent border-none focus:outline-none focus:ring-0 text-sm py-3 px-2 resize-none h-16 sm:h-11 max-h-48 custom-scrollbar placeholder:text-outline text-on-surface font-medium"
                                 placeholder="Escreva a mensagem a ser enviada para o Assistente" rows="1"
                                 onkeydown="handle_enter(event)"></textarea>
                             <div class="flex items-center gap-1 mb-0.5">
@@ -111,9 +113,10 @@
                     </p>
 
                     <!-- Score -->
-                    <div class="flex items-center" title="define a precisão do contexto">
-                        <span class="text-sm text-gray-700 pb-0.5 pr-1">score:</span>
-                        <input type="number" value="500" min="0" max="999"
+                    <div class="flex items-center gap-1 font-bold cursor-pointer" title="define a precisão do contexto">
+                        <span class="material-symbols-outlined text-[24px] text-primary">scoreboard</span>
+                        <span class="text-[10px] text-on-surface-variant/80 font-bold pr-2">SCORE:</span>
+                        <input type="number" value="50" min="1" max="100"
                             class="w-full bg-transparent font-medium text-gray-500 text-sm border-none rounded-md py-1 transition duration-300 focus:outline-none focus:border-slate-400 hover:border-slate-300 score" />
                     </div>
                     

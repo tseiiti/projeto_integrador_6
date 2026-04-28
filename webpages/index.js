@@ -136,8 +136,8 @@ const select_model = (cur_mod) => {
         <span class="ml-2">e todo histórico será excluído.</span>
       </p>
       <p class="p-1 text-gray-400 italic">
-        - "score" define o valor de precisão do contexto<br>
-        <span class="ml-2">entre 1 a 999, sendo os valores mais altos</span><br>
+        - "SCORE" define o valor de precisão do contexto<br>
+        <span class="ml-2">entre 1 a 100, sendo os valores mais altos</span><br>
         <span class="ml-2">serão os mais precisos, porém</span><br>
         <span class="ml-2">difíceis de corresponder a questão.</span>
       </p>
@@ -190,10 +190,14 @@ const insert_user_message = (msg) => {
 
 // insere mensagem do assistante
 const insert_ia_message = (msg) => {
+  let ctxs = msg.contexts;
+  let ctx = ctxs[0];
+  let ltx = ctxs.at(-1);
+  let context = ctx ? ` | contextos: ${ctxs.length}, max: ${Math.round(180 - ctx.score * 100)}, min: ${Math.round(180 - ltx.score * 100)}` : '';
   let html = `
     <!-- AI Message -->
     <div class="flex flex-col items-start group" id="msg_ia_${msg.id}">
-      <div class="max-w-[85%] flex items-start gap-4">
+      <div class="max-w-[95%] sm:max-w-[85%] sm:flex sm:items-start gap-2 space-y-2">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-1 shadow-md shadow-primary/10">
           <span class="material-symbols-outlined text-white text-xs"
             style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
@@ -214,18 +218,17 @@ const insert_ia_message = (msg) => {
               <span class="material-symbols-outlined text-[24px]">content_copy</span>
             </button>
             <p class="text-[10px] text-on-surface-variant/80 mb-1">${msg.created_at}</p>
-            <p class="text-[14px] text-on-surface-variant/80 ml-auto mr-4">${ msg.contexts[0] ? Math.round(1800 - msg.contexts[0].score * 1000) + ' | ' + msg.contexts.length  : ''}</p>
           </div>
         </div>
       </div>
-      <span class="ml-12 text-[10px] text-on-surface-variant mt-2 block opacity-0 group-hover:opacity-100 transition-opacity font-bold tokens">
-        tokens enviados: ${msg.up_tokens} | tokens recebidos: ${msg.dw_tokens}
-      </span>
+      <div class="ml-2 sm:ml-12 text-[10px] text-on-surface-variant mt-2 block opacity-0 group-hover:opacity-100 transition-opacity font-bold">
+        <span class="tokens">tokens enviados: ${msg.up_tokens} | tokens recebidos: ${msg.dw_tokens}</span>${context}
+      </div>
     </div>
   `;
 
   qs('.messages').innerHTML += html;
-  qs(`#msg_ia_${msg.id} p`).scrollIntoView({
+  qs('.messages-end').scrollIntoView({
     behavior: 'smooth',
   });
 }
@@ -261,6 +264,7 @@ const messages_clear = () => {
   set(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
   qs('.up_tokens').innerHTML = '0 TOKENS ENVIADO';
   qs('.dw_tokens').innerHTML = '0 TOKENS RECEBIDOS';
+  qs('[name=textarea_prompt]').focus();
 }
 
 // marca mensagem ia com like
@@ -302,30 +306,28 @@ const copy_text = (id) => {
 // finaliza mensagem resposta do assistente
 const set_assitent_messages = (id) => {
   let e = qs(`#msg_ia_${id} p.content`);
-  MESSAGES.upd(id, { role: 'assistant', content: e.innerHTML });
+  MESSAGES.upd(id, { content: e.innerHTML });
 
   qs('.ia_thinking_state').remove();
   qs('[name=textarea_prompt]').readOnly = false;
   qs('[name=textarea_prompt]').focus();
   
-  e.scrollIntoView({
+  qs('.messages-end').scrollIntoView({
     behavior: 'smooth',
   });
 }
 
 // trata conteúdo picado (stream do chat) e contagem de tokens
-const get_content = (id, value) => {
+const get_content = (msg, value) => {
   try {
-    let rjson = new TextDecoder().decode(value);
-    let json = JSON.parse(rjson);
+    let json = JSON.parse(new TextDecoder().decode(value));
     if (json.done) {
-      let msg = MESSAGES.get(id);
-      MESSAGES.upd(id, { 
+      msg = MESSAGES.upd(msg.id, { 
         ...msg, 
         up_tokens: json.prompt_eval_count,
         dw_tokens: json.eval_count, 
       });
-      qs(`#msg_ia_${id} span.tokens`).innerHTML = `tokens enviados: ${json.prompt_eval_count} | tokens recebidos: ${json.eval_count}`;
+      qs(`#msg_ia_${msg.id} span.tokens`).innerHTML = `tokens enviados: ${json.prompt_eval_count} | tokens recebidos: ${json.eval_count}`;
 
       let tk = get(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
       set(KEYS.TOKENS, {
@@ -336,14 +338,12 @@ const get_content = (id, value) => {
       qs('.up_tokens').innerHTML = `${tk.up_tokens + json.prompt_eval_count} TOKENS ENVIADO`;
       qs('.dw_tokens').innerHTML = `${tk.dw_tokens + json.eval_count} TOKENS RECEBIDOS`;
     } else {
-      let content = json.message.content;
-      let e = qs(`#msg_ia_${id} p.content`);
-      e.innerHTML += content;
-      e.scrollIntoView({
+      qs(`#msg_ia_${msg.id} p.content`).innerHTML += json.message.content;
+      qs('.messages-end').scrollIntoView({
         behavior: 'smooth',
       });
     }
-  } catch (error) {
+  } catch(error) {
     ce(error);
   }
 }
@@ -370,11 +370,12 @@ const call_api_chat = async (cur_mod, msgs, score, file, contexts) => {
 
     msg = MESSAGES.add({ role: 'assistant', content: '', up_tokens: 0, dw_tokens: 0, score: score, file: file, contexts: contexts });
     insert_ia_message(msg);
+    sleep(10);
     
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      get_content(msg.id, value);
+      get_content(msg, value);
     }
   } catch (error) {
     ce(error);
@@ -413,7 +414,7 @@ const get_context = async (prompt, score, file) => {
 const send_query = async () => {
   // armazena a questão do usuário
   let prompt = qs('[name=textarea_prompt]');
-  let score = (1800 - Number(qs('.score').value)) / 1000;
+  let score = (180 - Number(qs('.score').value)) / 100;
   let file = FILENAMES[qs('.filenames').value];
   if (prompt.value.length == 0) return;
 
@@ -456,7 +457,7 @@ const init = () => {
     MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
   select_model(cur_mod);
 
-  qs(`#msg_ia_${MESSAGES.lst().findLast(e => e.role == 'assistant')?.id}`)?.scrollIntoView({
+  qs('.messages-end').scrollIntoView({
     behavior: 'smooth',
   });
 
@@ -482,7 +483,7 @@ const KEYS = {
   FILENAMES_URL: `http://${window.location.hostname}:8000/filenames`,
   DEFAULT_MESSAGE: {
     role: 'system',
-    content: 'Responda a pergunta com base principalmente no contexto. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema PCP Master, e diga também que a seleção do arquivo pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português de forma clara e objetiva, e sem formatação. A resposta deve ser em um único parágrafo bem elaborado e completo, a menos que esteja explícito outro formato na pergunta.'
+    content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema PCP Master, e diga também que a seleção do arquivo pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português de forma clara e objetiva, e sem formatação. A resposta deve ser em um único parágrafo bem elaborado e completo, a menos que esteja explícito outro formato na pergunta.'
   },
 }
 
