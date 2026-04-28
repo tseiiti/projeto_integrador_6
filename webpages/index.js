@@ -2,9 +2,10 @@
 /******************************************************************************
  * Funções básicas
  ******************************************************************************/
-
-const cl = arg => console.log(arg);
-const ce = error => { console.error(error); alert(error); }
+const ONLOG = false;
+const ONALERT = false;
+const cl = arg => { if (ONLOG) console.log(arg); };
+const ce = error => { console.error(error); if (ONALERT) alert(error); }
 const qs = arg => document.querySelector(arg);
 const qsa = arg => document.querySelectorAll(arg);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -84,7 +85,21 @@ const show_toast = (title, text) => {
   }, 3000);
 }
 
+const resize_select = () => {
+  const select = qs('.filenames');
+  const selectedText = select.options[select.selectedIndex].text;
+  const tempDiv = document.createElement('div');
 
+  tempDiv.style.position = 'absolute';
+  tempDiv.style.visibility = 'hidden';
+  tempDiv.style.whiteSpace = 'nowrap';
+  tempDiv.style.fontSize = window.getComputedStyle(select).fontSize;
+  tempDiv.innerText = selectedText;
+
+  document.body.appendChild(tempDiv);
+  select.style.width = tempDiv.offsetWidth + 40 + 'px';
+  document.body.removeChild(tempDiv);
+}
 
 /******************************************************************************
  * Funções acopladas ao html
@@ -92,55 +107,39 @@ const show_toast = (title, text) => {
 
 // seleção, lista e detalhes informativos de models de ia
 const select_model = (cur_mod) => {
+  const get_p = (label, text, tclass = 'text-gray-900') => {
+    return `
+      <p class="p-1">
+        <span class="text-gray-500">${label}:</span><br>
+        <span class="${tclass}">${text}</span>
+      </p>`;
+  }
+
   set(KEYS.CURRENT_MODEL, cur_mod);
 
   let cm = MODELS.find(e => e.model == cur_mod);
   let html = `
     <h4 class="font-semibold mb-2 text-[12px] text-gray-800 uppercase">${cm.name}</h4>
     <div class="text-[10px]">
-      <p class="p-1">
-        <span class="text-gray-500">tokens enviados:</span><br>
-        <span class="text-green-600 up_tokens">0</span>
-      </p>
-      <p class="p-1">
-        <span class="text-gray-500">tokens recebidos:</span><br>
-        <span class="text-green-600 dw_tokens">0</span>
-      </p>
-      <p class="p-1">
-        <span class="text-gray-500">family:</span><br>
-        <span class="text-gray-900">${cm.details.family}</span>
-      </p>
-      <p class="p-1">
-        <span class="text-gray-500">modified_at:</span><br>
-        <span class="text-gray-900">${(new Date(cm.modified_at)).toLocaleString()}</span>
-      </p>
-      <p class="p-1">
-        <span class="text-gray-500">size:</span><br>
-        <span class="text-gray-900">${(cm.size / 1024 ** 2).toFixed(2)}MB</span>
-      </p>
-      <p class="p-1">
-        <span class="text-gray-500">parameter_size:</span><br>
-        <span class="text-gray-900">${cm.details.parameter_size}</span>
-      </p>
-      <p class="p-1">
-        <span class="text-gray-500">quantization_level:</span><br>
-        <span class="text-gray-900">${cm.details.quantization_level}</span>
-      </p>
-      <!-- <p class="p-1">
-        <span class="text-gray-500">digest:</span><br>
-        <span class="text-gray-600">${cm.digest}</span>
-      </p> -->
-      <p class="p-1">
-        <span class="text-gray-500">format:</span><br>
-        <span class="text-gray-600">${cm.details.format}</span>
-      </p>
-      <p class="p-1">
-        <span class="text-gray-500">parent_model:</span><br>
-        <span class="text-gray-600">${cm.details.parent_model}</span>
+      ${get_p('tokens enviados', '0', 'text-green-600 up_tokens')}
+      ${get_p('tokens recebidos', '0', 'text-green-600 dw_tokens')}
+      ${get_p('family', cm.details.family)}
+      ${get_p('modified_at', (new Date(cm.modified_at)).toLocaleString())}
+      ${get_p('size', (cm.size / 1024 ** 2).toFixed(2) + 'MB')}
+      ${get_p('parameter_size', cm.details.parameter_size)}
+      ${get_p('quantization_level', cm.details.quantization_level)}
+      <!-- ${get_p('digest', cm.digest, 'text-gray-600')} -->
+      ${get_p('format', cm.details.format, 'text-gray-600')}
+      ${get_p('parent_model', cm.details.parent_model, 'text-gray-600')}
+      <p class="p-1 text-gray-400 italic">
+        - "NOVO CHAT" permite limpar a conversa<br>
+        <span class="ml-2">e todo histórico será excluído.</span>
       </p>
       <p class="p-1 text-gray-400 italic">
-        - botão "NOVO CHAT" permite limpar a conversa<br>
-        - "score" define o valor de precisão do contexto
+        - "score" define o valor de precisão do contexto<br>
+        <span class="ml-2">entre 1 a 999, sendo os valores mais altos</span><br>
+        <span class="ml-2">serão os mais precisos, porém</span><br>
+        <span class="ml-2">difíceis de corresponder a questão.</span>
       </p>
     </div>
   `;
@@ -365,6 +364,7 @@ const call_api_chat = async (cur_mod, msgs, score, file, contexts) => {
       })
     });
     
+    cl(KEYS.API_CHAT_URL);
     const reader = response.body?.getReader();
     if (!reader) return;
 
@@ -397,6 +397,7 @@ const get_context = async (prompt, score, file) => {
         file: file
       })
     });
+    cl(KEYS.CONTEXT_URL);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -458,7 +459,7 @@ const init = () => {
   qs(`#msg_ia_${MESSAGES.lst().findLast(e => e.role == 'assistant')?.id}`)?.scrollIntoView({
     behavior: 'smooth',
   });
-  
+
   let tk = get(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
   qs('.up_tokens').innerHTML = `${tk.up_tokens} TOKENS ENVIADO`;
   qs('.dw_tokens').innerHTML = `${tk.dw_tokens} TOKENS RECEBIDOS`;
@@ -481,7 +482,7 @@ const KEYS = {
   FILENAMES_URL: `http://${window.location.hostname}:8000/filenames`,
   DEFAULT_MESSAGE: {
     role: 'system',
-    content: 'Responda a pergunta com base somente no contexto. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema PCP Master, e diga também que a seleção do arquivo pode influenciar na geração do contexto, por fim informe que é possível reduzir o score para obter contextos mais abrangente. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português de forma clara e objetiva, e sem formatação. A resposta deve ser em um único parágrafo bem elaborado e completo, a menos que esteja explícito outro formato na pergunta.'
+    content: 'Responda a pergunta com base principalmente no contexto. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema PCP Master, e diga também que a seleção do arquivo pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português de forma clara e objetiva, e sem formatação. A resposta deve ser em um único parágrafo bem elaborado e completo, a menos que esteja explícito outro formato na pergunta.'
   },
 }
 
@@ -516,19 +517,22 @@ document.addEventListener('DOMContentLoaded', () => {
   fetch(KEYS.FILENAMES_URL)
   .then(response => { return response.json(); })
   .then(json => {
+    cl(KEYS.FILENAMES_URL);
     FILENAMES = ['Todos'].concat(json);
     let html = '';
     for (let i in FILENAMES) {
       html += `<option class="bg-transparent border-none" value="${i}">${FILENAMES[i]}</option>`;
     }
     qs('.filenames').innerHTML = html;
+    resize_select();
   })
   .catch(error => ce(error));
 
   // carrega lista de modelos
   fetch(KEYS.API_TAGS_URL)
   .then(response => { return response.json(); })
-  .then(json => { 
+  .then(json => {
+    cl(KEYS.API_TAGS_URL);
     MODELS = json.models.filter(m => !m.model.includes('embedding')).sort(
       (a, b) => a.name.localeCompare(b.name)
     );

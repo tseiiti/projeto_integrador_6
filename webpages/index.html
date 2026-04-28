@@ -7,7 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>AI Chat</title>
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap"
         rel="stylesheet" />
@@ -15,45 +15,35 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="index.css">
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                    'primary': '#4F46E5',
-                    'primary-dim': '#4338CA',
-                    'primary-container': '#E0E7FF',
-                    'on-primary': '#FFFFFF',
-                    'on-primary-container': '#1E1B4B',
-                    'secondary': '#6366F1',
-                    'secondary-container': '#EEF2FF',
-                    'on-secondary-container': '#312E81',
-                    'surface': '#F9FAFB',
-                    'surface-dim': '#F3F4F6',
-                    'surface-bright': '#FFFFFF',
-                    'surface-container-lowest': '#FFFFFF',
-                    'surface-container-low': '#F9FAFB',
-                    'surface-container': '#F3F4F6',
-                    'surface-container-high': '#E5E7EB',
-                    'surface-container-highest': '#D1D5DB',
-                    'on-surface': '#111827',
-                    'on-surface-variant': '#4B5563',
-                    'outline': '#9CA3AF',
-                    'outline-variant': '#E5E7EB',
-                    'background': '#F9FAFB',
-                    'on-background': '#111827',
-                },
-                fontFamily: {
-                    'headline': ['Manrope', 'sans-serif'],
-                    'body': ['Inter', 'sans-serif'],
-                    'label': ['Inter', 'sans-serif']
-                },
-                borderRadius: { 'DEFAULT': '0.5rem', 'lg': '0.5rem', 'xl': '0.75rem', 'full': '9999px' },
-                },
-            },
-        }
-    </script>
+    <style type="text/tailwindcss">
+      @theme {
+        --color-primary: #4F46E5;
+        --color-primary-dim: #4338CA;
+        --color-primary-container: #E0E7FF;
+        --color-on-primary: #FFFFFF;
+        --color-on-primary-container: #1E1B4B;
+        --color-secondary: #6366F1;
+        --color-secondary-container: #EEF2FF;
+        --color-on-secondary-container: #312E81;
+        --color-surface: #F9FAFB;
+        --color-surface-dim: #F3F4F6;
+        --color-surface-bright: #FFFFFF;
+        --color-surface-container-lowest: #FFFFFF;
+        --color-surface-container-low: #F9FAFB;
+        --color-surface-container: #F3F4F6;
+        --color-surface-container-high: #E5E7EB;
+        --color-surface-container-highest: #D1D5DB;
+        --color-on-surface: #111827;
+        --color-on-surface-variant: #4B5563;
+        --color-outline: #9CA3AF;
+        --color-outline-variant: #E5E7EB;
+        --color-background: #F9FAFB;
+        --color-on-background: #111827;
+        --font-family-headline: Manrope, sans-serif;
+        --font-family-body: Inter, sans-serif;
+        --font-family-label: Inter, sans-serif;
+      }
+    </style>
     <script src="index.js"></script>
 </head>
 
@@ -89,14 +79,12 @@
                     <form id="form_chat_api">
                         <div class="flex items-end gap-2 px-2 py-1">
                             <span class="material-symbols-outlined ml-2 mb-[11px] text-outline text-on-surface">article</span>
-                            <textarea
-                                name="textarea_prompt"
-                                class="flex-1 bg-transparent border-none focus:ring-0 text-sm py-3 px-2 resize-none max-h-48 custom-scrollbar placeholder:text-outline text-on-surface font-medium"
+                            <textarea name="textarea_prompt"
+                                class="flex-1 bg-transparent border-none focus:outline-none focus:ring-0 text-sm py-3 px-2 resize-none max-h-48 custom-scrollbar placeholder:text-outline text-on-surface font-medium"
                                 placeholder="Escreva a mensagem a ser enviada para o Assistente" rows="1"
                                 onkeydown="handle_enter(event)"></textarea>
                             <div class="flex items-center gap-1 mb-0.5">
-                                <button
-                                    type="submit"
+                                <button type="submit"
                                     class="ml-2 w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/20 hover:bg-primary-dim hover:scale-105 active:scale-95 transition-all">
                                     <span class="material-symbols-outlined"
                                         style="font-variation-settings: 'FILL' 1;">send</span>
@@ -105,33 +93,31 @@
                         </div>
                     </form>
                 </div>
-                
+
                 <!-- Info Area -->
-                <div class="flex items-center justify-end mt-2" title="Selecione o arquivo do contexto">
-                    <span class="text-[12px] text-gray-400 pr-2">
-                        arquivo do contexto:
-                    </span>
-                    <select class="appearance-none bg-transparent border-none text-[12px] focus:outline-none focus:ring-0 text-gray-600 p-0 filenames" name="filenames">
-                    </select>
-                </div>
-                <div class="group relative flex justify-center gap-4">
+                <div class="group relative flex justify-center gap-4 mt-2">
+                    <!-- Model -->
                     <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold">
                         <span class="material-symbols-outlined text-[24px] text-primary">graph_8</span>
                         <span class="uppercase model"></span>
                     </p>
-                    
-                    <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1 font-bold cursor-pointer" title="Limpar a conversa" onclick="messages_clear();">
+
+                    <!-- Clear -->
+                    <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1 font-bold cursor-pointer" 
+                        onclick="messages_clear();" 
+                        title="Limpar a conversa">
                         <span class="material-symbols-outlined text-[20px] text-primary">contract_delete</span>
                         <span class="token">NOVO CHAT</span>
                     </p>
 
-                    <div class="flex items-center">
-                        <span class="text-sm font-bold text-gray-400">
-                            score:
-                        </span>
+                    <!-- Score -->
+                    <div class="flex items-center" title="define a precisão do contexto">
+                        <span class="text-sm text-gray-700 pb-0.5 pr-1">score:</span>
                         <input type="number" value="500" min="0" max="999"
-                            class="w-full bg-transparent font-bold text-gray-500 text-sm border-none rounded-md py-1 transition duration-300 focus:outline-none focus:border-slate-400 hover:border-slate-300 score" />
+                            class="w-full bg-transparent font-medium text-gray-500 text-sm border-none rounded-md py-1 transition duration-300 focus:outline-none focus:border-slate-400 hover:border-slate-300 score" />
                     </div>
+                    
+                    <!-- Tootip -->
                     <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-300 p-4 bg-white shadow-lg rounded-lg w-100 z-10 border border-gray-200 model_tooltip">
                     </span>
                 </div>
@@ -140,7 +126,13 @@
     </main>
 
     <!-- Floating Background Decorative Elements -->
-    <div class="fixed top-20 left-5">
+    <div class="fixed top-16 left-5">
+        <!-- File -->
+        <div class="flex items-center justify-end mt-2 mb-1" title="Permite filtrar um determinado arquivo para geração do contexto">
+            <span class="text-[12px] text-gray-400 pr-1">arquivo do contexto:</span>
+            <select class="bg-transparent border-none focus:outline-none focus:ring-0 transition duration-300 ease placeholder:text-slate-400 cursor-pointer text-slate-700 text-sm p-0 filenames" name="filenames" onchange="resize_select()">
+            </select>
+        </div>
     </div>
     <div class="fixed bottom-36 right-3 sm:px-12 lg:px-24" title="Arquivo para contexto">
     </div>
