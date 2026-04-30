@@ -24,7 +24,9 @@ POST http://localhost:8000/context
 Content-Type: application/json
 
 {
-  "query": "o que é a declaração de nova déli?"
+  "query": "o que é a declaração de nova déli?",
+  "file": "teste.pdf",
+  "score": 1.2
 }
 
 ###

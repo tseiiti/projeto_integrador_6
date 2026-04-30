@@ -44,7 +44,8 @@ class MainActivity : AppCompatActivity() {
         }
         onBackPressedDispatcher.addCallback(this, callback)
 
-        webView.loadUrl("http://192.168.15.50/")
+//        webView.loadUrl("http://192.168.15.50/")
+        webView.loadUrl("http://192.168.137.1/")
 
 //        swipeToRefresh.setOnRefreshListener {
 //            Toast.makeText(this, "Recarregamento da página", Toast.LENGTH_SHORT).show()

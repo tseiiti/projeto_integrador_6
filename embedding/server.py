@@ -25,16 +25,11 @@ class QueryRequest(BaseModel):
 
 @app.post("/context")
 def post_context(request: QueryRequest):
-  # print(request.query)
-  # print(request.file)
-  # print(request.score)
-
   filter = {"file_name": request.file} if request.file in filenames else None
   result = vector_store.similarity_search_with_score(
     request.query, 
     k=6, 
     filter=filter)
-  # print(result)
 
   context = []
   size = 0
