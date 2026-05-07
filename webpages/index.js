@@ -2,7 +2,7 @@
 /******************************************************************************
  * Funções básicas
  ******************************************************************************/
-const ONLOG = true;
+const ONLOG = false;
 const ONALERT = false;
 const cl = arg => { if (ONLOG) console.log(arg); };
 const ce = error => { console.error(error); if (ONALERT) alert(error); }
@@ -101,6 +101,24 @@ const resize_select = () => {
   document.body.removeChild(tempDiv);
 }
 
+// copia texto para área de transferência
+const copy_text = (text) => {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.select();
+  try {
+    document.execCommand('copy');
+    if (text.length > 50) text = `${text.substring(0, 47).trim()}...`
+    show_toast('Copiado:', `Texto "${text}" copiado!`);
+  } catch (err) {
+    ce(error);
+  }
+  document.body.removeChild(textArea);
+};
+
+
+
 /******************************************************************************
  * Funções acopladas ao html
  ******************************************************************************/
@@ -175,13 +193,17 @@ const insert_user_message = (msg) => {
         </div>
         <div class="relative">
           <div class="border-l-4 border-primary pl-4 py-1">
-            <p class="text-on-surface leading-relaxed text-sm font-medium">${msg.content}</p>
+            <p class="text-on-surface leading-relaxed text-sm font-medium content">${msg.content}</p>
           </div>
           <span
             class="text-[10px] text-on-surface-variant mt-2 block opacity-0 group-hover:opacity-100 transition-opacity font-bold">
             ${msg.created_at}
           </span>
         </div>
+        <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background opacity-0 group-hover:opacity-100 "
+          onclick="copy_msg_usr_id('${msg.id}')">
+          <span class="material-symbols-outlined text-[24px]">content_copy</span>
+        </button>
       </div>
     </div>
   `;
@@ -214,7 +236,7 @@ const insert_ia_message = (msg) => {
               <span class="material-symbols-outlined text-[24px] like" style="font-variation-settings: 'FILL' ${msg.like == -1 ? 1 : 0};" onclick="messages_like(this, '${msg.id}', -1);">thumb_down</span>
             </button>
             <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background"
-              onclick="copy_text('${msg.id}')">
+              onclick="copy_msg_ia_id('${msg.id}')">
               <span class="material-symbols-outlined text-[24px]">content_copy</span>
             </button>
             <p class="text-[10px] text-on-surface-variant/80 mb-1">${msg.created_at}</p>
@@ -279,22 +301,13 @@ const messages_like = (element, id, value) => {
   element.style.fontVariationSettings = `'FILL' ${value == 0 ? 0 : 1}`;
 }
 
-// copia texto para área de transferência
-const copy_text = (id) => {
+const copy_msg_ia_id = (id) => {
   let text = qs(`#msg_ia_${id} p.content`).innerHTML;
-
-  const textArea = document.createElement("textarea");
-  textArea.value = text;
-  document.body.appendChild(textArea);
-  textArea.select();
-  try {
-    document.execCommand('copy');
-    if (text.length > 50) text = `${text.substring(0, 47).trim()}...`
-    show_toast('Copiado:', `Texto "${text}" copiado!`);
-  } catch (err) {
-    ce(error);
-  }
-  document.body.removeChild(textArea);
+  copy_text(text);
+};
+const copy_msg_usr_id = (id) => {
+  let text = qs(`#msg_usr_${id} p.content`).innerHTML;
+  copy_text(text);
 };
 
 
@@ -357,6 +370,13 @@ const get_content = (msg, value) => {
 // consome serviço de chat
 const call_api_chat = async (cur_mod, msgs, file, score, temperature, contexts, prompt) => {
   let msg;
+  let content = `
+    Pergunta: ${prompt}
+
+    Contexto: ${contexts.map(e => { return e.content; })}
+  `;
+  msgs.push({ role: 'user', content: content });
+  cl(msgs);
 
   try {
     const response = await fetch(KEYS.API_CHAT_URL, {
@@ -458,14 +478,8 @@ const send_query = async () => {
   let aux = MESSAGES.lst()
     .filter(m => m.role == 'assistant' && m.contexts.length > 0)
     .map(m => { return m.prompt }).join('\n') + '\n' + prompt;
-  cl(aux);
+  // cl(aux);
   let contexts = await get_context(aux, file, score);
-  let content = `
-    Pergunta: ${prompt}
-
-    Contexto: ${contexts.map(e => { return e.content; })}
-  `;
-  msgs.push({ role: 'user', content: content });
 
   // ícone de espera do assistente
   let cur_mod = get(KEYS.CURRENT_MODEL);
