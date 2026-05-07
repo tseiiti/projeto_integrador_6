@@ -495,17 +495,18 @@ const init = () => {
 /******************************************************************************
  * Variáveis globais
  ******************************************************************************/
-
+// const BASE = window.location.hostname;
+const BASE = 'tseiiti.duckdns.org';
 const KEYS = {
   MODELS:        'models',
   CURRENT_MODEL: 'current_model',
   MESSAGES:      'messages',
   TOKENS:        'tokens',
-  API_CHAT_URL:  `https://${window.location.hostname}:11434/api/chat`,
-  API_TAGS_URL:  `https://${window.location.hostname}:11434/api/tags`,
-  API_PS_URL:    `https://${window.location.hostname}:11434/api/ps`,
-  CONTEXT_URL:   `https://${window.location.hostname}:8000/context`,
-  FILENAMES_URL: `https://${window.location.hostname}:8000/filenames`,
+  API_CHAT_URL:  `https://${BASE}:11434/api/chat`,
+  API_TAGS_URL:  `https://${BASE}:11434/api/tags`,
+  API_PS_URL:    `https://${BASE}:11434/api/ps`,
+  CONTEXT_URL:   `https://${BASE}:8000/context`,
+  FILENAMES_URL: `https://${BASE}:8000/filenames`,
   DEFAULT_MESSAGE: {
     role: 'system',
     content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema PCP Master, e diga também que a seleção do arquivo pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português de forma clara e objetiva, e sem formatação. A resposta deve ser em um único parágrafo bem elaborado e completo, a menos que esteja explícito outro formato na pergunta. E NA RESPOSTA, NÃO DIGA QUE FOI COM BASE NO CONTEXTO.'
