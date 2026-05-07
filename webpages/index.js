@@ -330,15 +330,10 @@ const set_assitent_messages = (id) => {
   });
 }
 
-const td = new TextDecoder();
-
 // trata conteúdo picado (stream do chat) e contagem de tokens
-const get_content = (msg, value) => {
+const td = new TextDecoder('utf-8');
+const get_content = (msg, json) => {
   try {
-    let str = td.decode(value);
-    // cl(str);
-    let json = JSON.parse(str);
-
     if (json.done) {
       msg = MESSAGES.upd(msg.id, {
         ...msg,
@@ -361,9 +356,11 @@ const get_content = (msg, value) => {
         behavior: 'smooth',
       });
     }
+    // qs('.fixed.bottom-36').innerHTML += '<span class="text-gray-400">.</span>';
   } catch(error) {
-    cl(td.decode(value));
+    // cl(td.decode(value));
     ce(error);
+    // qs('.fixed.bottom-36').innerHTML += '<span class="text-red-900 font-bold">.</span>';
   }
 }
 
@@ -376,7 +373,7 @@ const call_api_chat = async (cur_mod, msgs, file, score, temperature, contexts, 
     Contexto: ${contexts.map(e => { return e.content; })}
   `;
   msgs.push({ role: 'user', content: content });
-  cl(msgs);
+  // cl(msgs);
 
   try {
     const response = await fetch(KEYS.API_CHAT_URL, {
@@ -409,12 +406,19 @@ const call_api_chat = async (cur_mod, msgs, file, score, temperature, contexts, 
       prompt: prompt
     });
     insert_ia_message(msg);
-    sleep(10);
+    // await sleep(10);
 
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      get_content(msg, value);
+
+      let strs = td.decode(value).split('\n');
+      strs.forEach(str => {
+        if (str) {
+          let json = JSON.parse(str);
+          get_content(msg, json);
+        }
+      });
     }
   } catch (error) {
     ce(error);
@@ -510,7 +514,7 @@ const init = () => {
  * Variáveis globais
  ******************************************************************************/
 // const BASE = window.location.hostname;
-const BASE = 'tseiiti.duckdns.org';
+const BASE = window.location.hostname == '192.168.15.11' ? window.location.hostname : 'tseiiti.duckdns.org';
 const KEYS = {
   MODELS:        'models',
   CURRENT_MODEL: 'current_model',
