@@ -2,7 +2,7 @@
 /******************************************************************************
  * Funções básicas
  ******************************************************************************/
-const ONLOG = false;
+const ONLOG = true;
 const ONALERT = false;
 const cl = arg => { if (ONLOG) console.log(arg); };
 const ce = error => { console.error(error); if (ONALERT) alert(error); }
@@ -42,9 +42,9 @@ class StorageArray {
     let es = this.lst();
     if (meta) {
       e = {
+        ...e,
         id: Math.random().toString(36).substring(2),
         created_at: (new Date()).toLocaleString(),
-        ...e,
       };
     }
     es.push(e);
@@ -145,7 +145,7 @@ const select_model = (cur_mod) => {
   `;
   qs('.model_tooltip').innerHTML = html;
   qs('.model').innerHTML = `${cm.name}`;
-  
+
   html = '';
   for (let model of MODELS) {
     let aux;
@@ -153,13 +153,13 @@ const select_model = (cur_mod) => {
     else aux = 'text-on-surface-variant hover:text-on-surface transition-opacity';
 
     html += `
-      <a class="${aux} shrink-0" 
+      <a class="${aux} shrink-0"
         href="javascript: select_model('${model.model}')">
         ${model.name}
       </a>`;
   }
   qs('.models').innerHTML = html;
-  qs('[name=textarea_prompt]').focus();
+  qs('.prompt').focus();
 }
 
 // insere mensagem do usuário
@@ -175,7 +175,7 @@ const insert_user_message = (msg) => {
         </div>
         <div class="relative">
           <div class="border-l-4 border-primary pl-4 py-1">
-            <p class="text-on-surface leading-relaxed text-sm font-medium">${msg.prompt}</p>
+            <p class="text-on-surface leading-relaxed text-sm font-medium">${msg.content}</p>
           </div>
           <span
             class="text-[10px] text-on-surface-variant mt-2 block opacity-0 group-hover:opacity-100 transition-opacity font-bold">
@@ -264,7 +264,7 @@ const messages_clear = () => {
   set(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
   qs('.up_tokens').innerHTML = '0 TOKENS ENVIADO';
   qs('.dw_tokens').innerHTML = '0 TOKENS RECEBIDOS';
-  qs('[name=textarea_prompt]').focus();
+  qs('.prompt').focus();
 }
 
 // marca mensagem ia com like
@@ -309,23 +309,28 @@ const set_assitent_messages = (id) => {
   MESSAGES.upd(id, { content: e.innerHTML });
 
   qs('.ia_thinking_state').remove();
-  qs('[name=textarea_prompt]').readOnly = false;
-  qs('[name=textarea_prompt]').focus();
-  
+  qs('.prompt').readOnly = false;
+  qs('.prompt').focus();
+
   qs('.messages-end').scrollIntoView({
     behavior: 'smooth',
   });
 }
 
+const td = new TextDecoder();
+
 // trata conteúdo picado (stream do chat) e contagem de tokens
 const get_content = (msg, value) => {
   try {
-    let json = JSON.parse(new TextDecoder().decode(value));
+    let str = td.decode(value);
+    // cl(str);
+    let json = JSON.parse(str);
+
     if (json.done) {
-      msg = MESSAGES.upd(msg.id, { 
-        ...msg, 
+      msg = MESSAGES.upd(msg.id, {
+        ...msg,
         up_tokens: json.prompt_eval_count,
-        dw_tokens: json.eval_count, 
+        dw_tokens: json.eval_count,
       });
       qs(`#msg_ia_${msg.id} span.tokens`).innerHTML = `tokens enviados: ${json.prompt_eval_count} | tokens recebidos: ${json.eval_count}`;
 
@@ -344,12 +349,13 @@ const get_content = (msg, value) => {
       });
     }
   } catch(error) {
+    cl(td.decode(value));
     ce(error);
   }
 }
 
 // consome serviço de chat
-const call_api_chat = async (cur_mod, msgs, score, file, contexts) => {
+const call_api_chat = async (cur_mod, msgs, file, score, temperature, contexts, prompt) => {
   let msg;
 
   try {
@@ -361,17 +367,30 @@ const call_api_chat = async (cur_mod, msgs, score, file, contexts) => {
       body: JSON.stringify({
         model: cur_mod,
         messages: msgs,
+        options: {
+          temperature: temperature
+        }
       })
     });
-    
+
     cl(KEYS.API_CHAT_URL);
     const reader = response.body?.getReader();
     if (!reader) return;
 
-    msg = MESSAGES.add({ role: 'assistant', content: '', up_tokens: 0, dw_tokens: 0, score: score, file: file, contexts: contexts });
+    msg = MESSAGES.add({
+      role: 'assistant',
+      content: '',
+      up_tokens: 0,
+      dw_tokens: 0,
+      file: file,
+      score: score,
+      temperature: temperature,
+      contexts: contexts,
+      prompt: prompt
+    });
     insert_ia_message(msg);
     sleep(10);
-    
+
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
@@ -385,7 +404,7 @@ const call_api_chat = async (cur_mod, msgs, score, file, contexts) => {
 }
 
 // pega contexto embedding da pergunta
-const get_context = async (prompt, score, file) => {
+const get_context = async (prompt, file, score) => {
   try {
     const response = await fetch(KEYS.CONTEXT_URL, {
       method: 'POST',
@@ -413,47 +432,53 @@ const get_context = async (prompt, score, file) => {
 // função principal de envio de pergunta
 const send_query = async () => {
   // armazena a questão do usuário
-  let prompt = qs('[name=textarea_prompt]');
-  let score = (180 - Number(qs('.score').value)) / 100;
+  let ppt = qs('.prompt');
+  let prompt = ppt.value;
   let file = FILENAMES[qs('.filenames').value];
-  if (prompt.value.length == 0) return;
+  let score = (180 - Number(qs('.score').value)) / 100;
+  let temperature = Number(qs('.temperature').value);
+  if (prompt.length == 0) return;
 
   show_toast('Envio:', 'Mensagem sendo enviada...');
-  prompt.readOnly = true;
+  ppt.readOnly = true;
 
   // cria lista inicial de mensagens
   let msgs = MESSAGES.lst().map((e) => {
     return {
-      role: e.role, content: e.role == 'user' ? e.prompt : e.content
+      role: e.role, content: e.content
     }
   });
 
+  // adiciona o conteúdo da questão do usuário
+  let msg = MESSAGES.add({ role: 'user', content: prompt });
+  insert_user_message(msg);
+  ppt.value = '';
+
   // define o contexto da questão
-  let contexts = await get_context(prompt.value, score, file);
+  let aux = MESSAGES.lst()
+    .filter(m => m.role == 'assistant' && m.contexts.length > 0)
+    .map(m => { return m.prompt }).join('\n') + '\n' + prompt;
+  cl(aux);
+  let contexts = await get_context(aux, file, score);
   let content = `
-    Pergunta: ${prompt.value}
-    
+    Pergunta: ${prompt}
+
     Contexto: ${contexts.map(e => { return e.content; })}
   `;
-
-  // adiciona o conteúdo da questão do usuário
-  msgs.push({ role: 'user', content: content })
-  let msg = MESSAGES.add({ role: 'user', prompt: prompt.value, content: content });
-  insert_user_message(msg);
-  prompt.value = '';
+  msgs.push({ role: 'user', content: content });
 
   // ícone de espera do assistente
   let cur_mod = get(KEYS.CURRENT_MODEL);
   ia_thinking_state(cur_mod);
 
   // chamada da api do assistente
-  call_api_chat(cur_mod, msgs, score, file, contexts);
+  call_api_chat(cur_mod, msgs, file, score, temperature, contexts, prompt);
 }
 
 // alguns processos iniciais
 const init = () => {
   let cur_mod = get(
-    KEYS.CURRENT_MODEL, 
+    KEYS.CURRENT_MODEL,
     MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
   select_model(cur_mod);
 
@@ -476,14 +501,14 @@ const KEYS = {
   CURRENT_MODEL: 'current_model',
   MESSAGES:      'messages',
   TOKENS:        'tokens',
-  API_CHAT_URL:  `http://${window.location.hostname}:11434/api/chat`,
-  API_TAGS_URL:  `http://${window.location.hostname}:11434/api/tags`,
-  API_PS_URL:    `http://${window.location.hostname}:11434/api/ps`,
-  CONTEXT_URL:   `http://${window.location.hostname}:8000/context`,
-  FILENAMES_URL: `http://${window.location.hostname}:8000/filenames`,
+  API_CHAT_URL:  `https://${window.location.hostname}:11434/api/chat`,
+  API_TAGS_URL:  `https://${window.location.hostname}:11434/api/tags`,
+  API_PS_URL:    `https://${window.location.hostname}:11434/api/ps`,
+  CONTEXT_URL:   `https://${window.location.hostname}:8000/context`,
+  FILENAMES_URL: `https://${window.location.hostname}:8000/filenames`,
   DEFAULT_MESSAGE: {
     role: 'system',
-    content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema PCP Master, e diga também que a seleção do arquivo pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português de forma clara e objetiva, e sem formatação. A resposta deve ser em um único parágrafo bem elaborado e completo, a menos que esteja explícito outro formato na pergunta.'
+    content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema PCP Master, e diga também que a seleção do arquivo pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português de forma clara e objetiva, e sem formatação. A resposta deve ser em um único parágrafo bem elaborado e completo, a menos que esteja explícito outro formato na pergunta. E NA RESPOSTA, NÃO DIGA QUE FOI COM BASE NO CONTEXTO.'
   },
 }
 
@@ -513,7 +538,7 @@ document.addEventListener('DOMContentLoaded', () => {
       insert_ia_message(msg);
     }
   }
-  
+
   // carrega nome de arquivos
   fetch(KEYS.FILENAMES_URL)
   .then(response => { return response.json(); })
