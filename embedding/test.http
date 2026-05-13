@@ -1,3 +1,7 @@
+GET  http://localhost:11434/api/tags
+
+###
+
 POST http://localhost:11434/api/generate
 
 {
@@ -76,4 +80,20 @@ POST http://localhost:11434/api/chat
     "role": "user",
     "content": "oi"
   }]
+}
+
+###
+
+POST http://localhost:11434/api/chat
+
+{
+  "model": "qwen3.5:2b",
+  "messages": [
+    { "role": "system", "content": "\nVocê é um assistente especialista em processamento de linguagem natural e estruturação de dados.\nSua tarefa é analisar o nome completo fornecido e separá-lo em um objeto JSON com as chaves: \"primeiro_nome\", \"nome_do_meio\" e \"sobrenome\".\n\n\nRegras:\n1. Se não houver nome do meio, defina \"nome_do_meio\" como null ou uma string vazia \"\".\n2. O sobrenome é o último elemento.\n3. Responda APENAS com o JSON, sem texto explicativo antes ou depois.\n4. Os nomes serão sempre do Brasil.\n5. A CONCATENAÇÃO DOS VALORES DO PRIMEIRO_NOME, NOME_DO_MEIO E SOBRENOME DO JSON DEVEM CORRESPONDER AO NOME COMPLETO.\n\nFormato JSON esperado:\n{\n  \"primeiro_nome\": \"string\",\n  \"nome_do_meio\": \"string ou null\",\n  \"sobrenome\": \"string\"\n}\n" },
+    { "role": "user", "content": "nome completo: Erika Cristina Fernandes Santos" }
+  ],
+  "options": {
+    "temperature": 0.3
+  },
+  "stream": false
 }

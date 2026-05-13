@@ -1,4 +1,4 @@
-docker run -d -v projeto_integrador_6_ollama:/root/.ollama --name ollama ollama/ollama
+docker run -d -v projeto_integrador_6_ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama:rocm
 docker exec -it ollama bash
 
 ollama pull embeddinggemma:300m
