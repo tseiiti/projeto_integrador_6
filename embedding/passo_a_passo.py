@@ -11,11 +11,12 @@ vector_store = Chroma(
   persist_directory="./teste",
 )
 
+
 ###############################################################################
 # insere documento no banco
 ###############################################################################
 
-# bibliotecas auxiliares para inserção
+# bibliotecas auxiliares para inserção de pdf
 import PyPDF2
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -26,28 +27,31 @@ path = "./docs/Aplicacao_de_Caclulos_OEE.pdf"
 with open(path, "rb") as f:
   pdf = PyPDF2.PdfReader(f)
   docs = []
+  # extrair
   for p in pdf.pages:
     docs.append(Document(
       page_content=p.extract_text(),
       metadata={ "source": path }))
-      
+  # dividir
   splitter = RecursiveCharacterTextSplitter(
     chunk_size=1000,
     chunk_overlap=100,
   )
-
+  # adicionar
   vector_store.add_documents(documents=splitter.split_documents(docs))
 
+
+###############################################################################
+# recupera contexto
+###############################################################################
 
 # pergunta
 query = "o que é o cálculo o.e.e?"
 
 # lista de contextos de acordo com a similaridade
-result = vector_store.similarity_search_with_score(
-  query, 
-  k=6, )
+result = vector_store.similarity_search_with_score(query, k=5)
 
 # exibição
 for doc, score in result:
-  print(f"content:  {doc.page_content[:100].replace("\n", " ")}...")
-  print(f"metadata: {doc.metadata}", "\n")
+  print(f"content:  {doc.page_content.strip()[:100].replace("\n", " ")}...")
+  print(f"metadata: {doc.metadata}", "\nscore:", score, "\n")
