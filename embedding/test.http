@@ -1,4 +1,14 @@
-curl https://tseiiti.duckdns.org:11434/api/tags -H "Content-Type: application/json"  
+# lista modelos
+curl https://tseiiti.duckdns.org:11434/api/tags -H "Accept: application/json"
+
+# lista modelos em execução
+curl https://tseiiti.duckdns.org:11434/api/ps -H "Accept: application/json"
+
+# ativa um modelo
+curl -X POST https://tseiiti.duckdns.org:11434/api/chat -H "Content-Type: application/json" -d "{ \"model\": \"gemma3:1b\", \"prompt\": \"\" }"
+
+# desativa um modelo
+curl -X POST https://tseiiti.duckdns.org:11434/api/generate -H "Content-Type: application/json" -d "{ \"model\": \"gemma3:1b\", \"keep_alive\": 0 }"
 
 ###
 
