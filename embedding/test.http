@@ -1,3 +1,7 @@
+curl https://tseiiti.duckdns.org:11434/api/tags -H "Content-Type: application/json"  
+
+###
+
 GET  http://localhost:11434/api/tags
 
 ###
