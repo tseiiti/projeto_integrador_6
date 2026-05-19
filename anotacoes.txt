@@ -20,8 +20,8 @@ docker exec -it node sh
 
 
 netstat -ano | findstr :80
-
 taskkill /F /PID $($(netstat -ano | findstr :80) -split '\s+')[5]
+$($(netstat -ano | findstr :80) -split '\s+')[5]
 
 start nginx
 tasklist /fi "imagename eq nginx.exe"
