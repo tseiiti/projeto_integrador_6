@@ -10,6 +10,8 @@ curl -X POST https://tseiiti.duckdns.org:11434/api/chat -H "Content-Type: applic
 # desativa um modelo
 curl -X POST https://tseiiti.duckdns.org:11434/api/generate -H "Content-Type: application/json" -d "{ \"model\": \"gemma3:1b\", \"keep_alive\": 0 }"
 
+curl -X POST https://tseiiti.duckdns.org:11434/api/chat -H "Content-Type: application/json" -d "{ \"model\": \"gemma3:1b\", \"prompt\": \"o que é o cálculo O.E.E?\" }"
+
 ###
 
 GET  http://localhost:11434/api/tags
