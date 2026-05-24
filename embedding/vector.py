@@ -19,7 +19,7 @@ def load_and_split(docs):
   )
   vector_store.add_documents(documents=splitter.split_documents(docs))
 
-def load_pdf(path, fn):
+def load_pdf(path, file, cate):
   docs = []
   with open(path, "rb") as f:
     pdf = PyPDF2.PdfReader(f)
@@ -30,38 +30,59 @@ def load_pdf(path, fn):
       docs.append(Document(
         page_content=content,
         metadata={
-          "file_name": fn,
-          "source": path,
+          "path": path,
+          "cate": cate,
+          "file": file,
           "page": i + 1,
           "file_type": "pdf",
         }))
   load_and_split(docs)
 
-def load_csv(path, fn):
+def load_csv(path, file, cate):
   docs = []
   df = pd.read_csv(path)
   for i, row in df.iterrows():
     docs.append(Document(
       page_content=row.content,
       metadata={
-        "file_name": fn,
-        "source": path,
+        "path": path,
+        "cate": cate,
+        "file": file,
         "page": i + 1,
         "file_type": "csv",
       }))
   load_and_split(docs)
 
-def load_txt(path, fn):
+def load_xls(path, file, cate):
+  docs = []
+  df = pd.read_excel(path)
+  for i, row in df.iterrows():
+    content = str(row)
+    content = re.sub(r'\n\s{2,}', "\n ", content)
+    content = re.sub(r'\s{2,}', " ", content)
+    docs.append(Document(
+      page_content=content,
+      metadata={
+        "path": path,
+        "cate": cate,
+        "file": file,
+        "page": i + 1,
+        "type": "xls",
+      }))
+  load_and_split(docs)
+    
+def load_txt(path, file, cate):
   docs = []
   with open(path, "r", encoding="utf-8") as f:
     content = f.read()
   docs.append(Document(
     page_content=content,
     metadata={
-      "file_name": fn,
-      "source": path,
+      "path": path,
+      "cate": cate,
+      "file": file,
       "page": 1,
-      "file_type": "txt",
+      "type": "txt",
     }))
   load_and_split(docs)
 
@@ -76,17 +97,20 @@ vector_store = Chroma(
   persist_directory=CHROMA_DB_PATH,
 )
 
-
-filenames = [fn for fn in os.listdir(STORAGE_PATH)]
+categories = [cat for cat in os.listdir(STORAGE_PATH)]
 
 if is_add:
   loaders = {
     ".pdf": load_pdf,
     ".csv": load_csv,
     ".txt": load_txt,
+    ".xls": load_xls,
+    ".xlsx": load_xls,
   }
-  for fn in filenames:
-    path = os.path.join(STORAGE_PATH, fn)
-    loader = loaders.get(os.path.splitext(path)[1])
-    loader(path, fn)
-    print("adicionado o arquivo:", fn)
+  for root, dirs, files in os.walk('./docs'):
+    for file in files:
+      cate = root.replace("./docs/", "")
+      path = os.path.join(root, file)
+      loader = loaders.get(os.path.splitext(path)[1])
+      loader(path, file, cate)
+      print("adicionado o arquivo:", cate)
