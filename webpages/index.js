@@ -86,7 +86,7 @@ const show_toast = (title, text) => {
 }
 
 const resize_select = () => {
-  const select = qs('.filenames');
+  const select = qs('.categories');
   const selectedText = select.options[select.selectedIndex].text;
   const tempDiv = document.createElement('div');
 
@@ -458,7 +458,7 @@ const send_query = async () => {
   // armazena a questão do usuário
   let ppt = qs('.prompt');
   let prompt = ppt.value;
-  let file = FILENAMES[qs('.filenames').value];
+  let file = FILENAMES[qs('.categories').value];
   let score = (180 - Number(qs('.score').value)) / 100;
   let temperature = Number(qs('.temperature').value);
   if (prompt.length == 0) return;
@@ -526,7 +526,7 @@ const KEYS = {
   API_TAGS_URL:  `${BASE}:11434/api/tags`,
   API_PS_URL:    `${BASE}:11434/api/ps`,
   CONTEXT_URL:   `${BASE}:8000/context`,
-  FILENAMES_URL: `${BASE}:8000/filenames`,
+  FILENAMES_URL: `${BASE}:8000/categories`,
   DEFAULT_MESSAGE: {
     role: 'system',
     content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema PCP Master, e diga também que a seleção do arquivo pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português de forma clara e objetiva, e sem formatação. A resposta deve ser em um único parágrafo bem elaborado e completo, a menos que esteja explícito outro formato na pergunta. E NA RESPOSTA, NÃO DIGA QUE FOI COM BASE NO CONTEXTO.'
@@ -570,7 +570,7 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i in FILENAMES) {
       html += `<option class="bg-transparent border-none" value="${i}">${FILENAMES[i]}</option>`;
     }
-    qs('.filenames').innerHTML = html;
+    qs('.categories').innerHTML = html;
     resize_select();
   })
   .catch(error => ce(error));

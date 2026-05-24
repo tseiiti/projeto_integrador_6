@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from vector import vector_store, filenames
+from vector import vector_store, categories
 
 from config import (API_HOST, API_PORT)
 
@@ -20,12 +20,12 @@ app.add_middleware(
 
 class QueryRequest(BaseModel):
   query: str
-  file: str
+  cate: str
   score: float
 
 @app.post("/context")
 def post_context(request: QueryRequest):
-  filter = {"file_name": request.file} if request.file in filenames else None
+  filter = {"cate": request.cate} if request.cate in categories else None
   result = vector_store.similarity_search_with_score(
     request.query, 
     k=6, 
@@ -40,9 +40,9 @@ def post_context(request: QueryRequest):
   
   return context
 
-@app.get("/filenames")
-def get_filenames():
-  return filenames
+@app.get("/categories")
+def get_categories():
+  return categories
 
 
 
