@@ -22,7 +22,7 @@ from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 # arquivo
-path = "./docs/Aplicacao_de_Caclulos_OEE.pdf"
+path = "./docs/OEE/Aplicação de Cáclulos O.E.E.pdf"
 
 with open(path, "rb") as f:
   pdf = PyPDF2.PdfReader(f)
