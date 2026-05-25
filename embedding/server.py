@@ -20,8 +20,8 @@ app.add_middleware(
 
 class QueryRequest(BaseModel):
   query: str
-  cate: str
   score: float
+  cate: str
 
 @app.post("/context")
 def post_context(request: QueryRequest):

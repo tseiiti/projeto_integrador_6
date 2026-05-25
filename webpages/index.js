@@ -428,7 +428,7 @@ const call_api_chat = async (cur_mod, msgs, file, score, temperature, contexts, 
 }
 
 // pega contexto embedding da pergunta
-const get_context = async (prompt, file, score) => {
+const get_context = async (prompt, cate, score) => {
   try {
     const response = await fetch(KEYS.CONTEXT_URL, {
       method: 'POST',
@@ -438,7 +438,7 @@ const get_context = async (prompt, file, score) => {
       body: JSON.stringify({
         query: prompt,
         score: score,
-        file: file
+        cate: cate
       })
     });
     cl(KEYS.CONTEXT_URL);
@@ -458,7 +458,7 @@ const send_query = async () => {
   // armazena a questão do usuário
   let ppt = qs('.prompt');
   let prompt = ppt.value;
-  let file = FILENAMES[qs('.categories').value];
+  let cate = CATEGORIES[qs('.categories').value];
   let score = (180 - Number(qs('.score').value)) / 100;
   let temperature = Number(qs('.temperature').value);
   if (prompt.length == 0) return;
@@ -483,14 +483,14 @@ const send_query = async () => {
     .filter(m => m.role == 'assistant' && m.contexts.length > 0)
     .map(m => { return m.prompt }).join('\n') + '\n' + prompt;
   // cl(aux);
-  let contexts = await get_context(aux, file, score);
+  let contexts = await get_context(aux, cate, score);
 
   // ícone de espera do assistente
   let cur_mod = get(KEYS.CURRENT_MODEL);
   ia_thinking_state(cur_mod);
 
   // chamada da api do assistente
-  call_api_chat(cur_mod, msgs, file, score, temperature, contexts, prompt);
+  call_api_chat(cur_mod, msgs, cate, score, temperature, contexts, prompt);
 }
 
 // alguns processos iniciais
@@ -526,7 +526,7 @@ const KEYS = {
   API_TAGS_URL:  `${BASE}:11434/api/tags`,
   API_PS_URL:    `${BASE}:11434/api/ps`,
   CONTEXT_URL:   `${BASE}:8000/context`,
-  FILENAMES_URL: `${BASE}:8000/categories`,
+  CATEGORIES_URL: `${BASE}:8000/categories`,
   DEFAULT_MESSAGE: {
     role: 'system',
     content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema PCP Master, e diga também que a seleção do arquivo pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português de forma clara e objetiva, e sem formatação. A resposta deve ser em um único parágrafo bem elaborado e completo, a menos que esteja explícito outro formato na pergunta. E NA RESPOSTA, NÃO DIGA QUE FOI COM BASE NO CONTEXTO.'
@@ -535,7 +535,7 @@ const KEYS = {
 
 var MESSAGES  = new StorageArray(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
 var MODELS    = [];
-var FILENAMES = [];
+var CATEGORIES = [];
 
 
 
@@ -561,14 +561,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // carrega nome de arquivos
-  fetch(KEYS.FILENAMES_URL)
+  fetch(KEYS.CATEGORIES_URL)
   .then(response => { return response.json(); })
   .then(json => {
-    cl(KEYS.FILENAMES_URL);
-    FILENAMES = ['Todos'].concat(json);
+    cl(KEYS.CATEGORIES_URL);
+    CATEGORIES = ['Todos'].concat(json);
     let html = '';
-    for (let i in FILENAMES) {
-      html += `<option class="bg-transparent border-none" value="${i}">${FILENAMES[i]}</option>`;
+    for (let i in CATEGORIES) {
+      html += `<option class="bg-transparent border-none" value="${i}">${CATEGORIES[i]}</option>`;
     }
     qs('.categories').innerHTML = html;
     resize_select();
