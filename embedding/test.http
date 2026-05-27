@@ -1,20 +1,85 @@
-# lista modelos
-curl https://tseiiti.duckdns.org:11434/api/tags -H "Accept: application/json"
+# # lista modelos
+# curl https://tseiiti.duckdns.org:11434/api/tags -H "Accept: application/json"
 
-# lista modelos em execução
-curl https://tseiiti.duckdns.org:11434/api/ps -H "Accept: application/json"
+# # lista modelos em execução
+# curl https://tseiiti.duckdns.org:11434/api/ps -H "Accept: application/json"
 
-# ativa um modelo
-curl -X POST https://tseiiti.duckdns.org:11434/api/chat -H "Content-Type: application/json" -d "{ \"model\": \"gemma3:1b\", \"prompt\": \"\" }"
+# # ativa um modelo
+# curl -X POST https://tseiiti.duckdns.org:11434/api/chat -H "Content-Type: application/json" -d "{ \"model\": \"gemma3:1b\", \"prompt\": \"\" }"
 
-# desativa um modelo
-curl -X POST https://tseiiti.duckdns.org:11434/api/generate -H "Content-Type: application/json" -d "{ \"model\": \"gemma3:1b\", \"keep_alive\": 0 }"
+# # desativa um modelo
+# curl -X POST https://tseiiti.duckdns.org:11434/api/generate -H "Content-Type: application/json" -d "{ \"model\": \"gemma3:1b\", \"keep_alive\": 0 }"
 
-curl -X POST https://tseiiti.duckdns.org:11434/api/chat -H "Content-Type: application/json" -d "{ \"model\": \"gemma3:1b\", \"prompt\": \"o que é o cálculo O.E.E?\" }"
+# curl -X POST https://tseiiti.duckdns.org:11434/api/chat -H "Content-Type: application/json" -d "{ \"model\": \"gemma3:1b\", \"prompt\": \"o que é o cálculo O.E.E?\" }"
 
-###
 
-GET  http://localhost:11434/api/tags
+### lista modelos
+GET https://tseiiti.duckdns.org:11434/api/tags
+
+### lista modelos em execução
+GET https://tseiiti.duckdns.org:11434/api/ps
+
+
+
+### ativa o modelo llama3:8b
+POST https://tseiiti.duckdns.org:11434/api/chat
+
+{ "model": "llama3:8b", "prompt": "" }
+
+### ativa o modelo mistral:7b
+POST https://tseiiti.duckdns.org:11434/api/chat
+
+{ "model": "mistral:7b", "prompt": "" }
+
+### ativa o modelo qwen3.5:2b
+POST https://tseiiti.duckdns.org:11434/api/chat
+
+{ "model": "qwen3.5:2b", "prompt": "" }
+
+### ativa o modelo phi4-mini:3.8b
+POST https://tseiiti.duckdns.org:11434/api/chat
+
+{ "model": "phi4-mini:3.8b", "prompt": "" }
+
+### ativa o modelo llama3.2:3b
+POST https://tseiiti.duckdns.org:11434/api/chat
+
+{ "model": "llama3.2:3b", "prompt": "" }
+
+### ativa o modelo gemma3:1b
+POST https://tseiiti.duckdns.org:11434/api/chat
+
+{ "model": "gemma3:1b", "prompt": "" }
+
+
+
+### desativa o modelo gemma3:1b
+POST https://tseiiti.duckdns.org:11434/api/generate
+
+{ "model": "gemma3:1b", "keep_alive": 0 }
+
+### desativa o modelo llama3:8b
+POST https://tseiiti.duckdns.org:11434/api/generate
+
+{ "model": "llama3:8b", "keep_alive": 0 }
+
+### desativa o modelo mistral:7b
+POST https://tseiiti.duckdns.org:11434/api/generate
+
+{ "model": "mistral:7b", "keep_alive": 0 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ###
 
