@@ -514,7 +514,7 @@ const init = () => {
  * Variáveis globais
  ******************************************************************************/
 const BASE = ['192.168.', 'localhos'].includes(window.location.hostname.substring(0, 8)) ?
-  `http://${window.location.hostname}` :
+  `${window.location.protocol}//${window.location.hostname}` :
   'https://tseiiti.duckdns.org';
 
 const KEYS = {
