@@ -21,20 +21,24 @@ O ecossistema é distribuído por múltiplos canais para atender a diferentes pe
 
 O ciclo de vida e processamento do conhecimento segue um fluxo estruturado utilizando ferramentas de código aberto:
 
+```
 [Manuais Técnicos PDF]
-&darr;
-(LangChain: RecursiveCharacterTextSplitter)
+│
+▼ (LangChain: RecursiveCharacterTextSplitter)
 [Segmentação / Chunks]
-&darr;
-(EmbeddingGemma-300m via DeepMind)
+│
+▼ (EmbeddingGemma-300m via DeepMind)
 [Vetores Numéricos]
-&darr;
-[Banco Vetorial ChromaDB] &harr; [Busca por Similaridade de Cosseno] &larr; [Prompt do Usuário]
-&darr;
-(Injeção de Contexto)
+│
+▼
+[Banco Vetorial ChromaDB] <───> [Busca por Similaridade de Cosseno] <─── [Prompt do Usuário]
+│
+▼ (Injeção de Contexto)
 [Ollama: LLMs Locais]
-&darr;
+│
+▼
 [Resposta em Linguagem Natural]
+```
 
 
 * **Ingestão:** Documentos e manuais técnicos em formato PDF passam por uma quebra de blocos (*chunks*) através do framework **LangChain**.
