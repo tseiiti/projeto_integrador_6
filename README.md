@@ -101,7 +101,6 @@ Abra o navegador e acesse `http://localhost/docs` (ou a porta mapeada no seu arq
 ├── docker-compose.yml# Orquestração do NGINX, API e ChromaDB
 ├── nginx/            # Arquivos de configuração do Proxy Reverso
 └── README.md         # Documentação do projeto
-
 ```
 
 ---
