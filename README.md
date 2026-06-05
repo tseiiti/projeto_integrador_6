@@ -65,7 +65,7 @@ O ciclo de vida e processamento do conhecimento segue um fluxo estruturado utili
 
 1. **Clone o repositório:**
 ```bash
-git clone [https://github.com/tseiiti/projeto_integrador_6.git](https://github.com/tseiiti/projeto_integrador_6.git)
+git clone https://github.com/tseiiti/projeto_integrador_6.git
 cd projeto_integrador_6
 ```
 
