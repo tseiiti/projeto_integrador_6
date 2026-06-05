@@ -69,8 +69,6 @@ git clone https://github.com/tseiiti/projeto_integrador_6.git
 cd projeto_integrador_6
 ```
 
-
-
 2. **Certifique-se de que o Ollama está ativo e baixe o modelo padrão:**
 ```bash
 ollama run gemma3:1b
@@ -78,29 +76,44 @@ ollama run gemma3:1b
 
 (Nota: O sistema aceita outros modelos configuráveis como `llama3.2:3b` ou `phi4-mini` de acordo com a capacidade do seu hardware).
 
-3. **Suba os contêineres da aplicação via Docker Compose:**
+3. **Anexe os manuais em pdf:**
+Insira os manuais pdfs na pasta `embedding/docs`. Atualmente o sistema aceita arquivos pdf, txt, xls, csv e xlsx.
+
+4. **Suba os contêineres da aplicação via Docker Compose:**
 ```bash
 docker-compose up --build
 ```
 
 Isso inicializará os microsserviços do back-end em **FastAPI**, o proxy **NGINX** e a instância do **ChromaDB**.
+Para acessar `localhost` sem https prefira a branch **dell**
+
+5. **Testar os End-points da API:**
+Certifique-se que os end-points abaixo estão acessíveis:
+- https://localhost:8000/
+- https://localhost:11434/
 
 
-4. **Acesse a documentação interativa da API:**
-Abra o navegador e acesse `http://localhost/docs` (ou a porta mapeada no seu arquivo compose) para visualizar e testar os end-points via Swagger UI.
+6. **Acessar o assistente:**
+Abra o seu navegador e acesse https://localhost/.
+
 
 ---
 
 ## ⚙️ Estrutura do Repositório
 
 ```text
-├── .github/          # Workflows de CI/CD (se houver)
-├── backend/          # Código-fonte da API Python (FastAPI, LangChain)
-│   ├── app/          # Core do pipeline RAG e rotas
-│   └── Dockerfile    # Configuração de conteinerização do back-end
-├── docker-compose.yml# Orquestração do NGINX, API e ChromaDB
-├── nginx/            # Arquivos de configuração do Proxy Reverso
-└── README.md         # Documentação do projeto
+├── .github/           # Workflows de CI/CD (se houver)
+├── embedding/         # Código-fonte da API Python (FastAPI, LangChain)
+│   ├── db/            # ChromaDB
+│   └── docs           # Manuais, PDFs, XLS
+├── nginx              # Configuração NGINX, Proxy Reverso, PEM private keys
+├── ProjetoIntegrador6 # Android Kotlin project
+│   ├── app            # Pastas android
+│   └── gradle         # Pastas android
+├── webpages           # Front-end, HTML, CSS, javascript
+├── docker-compose.yml # Orquestração docker
+├── python.dockerfile  # Configuração container python
+└── README.md          # Documentação do projeto
 ```
 
 ---
