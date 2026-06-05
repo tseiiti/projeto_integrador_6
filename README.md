@@ -40,7 +40,6 @@ O ciclo de vida e processamento do conhecimento segue um fluxo estruturado utili
 [Resposta em Linguagem Natural]
 ```
 
-
 * **Ingestão:** Documentos e manuais técnicos em formato PDF passam por uma quebra de blocos (*chunks*) através do framework **LangChain**.
 * **Vetorização:** Cada bloco é transformado em um vetor numérico pelo modelo open-source **EmbeddingGemma-300m**.
 * **Indexação:** Os embeddings gerados são persistidos e gerenciados no banco de dados vetorial **ChromaDB**.
