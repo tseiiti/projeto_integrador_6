@@ -5,6 +5,7 @@ services:
       - ollama:/root/.ollama
     environment:
       - OLLAMA_ORIGINS="*"
+      - OLLAMA_KEEP_ALIVE=-1
     ports:
       - 11434:11434
     networks:

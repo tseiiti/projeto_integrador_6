@@ -28,7 +28,7 @@ def post_context(request: QueryRequest):
   filter = {"cate": request.cate} if request.cate in categories else None
   result = vector_store.similarity_search_with_score(
     request.query, 
-    k=6, 
+    k=5, 
     filter=filter)
 
   context = []
