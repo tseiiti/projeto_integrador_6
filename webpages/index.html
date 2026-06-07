@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 <html class="light" lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -99,7 +97,8 @@
                 <!-- Info Area -->
                 <div class="group relative flex justify-center mt-2">
                     <!-- Model -->
-                    <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold pr-5">
+                    <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold pr-5"
+                        onclick="qs('.model_tooltip').classList.toggle('opacity-0');" title="informações do modelo ">
                         <span class="material-symbols-outlined text-[24px] text-primary">graph_8</span>
                         <span class="uppercase model"></span>
                     </p>
@@ -129,7 +128,7 @@
                     </div>
 
                     <!-- Tootip -->
-                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-300 p-4 bg-white shadow-lg rounded-lg w-100 z-10 border border-gray-200 model_tooltip">
+                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 transition-opacity duration-300 p-4 bg-white shadow-lg rounded-lg w-100 z-10 border border-gray-200 model_tooltip">
                     </span>
                 </div>
             </div>
