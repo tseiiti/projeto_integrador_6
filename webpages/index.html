@@ -44,7 +44,6 @@
     </style>
     <script src="index.js"></script>
 </head>
-
 <body class="font-body overflow-hidden">
     <!-- TopNavBar Shell -->
     <header class="fixed top-0 right-0 left-0 h-16 z-40 bg-white/80 dark:bg-white/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-8 w-auto">
@@ -97,8 +96,8 @@
                 <!-- Info Area -->
                 <div class="group relative flex justify-center mt-2">
                     <!-- Model -->
-                    <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold pr-5"
-                        onclick="qs('.model_tooltip').classList.toggle('opacity-0');" title="informações do modelo ">
+                    <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold cursor-pointer pr-5"
+                        onclick="qs('.model_tooltip').classList.toggle('opacity-0');qs('.model_tooltip').classList.toggle('-z-1')" title="informações do modelo ">
                         <span class="material-symbols-outlined text-[24px] text-primary">graph_8</span>
                         <span class="uppercase model"></span>
                     </p>
@@ -112,7 +111,7 @@
                     </p>
 
                     <!-- Score -->
-                    <div class="flex items-center gap-1 font-bold cursor-pointer" title="define a precisão do contexto">
+                    <div class="flex items-center gap-1 font-bold" title="define a precisão do contexto">
                         <span class="material-symbols-outlined text-[24px] text-primary">scoreboard</span>
                         <span class="text-[10px] text-on-surface-variant/80 font-bold pr-1">SCORE:</span>
                         <input type="number" value="50" min="1" max="100" name="input_score"
@@ -120,7 +119,7 @@
                     </div>
 
                     <!-- Temperature -->
-                    <div class="flex items-center gap-1 font-bold cursor-pointer" title="define a temperatura do modelo">
+                    <div class="flex items-center gap-1 font-bold" title="define a temperatura do modelo">
                         <span class="material-symbols-outlined text-[24px] text-primary">device_thermostat</span>
                         <span class="text-[10px] text-on-surface-variant/80 font-bold pr-1">Temperatura:</span>
                         <input type="number" value="0.7" min="0.1" max="2.0" step="0.1" name="input_temperature"
@@ -128,7 +127,7 @@
                     </div>
 
                     <!-- Tootip -->
-                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 transition-opacity duration-300 p-4 bg-white shadow-lg rounded-lg w-100 z-10 border border-gray-200 model_tooltip">
+                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 transition-opacity duration-300 p-4 bg-white shadow-lg rounded-lg w-100 -z-1 border border-gray-200 model_tooltip">
                     </span>
                 </div>
             </div>

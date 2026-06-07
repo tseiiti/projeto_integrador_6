@@ -383,6 +383,7 @@ const call_api_chat = async (cur_mod, msgs, file, score, temperature, contexts, 
       },
       body: JSON.stringify({
         model: cur_mod,
+        think: false,
         messages: msgs,
         options: {
           temperature: temperature
