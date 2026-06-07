@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from vector import vector_store, categories
 
-from config import (API_HOST, API_PORT)
+from config import (API_HOST, API_PORT, TOP_K)
 
 app = FastAPI(
   title="Ollama RAG Chat API",
@@ -28,7 +28,7 @@ def post_context(request: QueryRequest):
   filter = {"cate": request.cate} if request.cate in categories else None
   result = vector_store.similarity_search_with_score(
     request.query, 
-    k=5, 
+    k=TOP_K, 
     filter=filter)
 
   context = []
