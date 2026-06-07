@@ -506,7 +506,7 @@ const init = () => {
 
   let tk = get(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
   qs('.up_tokens').innerHTML = `${tk.up_tokens} TOKENS ENVIADO`;
-  qs('.dw_tokens').innerHTML = `${tk.dw_tokens} TOKENS RECEBIDOS`; 
+  qs('.dw_tokens').innerHTML = `${tk.dw_tokens} TOKENS RECEBIDOS`;
 }
 
 
