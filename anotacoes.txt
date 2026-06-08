@@ -33,6 +33,8 @@ tasklist /fi "imagename eq nginx.exe"
 
 alias ll='ls -AlFv --color --group-directories-first'
 
+o que é o cálculo OEE (Overall Equipment Effectiveness)?
+qual a diferença entre o cálculo OEE e o TEEP?
 
 
   # nginxproxymanager:

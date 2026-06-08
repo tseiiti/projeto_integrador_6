@@ -41,10 +41,14 @@ class StorageArray {
   add(e, meta = true) {
     let es = this.lst();
     if (meta) {
+      let times = e.times;
       e = {
         ...e,
         id: Math.random().toString(36).substring(2),
-        created_at: (new Date()).toLocaleString(),
+        times: {
+          ...times,
+          created_at: (new Date()).toLocaleString(),
+        }
       };
     }
     es.push(e);
@@ -117,7 +121,10 @@ const copy_text = (text) => {
   document.body.removeChild(textArea);
 };
 
-
+const fmt = (text) => {
+  const converter = new showdown.Converter({optionKey: 'value'});
+  return converter.makeHtml(text);
+}
 
 /******************************************************************************
  * Funções acopladas ao html
@@ -182,7 +189,9 @@ const select_model = (cur_mod) => {
 
 // insere mensagem do usuário
 const insert_user_message = (msg) => {
-  let html = `
+  let html = fmt(msg.content);
+  cl(html)
+  html = `
     <!-- User Message -->
     <div class="flex flex-col items-end group" id="msg_usr_${msg.id}">
       <div class="max-w-[80%] flex items-start gap-4 flex-row-reverse">
@@ -192,12 +201,12 @@ const insert_user_message = (msg) => {
             style="font-variation-settings: 'FILL' 1;">person</span>
         </div>
         <div class="relative">
-          <div class="border-l-4 border-primary pl-4 py-1">
-            <p class="text-on-surface leading-relaxed text-sm font-medium content">${msg.content}</p>
+          <div class="border-l-4 border-primary pl-4 py-1 text-justify">
+            <div class="text-on-surface leading-relaxed text-sm font-medium content">${html}</div>
           </div>
           <span
             class="text-[10px] text-on-surface-variant mt-2 block opacity-0 group-hover:opacity-100 transition-opacity font-bold">
-            ${msg.created_at}
+            ${msg.times.created_at}
           </span>
         </div>
         <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background opacity-0 group-hover:opacity-100 "
@@ -216,7 +225,10 @@ const insert_ia_message = (msg) => {
   let ctx = ctxs[0];
   let ltx = ctxs.at(-1);
   let context = ctx ? ` | contextos: ${ctxs.length}, max: ${Math.round(180 - ctx.score * 100)}, min: ${Math.round(180 - ltx.score * 100)}` : '';
-  let html = `
+  
+  let html = fmt(msg.content);
+  cl(html)
+  html = `
     <!-- AI Message -->
     <div class="flex flex-col items-start group" id="msg_ia_${msg.id}">
       <div class="max-w-[95%] sm:max-w-[85%] sm:flex sm:items-start gap-2 space-y-2">
@@ -225,8 +237,8 @@ const insert_ia_message = (msg) => {
             style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
         </div>
         <div class="bg-white rounded-lg rounded-tl-none p-5 space-y-4 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-outline-variant/50">
-          <div class="prose prose-sm max-w-none">
-            <p class="text-on-surface content">${msg.content}</p>
+          <div class="prose prose-sm max-w-none text-justify">
+            <div class="text-on-surface content [&>*]:pb-2">${html}</div>
           </div>
           <div class="flex items-center gap-3">
             <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background">
@@ -239,7 +251,7 @@ const insert_ia_message = (msg) => {
               onclick="copy_msg_ia_id('${msg.id}')">
               <span class="material-symbols-outlined text-[24px]">content_copy</span>
             </button>
-            <p class="text-[10px] text-on-surface-variant/80 mb-1">${msg.created_at}</p>
+            <p class="text-[10px] text-on-surface-variant/80 mb-1">${msg.times.created_at}</p>
           </div>
         </div>
       </div>
@@ -302,11 +314,11 @@ const messages_like = (element, id, value) => {
 }
 
 const copy_msg_ia_id = (id) => {
-  let text = qs(`#msg_ia_${id} p.content`).innerHTML;
+  let text = qs(`#msg_ia_${id} .content`).innerText;
   copy_text(text);
 };
 const copy_msg_usr_id = (id) => {
-  let text = qs(`#msg_usr_${id} p.content`).innerHTML;
+  let text = qs(`#msg_usr_${id} .content`).innerText;
   copy_text(text);
 };
 
@@ -318,7 +330,7 @@ const copy_msg_usr_id = (id) => {
 
 // finaliza mensagem resposta do assistente
 const set_assitent_messages = (id) => {
-  let e = qs(`#msg_ia_${id} p.content`);
+  let e = qs(`#msg_ia_${id} .content`);
   MESSAGES.upd(id, { content: e.innerHTML });
 
   qs('.ia_thinking_state').remove();
@@ -331,16 +343,18 @@ const set_assitent_messages = (id) => {
 }
 
 // trata conteúdo picado (stream do chat) e contagem de tokens
-const td = new TextDecoder('utf-8');
 const get_content = (msg, json) => {
   try {
-    let pcont = qs(`#msg_ia_${msg.id} p.content`);
+    let pcont = qs(`#msg_ia_${msg.id} .content`);
     if (json.done) {
       msg = MESSAGES.upd(msg.id, {
         ...msg,
         up_tokens: json.prompt_eval_count,
         dw_tokens: json.eval_count,
-        finish_at: (new Date()).toLocaleString(),
+        times: {
+          ...msg.times,
+          finish_at: (new Date()).toLocaleString(),
+        }
       });
       qs(`#msg_ia_${msg.id} span.tokens`).innerHTML = `tokens enviados: ${json.prompt_eval_count} | tokens recebidos: ${json.eval_count}`;
 
@@ -352,12 +366,10 @@ const get_content = (msg, json) => {
       });
       qs('.up_tokens').innerHTML = `${tk.up_tokens + json.prompt_eval_count} TOKENS ENVIADO`;
       qs('.dw_tokens').innerHTML = `${tk.dw_tokens + json.eval_count} TOKENS RECEBIDOS`;
-      pcont.innerHTML = pcont.innerHTML
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replaceAll(/^\*\s(.*)$/gm, '<li class="ml-4">$1</li>')
-        .replaceAll(/\n\n/g, '<br>');
+      pcont.innerHTML = fmt(BUFFER);
     } else {
-      pcont.innerHTML += json.message.content;
+      BUFFER += json.message.content
+      pcont.innerHTML = BUFFER;
       qs('.messages-end').scrollIntoView({
         behavior: 'smooth',
       });
@@ -413,12 +425,16 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
       temperature: temperature,
       contexts: contexts,
       prompt: prompt, 
-      think_at: think_at,
-      context_at: context_at,
+      times: {
+        context_at: context_at,
+        think_at: think_at,
+      },
     });
     insert_ia_message(msg);
     // await sleep(10);
-
+    
+    const td = new TextDecoder('utf-8');
+    BUFFER = '';
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
@@ -484,7 +500,7 @@ const send_query = async () => {
   msgs = msgs.concat(MESSAGES.lst().filter(m => m.role != 'system').slice(-6));
   msgs = msgs.map((e) => {
     return {
-      role: e.role, content: e.content
+      role: e.role, content: e.content.substring(0, 300)
     }
   });
 
@@ -541,14 +557,15 @@ const KEYS = {
   CATEGORIES_URL: `${BASE}:8000/categories`,
   DEFAULT_MESSAGE: {
     role: 'system',
-    content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema PCP Master, e diga também que a seleção do arquivo pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português de forma clara e objetiva, e sem formatação. A resposta deve ser em um único parágrafo bem elaborado e completo, a menos que esteja explícito outro formato na pergunta. E NA RESPOSTA, NÃO DIGA QUE FOI COM BASE NO CONTEXTO.'
+    content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema EGA, e diga também que a seleção da categoria pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português com clareza, em parágrafos fluidos. Não use qualquer tipo de formatação. A resposta deve ser em poucos parágrafos, bem elaborado e completo, a menos que esteja explícito outro formato na pergunta. E não use LaTex!\n'
   },
 }
+// Não acrescente nada que não seja a resposta. Não diga que foi com base no contexto fornecido. 
 
-var MESSAGES  = new StorageArray(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
-var MODELS    = [];
+var MESSAGES   = new StorageArray(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
+var MODELS     = [];
 var CATEGORIES = [];
-
+var BUFFER     = '';
 
 
 /******************************************************************************
@@ -569,11 +586,6 @@ document.addEventListener('DOMContentLoaded', () => {
       insert_user_message(msg);
     } else if (msg.role == 'assistant') {
       insert_ia_message(msg);
-      let pcont = qs(`#msg_ia_${msg.id} p.content`);
-      pcont.innerHTML = pcont.innerHTML
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replaceAll(/^\*\s(.*)$/gm, '<li class="ml-4">$1</li>')
-        .replaceAll(/\n\n/g, '<br>');
     }
   }
 
@@ -582,7 +594,7 @@ document.addEventListener('DOMContentLoaded', () => {
   .then(response => { return response.json(); })
   .then(json => {
     cl(KEYS.CATEGORIES_URL);
-    CATEGORIES = ['Todos'].concat(json);
+    CATEGORIES = ['Todos'].concat(json); 
     let html = '';
     for (let i in CATEGORIES) {
       html += `<option class="bg-transparent border-none" value="${i}">${CATEGORIES[i]}</option>`;
