@@ -334,11 +334,13 @@ const set_assitent_messages = (id) => {
 const td = new TextDecoder('utf-8');
 const get_content = (msg, json) => {
   try {
+    let pcont = qs(`#msg_ia_${msg.id} p.content`);
     if (json.done) {
       msg = MESSAGES.upd(msg.id, {
         ...msg,
         up_tokens: json.prompt_eval_count,
         dw_tokens: json.eval_count,
+        finish_at: (new Date()).toLocaleString(),
       });
       qs(`#msg_ia_${msg.id} span.tokens`).innerHTML = `tokens enviados: ${json.prompt_eval_count} | tokens recebidos: ${json.eval_count}`;
 
@@ -350,22 +352,23 @@ const get_content = (msg, json) => {
       });
       qs('.up_tokens').innerHTML = `${tk.up_tokens + json.prompt_eval_count} TOKENS ENVIADO`;
       qs('.dw_tokens').innerHTML = `${tk.dw_tokens + json.eval_count} TOKENS RECEBIDOS`;
+      pcont.innerHTML = pcont.innerHTML
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replaceAll(/^\*\s(.*)$/gm, '<li class="ml-4">$1</li>')
+        .replaceAll(/\n\n/g, '<br>');
     } else {
-      qs(`#msg_ia_${msg.id} p.content`).innerHTML += json.message.content;
+      pcont.innerHTML += json.message.content;
       qs('.messages-end').scrollIntoView({
         behavior: 'smooth',
       });
     }
-    // qs('.fixed.bottom-36').innerHTML += '<span class="text-gray-400">.</span>';
   } catch(error) {
-    // cl(td.decode(value));
     ce(error);
-    // qs('.fixed.bottom-36').innerHTML += '<span class="text-red-900 font-bold">.</span>';
   }
 }
 
 // consome serviço de chat
-const call_api_chat = async (cur_mod, msgs, file, score, temperature, contexts, prompt) => {
+const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, context_at) => {
   let msg;
   let content = `
     Pergunta: ${prompt}
@@ -373,7 +376,12 @@ const call_api_chat = async (cur_mod, msgs, file, score, temperature, contexts, 
     Contexto: ${contexts.map(e => { return e.content; })}
   `;
   msgs.push({ role: 'user', content: content });
-  // cl(msgs);
+  cl(msgs);
+
+  // ícone de espera do assistente
+  let cur_mod = get(KEYS.CURRENT_MODEL);
+  ia_thinking_state(cur_mod);
+  let think_at = (new Date()).toLocaleString();
 
   try {
     const response = await fetch(KEYS.API_CHAT_URL, {
@@ -404,7 +412,9 @@ const call_api_chat = async (cur_mod, msgs, file, score, temperature, contexts, 
       score: score,
       temperature: temperature,
       contexts: contexts,
-      prompt: prompt
+      prompt: prompt, 
+      think_at: think_at,
+      context_at: context_at,
     });
     insert_ia_message(msg);
     // await sleep(10);
@@ -459,16 +469,20 @@ const send_query = async () => {
   // armazena a questão do usuário
   let ppt = qs('.prompt');
   let prompt = ppt.value;
+  if (prompt.length == 0) return;
+
+  let context_at = (new Date()).toLocaleString();
   let cate = CATEGORIES[qs('.categories').value];
   let score = (180 - Number(qs('.score').value)) / 100;
   let temperature = Number(qs('.temperature').value);
-  if (prompt.length == 0) return;
 
   show_toast('Envio:', 'Mensagem sendo enviada...');
   ppt.readOnly = true;
 
   // cria lista inicial de mensagens
-  let msgs = MESSAGES.lst().map((e) => {
+  let msgs = MESSAGES.lst().filter(m => m.role == 'system');
+  msgs = msgs.concat(MESSAGES.lst().filter(m => m.role != 'system').slice(-6));
+  msgs = msgs.map((e) => {
     return {
       role: e.role, content: e.content
     }
@@ -482,16 +496,13 @@ const send_query = async () => {
   // define o contexto da questão
   let aux = MESSAGES.lst()
     .filter(m => m.role == 'assistant' && m.contexts.length > 0)
+    .slice(-3)
     .map(m => { return m.prompt }).join('\n') + '\n' + prompt;
   // cl(aux);
   let contexts = await get_context(aux, cate, score);
 
-  // ícone de espera do assistente
-  let cur_mod = get(KEYS.CURRENT_MODEL);
-  ia_thinking_state(cur_mod);
-
   // chamada da api do assistente
-  call_api_chat(cur_mod, msgs, cate, score, temperature, contexts, prompt);
+  call_api_chat(msgs, cate, score, temperature, contexts, prompt, context_at);
 }
 
 // alguns processos iniciais
@@ -558,6 +569,11 @@ document.addEventListener('DOMContentLoaded', () => {
       insert_user_message(msg);
     } else if (msg.role == 'assistant') {
       insert_ia_message(msg);
+      let pcont = qs(`#msg_ia_${msg.id} p.content`);
+      pcont.innerHTML = pcont.innerHTML
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replaceAll(/^\*\s(.*)$/gm, '<li class="ml-4">$1</li>')
+        .replaceAll(/\n\n/g, '<br>');
     }
   }
 
