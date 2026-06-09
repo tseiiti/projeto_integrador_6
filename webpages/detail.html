@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AI Chat Detail</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="detail.js"></script>
+</head>
+<body class="font-body overflow-hidden">
+    <!-- TopNavBar Shell -->
+    <header class="fixed top-0 right-0 left-0 h-16 z-40 bg-white/80 dark:bg-white/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-8 w-auto">
+        <div class="flex items-center gap-8 flex-1 min-w-0">
+            <h2 class="text-lg font-black tracking-tighter text-on-secondary-container shrink-0">
+                Chat IA
+            </h2>
+            <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative py-1 custom-scrollbar">
+                <div class="flex items-center gap-6 whitespace-nowrap font-['Inter'] text-xs font-semibold px-2">
+                    <p class="text-on-surface-variant">
+                        Detalhes
+                    </p>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Canvas -->
+    <main class="ml-0 mt-16 h-[calc(100dvh-64px)] flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-8 lg:px-24 space-y-8">
+        <h3 class="text-2xl mb-0"></h3>
+        <p class="text-gray-400 mb-8 model"></p>
+
+        <h4 class="mt-8 mb-2 font-bold text-gray-400">Mensagem</h4>
+        <p class="content"></p>
+
+        <h4 class="mt-8 mb-2 font-bold text-gray-400">Contextos</h4>
+        <table class="w-full table-auto border-collapse text-sm contexts">
+            <thead>
+                <tr>
+                    <th class="border-b border-gray-200 text-left p-4 text-gray-400 min-w-[100px]">
+                        Score
+                    </th>
+                    <th class="border-b border-gray-200 text-left p-4 text-gray-400 min-w-[100px]">
+                        Calculado
+                    </th>
+                    <th class="border-b border-gray-200 text-left p-4 text-gray-400">
+                        Conteúdo
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white"></tbody>
+        </table>
+
+        <h4 class="mt-8 mb-2 font-bold text-gray-400">Transferências (tokens)</h4>
+        <table class="w-full table-auto border-collapse text-sm tokens">
+            <thead>
+                <tr>
+                    <th class="border-b border-gray-200 text-left p-4 text-gray-400">
+                        Envidados
+                    </th>
+                    <th class="border-b border-gray-200 text-left p-4 text-gray-400">
+                        Recebidos
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white"></tbody>
+        </table>
+
+        <h4 class="mt-8 mb-2 font-bold text-gray-400">Tempos</h4>
+        <table class="w-full table-auto border-collapse text-sm times">
+            <thead>
+                <tr>
+                    <th class="border-b border-gray-200 text-left p-4 text-gray-400">
+                        Início
+                    </th>
+                    <th class="border-b border-gray-200 text-left p-4 text-gray-400">
+                        Contexto
+                    </th>
+                    <th class="border-b border-gray-200 text-left p-4 text-gray-400">
+                        Pensamento
+                    </th>
+                    <th class="border-b border-gray-200 text-left p-4 text-gray-400">
+                        Exibição
+                    </th>
+                    <th class="border-b border-gray-200 text-left p-4 text-gray-400">
+                        Término
+                    </th>
+                    <th class="border-b border-gray-200 text-left p-4 text-gray-400">
+                        Total
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-white"></tbody>
+        </table>
+        
+        <h4 class="mt-8 mb-2 font-bold text-gray-400">Filtros</h4>
+        <table class="">
+            <tbody class="bg-white">
+                <tr>
+                    <td class="text-sm leading-tight font-bold text-gray-400">Pergunta:</td>
+                    <td class="text-lg leading-tight font-normal text-gray-800 italic pl-2 prompt"></td>
+                </tr>
+                <tr>
+                    <td class="text-sm leading-tight font-bold text-gray-400">Categoria:</td>
+                    <td class="text-lg leading-tight font-normal text-gray-800 italic pl-2 file"></td>
+                </tr>
+                <tr>
+                    <td class="text-sm leading-tight font-bold text-gray-400">Score:</td>
+                    <td class="text-lg leading-tight font-normal text-gray-800 italic pl-2 score"></td>
+                </tr>
+                <tr>
+                    <td class="text-sm leading-tight font-bold text-gray-400">Temperatura:</td>
+                    <td class="text-lg leading-tight font-normal text-gray-800 italic pl-2 temperature"></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <div class="fixed top-24 right-8 lg:right-24">
+        <button class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-1 px-4 border border-blue-500 hover:border-transparent rounded" onclick="history.back()">
+            Voltar
+        </button>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="toast" class="fixed top-24 px-4 py-3 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2
+            gap-2 rounded-lg bg-green-100 px-4 py-3 text-green-800 shadow-lg border border-green-300 transition-all duration-300
+            transition-all duration-300 ease-in-out
+            opacity-0 -translate-y-4 pointer-events-none">
+        <span class="font-semibold">Successo</span>
+        <p>Action completed successfully.</p>
+    </div>
+</body>
+</html>

@@ -122,6 +122,10 @@ const copy_text = (text) => {
 };
 
 const fmt = (text) => {
+  // trata latex
+  text = text.replace(/\$+(.*?)\$+/g, (match, value) => {
+    return '<i>' + value.replace(/\\text\{(.*?)\}/g, '$1').replace(/\\times/g, '*').replace(/\s\\%/g, '%') + '</i>';
+  });
   const converter = new showdown.Converter({optionKey: 'value'});
   return converter.makeHtml(text);
 }
@@ -238,7 +242,7 @@ const insert_ia_message = (msg) => {
         </div>
         <div class="bg-white rounded-lg rounded-tl-none p-5 space-y-4 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-outline-variant/50">
           <div class="prose prose-sm max-w-none text-justify">
-            <div class="text-on-surface content [&>*]:pb-2">${html}</div>
+            <div class="text-on-surface content [&>*]:pb-2 [&>ul]:list-disc [&>ul]:pl-5 [&>ol]:list-decimal [&>ol]:pl-5">${html}</div>
           </div>
           <div class="flex items-center gap-3">
             <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background">
@@ -252,6 +256,7 @@ const insert_ia_message = (msg) => {
               <span class="material-symbols-outlined text-[24px]">content_copy</span>
             </button>
             <p class="text-[10px] text-on-surface-variant/80 mb-1">${msg.times.created_at}</p>
+            <a class="text-[10px] text-on-surface-variant/80 mb-1" href="/detail.html?id=${msg.id}">detalhes</a>
           </div>
         </div>
       </div>
@@ -330,8 +335,7 @@ const copy_msg_usr_id = (id) => {
 
 // finaliza mensagem resposta do assistente
 const set_assitent_messages = (id) => {
-  let e = qs(`#msg_ia_${id} .content`);
-  MESSAGES.upd(id, { content: e.innerHTML });
+  MESSAGES.upd(id, { content: BUFFER });
 
   qs('.ia_thinking_state').remove();
   qs('.prompt').readOnly = false;
@@ -418,6 +422,7 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
     msg = MESSAGES.add({
       role: 'assistant',
       content: '',
+      model: cur_mod,
       up_tokens: 0,
       dw_tokens: 0,
       file: file,
@@ -557,10 +562,13 @@ const KEYS = {
   CATEGORIES_URL: `${BASE}:8000/categories`,
   DEFAULT_MESSAGE: {
     role: 'system',
-    content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema EGA, e diga também que a seleção da categoria pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português com clareza, em parágrafos fluidos. Não use qualquer tipo de formatação. A resposta deve ser em poucos parágrafos, bem elaborado e completo, a menos que esteja explícito outro formato na pergunta. E não use LaTex!\n'
+    content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema EGA, e diga também que a seleção da categoria pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português, bem elaborada e completa, entre um a quatro parágrafos fluidos, a menos que esteja explícito outro formato na pergunta.\n'
   },
 }
+
+    // content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema EGA, e diga também que a seleção da categoria pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português com clareza, em parágrafos fluidos. Não use qualquer tipo de formatação. A resposta deve ser em poucos parágrafos, bem elaborado e completo, a menos que esteja explícito outro formato na pergunta. E não use LaTex!\n'
 // Não acrescente nada que não seja a resposta. Não diga que foi com base no contexto fornecido. 
+
 
 var MESSAGES   = new StorageArray(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
 var MODELS     = [];
@@ -589,7 +597,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // carrega nome de arquivos
+  // carrega categorias
   fetch(KEYS.CATEGORIES_URL)
   .then(response => { return response.json(); })
   .then(json => {
@@ -609,7 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
   .then(response => { return response.json(); })
   .then(json => {
     cl(KEYS.API_TAGS_URL);
-    MODELS = json.models.filter(m => !m.model.includes('embedding')).sort(
+    MODELS = json.models.filter(m => !m.model.includes('embed')).sort(
       (a, b) => a.name.localeCompare(b.name)
     );
 
