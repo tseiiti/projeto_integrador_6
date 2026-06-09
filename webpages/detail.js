@@ -83,7 +83,6 @@ class StorageArray {
 //   }, time);
 // }
 
-  
 const x = (id) => {
   let msg = MESSAGES.get(id);
   
@@ -94,7 +93,7 @@ const x = (id) => {
   let html = '';
   msg.contexts.forEach(ct => {
     html += `
-      <tr>
+      <tr class="group relative inline-block">
         <th scope="row" class="border-b border-gray-100 p-4 text-gray-500">
           ${ct.score.toFixed(5)}
         </th>
@@ -103,8 +102,13 @@ const x = (id) => {
         </td>
         <td class="border-b border-gray-100 p-4 text-gray-500">
           ${ct.content}
+          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap shadow-lg">
+            categoria: ${ct.category}; <br>arquivo: ${ct.file}; <br>página: ${ct.page};
+            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
+          </div>
         </td>
-      </tr>`;
+      </tr>
+      `;
   });
   qs('.contexts tbody').innerHTML = html;
   
@@ -151,31 +155,17 @@ const x = (id) => {
 /******************************************************************************
  * Variáveis globais
  ******************************************************************************/
-// const BASE = ['192.168.', 'localhos'].includes(window.location.hostname.substring(0, 8)) ?
-//   `${window.location.protocol}//${window.location.hostname}` :
-//   'https://tseiiti.duckdns.org';
-
 const KEYS = {
   MESSAGES:      'messages',
-  // CATEGORIES_URL: `${BASE}:8000/categories`,
 }
   
 var MESSAGES   = new StorageArray(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
-// var CATEGORIES = [];
 
 /******************************************************************************
  * Processo principal
  ******************************************************************************/
 
 document.addEventListener('DOMContentLoaded', () => {
-  // // carrega categorias
-  // fetch(KEYS.CATEGORIES_URL)
-  // .then(response => { return response.json(); })
-  // .then(json => {
-  //   CATEGORIES = ['Todos'].concat(json); 
-  // })
-  // .catch(error => ce(error));
-
   const urlParams = new URLSearchParams(window.location.search);
   const id = urlParams.get('id');
   x(id)

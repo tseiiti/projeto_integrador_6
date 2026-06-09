@@ -242,7 +242,7 @@ const insert_ia_message = (msg) => {
         </div>
         <div class="bg-white rounded-lg rounded-tl-none p-5 space-y-4 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-outline-variant/50">
           <div class="prose prose-sm max-w-none text-justify">
-            <div class="text-on-surface content [&>*]:pb-2 [&>ul]:list-disc [&>ul]:pl-5 [&>ol]:list-decimal [&>ol]:pl-5">${html}</div>
+            <div class="text-on-surface content [&>*]:pb-2 [&>ul]:list-disc [&_ul]:pl-5 [&>ul]:[&_ul]:list-['⮞'] [&_ol]:list-decimal [&_ol]:pl-5">${html}</div>
           </div>
           <div class="flex items-center gap-3">
             <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background">
