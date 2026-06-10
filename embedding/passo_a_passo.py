@@ -107,3 +107,55 @@ for part in stream:
   print(part.message.content, end='', flush=True)
 
 print()
+
+
+
+
+###############################################################################
+
+import ollama
+import PyPDF2
+import os
+import re
+from datetime import datetime
+print("ini:", datetime.now().strftime("%H:%M:%S"))
+
+client = ollama.Client(host="http://ollama:11434")
+
+for root, dirs, files in os.walk('./docs'):
+  for file in files:
+    path = os.path.join(root, file)
+    if os.path.splitext(path)[1] == ".pdf":
+      print(path, " - ", datetime.now().strftime("%H:%M:%S"))
+      contexts = []
+      context = ""
+      with open(path, "rb") as f:
+        pdf = PyPDF2.PdfReader(f)
+        for p in pdf.pages:
+          content = p.extract_text()
+          content = re.sub(r'\n\s{2,}', "\n ", content)
+          content = re.sub(r'\s{2,}', " ", content)
+          context += content
+          if len(context) > 10000:
+            contexts.append(context)
+            context = content[-300:]
+      contexts.append(context)
+      for context in contexts:
+        print("\n", "-" * 120, "\n")
+        # print(context)
+        messages = [{
+          "role": "system",
+          "content": "O usuário irá fornecer um contexto, e você é um especialista no assunto deste contexto. Você deve criar diversas perguntas para testar um Modelo Linguagem Natura (LLM) de acordo com o contexto fornecido. Crie a quantidade de perguntas solicitadas sempre em português e sem formatação. Não acrescente mais nada que não seja as perguntas solicidades."
+        },{
+          "role": "user",
+          "content": f"crie 2 perguntas EM PORTUGUÊS sobre o contexto abaixo: \n\n{context}",
+        },]
+        stream = client.chat("ssfdre38/gemma4-nano:e4b", messages=messages, stream=True, think=False)
+        for part in stream:
+          print(part.message.content, end='', flush=True)
+        print()
+
+print("fim:", datetime.now().strftime("%H:%M:%S"))
+
+
+

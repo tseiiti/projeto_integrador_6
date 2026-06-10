@@ -43,7 +43,7 @@ qual a diferença entre o cálculo OEE e o TEEP?
   #     - 80:80
   #     - 81:81
   #     - 8000:8000
-  #     - 11434:11434
+  #     - 11434:11434m
   #   networks:
   #     - internal_network
   #     - internet_access
@@ -54,6 +54,16 @@ qual a diferença entre o cálculo OEE e o TEEP?
 #volumes:
   # nginx:
 
+
+
+
+===============================================================================
+
+1.  Qual o impacto do plano de manutenção na capacidade de produção da máquina?
+2.  Como identificar a variação média de produtos produzidos ao longo do mês e como ela se relaciona com o total esperado?
+3.  Para que tipo de jornada é o turno Extra programado das 23h00min às 5h00min? Qual a importância do turno extra na produção da máquina?
+4.  Se o total de produtos produzidos durante os três turnos (Segunda à Sábado) for superior ao total esperado, qual o impacto sobre o período de produção e as paradas previstas?
+5.  Considerando os dados históricos e as rotas do sistema, como a escala de tempo está sendo implementada em cada turno para otimizar a produtividade?
 
 ===============================================================================
 

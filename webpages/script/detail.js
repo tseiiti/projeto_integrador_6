@@ -40,6 +40,9 @@ const load = (id) => {
       <td class="border-b border-gray-100 p-4 text-gray-500">
         ${msg.dw_tokens}
       </td>
+      <td class="border-b border-gray-100 p-4 text-gray-500">
+        ~${((msg.up_tokens + msg.dw_tokens) / (((new Date(msg.times.finish_at)) - (new Date(msg.times.context_at))) / 1000)).toFixed(2)}
+      </td>
     </tr>`;
   qs('.tokens tbody').innerHTML = html;
   
