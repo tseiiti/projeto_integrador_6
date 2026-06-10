@@ -93,14 +93,14 @@ const x = (id) => {
   let html = '';
   msg.contexts.forEach(ct => {
     html += `
-      <tr class="group relative inline-block">
+      <tr>
         <th scope="row" class="border-b border-gray-100 p-4 text-gray-500">
           ${ct.score.toFixed(5)}
         </th>
         <td class="border-b border-gray-100 p-4 text-gray-500">
           ${Math.round(-ct.score * 100) + 180}
         </td>
-        <td class="border-b border-gray-100 p-4 text-gray-500">
+        <td class="border-b border-gray-100 p-4 text-gray-500 group relative inline-block">
           ${ct.content}
           <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap shadow-lg">
             categoria: ${ct.category}; <br>arquivo: ${ct.file}; <br>página: ${ct.page};
