@@ -12,15 +12,20 @@ const load = (id) => {
         <th scope="row" class="border-b border-gray-100 p-4 text-gray-500">
           ${ct.score.toFixed(5)}
         </th>
-        <td class="border-b border-gray-100 p-4 text-gray-500">
+        <td class="border-b border-gray-100 p-4 text-gray-500 text-center">
           ${Math.round(-ct.score * 100) + 180}
         </td>
-        <td class="border-b border-gray-100 p-4 text-gray-500 group relative inline-block">
+        <td class="border-b border-gray-100 p-4 text-gray-500 text-justify group relative inline-block">
           ${ct.content}
-          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap shadow-lg">
-            categoria: ${ct.category}; <br>arquivo: ${ct.file}; <br>página: ${ct.page};
-            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800"></div>
+          <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-sm rounded p-3 pt-2 border border-slate-300 whitespace-nowrap shadow-lg">
+            categoria: ${ct.category}<br>
+            arquivo: ${ct.file}<br>
+            página: ${ct.page}
+            <div class="absolute top-full left-1/2 -translate-x-1/2 border-6 border-transparent border-t-gray-400"></div>
           </div>
+        </td>
+        <td class="border-b border-gray-100 p-4 text-gray-500 text-center">
+          ${ct.content.length}
         </td>
       </tr>
       `;

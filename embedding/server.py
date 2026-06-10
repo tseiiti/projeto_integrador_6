@@ -34,8 +34,9 @@ def post_context(request: QueryRequest):
   context = []
   size = 0
   for doc, score in result:
-    if size + len(doc.page_content) > 2000: break
+    if size + len(doc.page_content) > 3000: break
     if score > request.score: break
+    size += len(doc.page_content)
     context.append({ "content": doc.page_content, "score": score, "category": doc.metadata["cate"], "file": doc.metadata["file"], "page": doc.metadata["page"] })
   
   return context

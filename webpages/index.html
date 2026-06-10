@@ -50,8 +50,8 @@
             <h2 class="text-lg font-black tracking-tighter text-on-secondary-container shrink-0">
                 Chat IA
             </h2>
-            <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative py-1 custom-scrollbar">
-                <div class="flex items-center gap-6 whitespace-nowrap font-['Inter'] text-xs font-semibold px-2 uppercase models"></div>
+            <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative pt-2 h-12 custom-scrollbar">
+                <div class="flex items-center gap-6 whitespace-nowrap font-['Inter'] text-sm font-semibold px-2 uppercase models"></div>
             </nav>
         </div>
         <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-violet-600 shadow-sm border border-slate-100 shrink-0 ml-4">
@@ -76,14 +76,14 @@
                 <div class="bg-white rounded-2xl px-2 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-outline-variant focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/5 transition-all duration-500">
                     <form id="form_chat_api">
                         <div class="flex items-center gap-2 px-2 py-1">
-                            <span class="material-symbols-outlined ml-2 text-outline text-on-surface">article</span>
+                            <span class="material-symbols-outlined ml-2 text-outline text-on-surface cursor-pointer" onclick="paste_text(qs('.prompt'))">article</span>
                             <textarea name="textarea_prompt"
                                 class="flex-1 bg-transparent border-none focus:outline-none focus:ring-0 text-sm py-3 px-2 resize-none h-11 max-h-48 custom-scrollbar placeholder:text-outline text-on-surface font-medium prompt"
                                 placeholder="Escreva a mensagem a ser enviada ao Assistente" rows="1"
                                 onkeydown="handle_enter(event)"></textarea>
                             <div class="flex items-center gap-1 mb-0.5">
                                 <button type="submit"
-                                    class="ml-2 w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/20 hover:bg-primary-dim hover:scale-105 active:scale-95 transition-all">
+                                    class="ml-2 w-10 h-10 rounded-xl bg-primary text-white cursor-pointer flex items-center justify-center shadow-lg shadow-primary/20 hover:bg-primary-dim hover:scale-105 active:scale-95 transition-all">
                                     <span class="material-symbols-outlined"
                                         style="font-variation-settings: 'FILL' 1;">send</span>
                                 </button>
@@ -93,7 +93,7 @@
                 </div>
 
                 <!-- Info Area -->
-                <div class="group relative flex justify-center mt-2">
+                <div class="relative flex justify-center mt-2">
                     <!-- Model -->
                     <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold cursor-pointer pr-5"
                         onclick="qs('.model_tooltip').classList.toggle('opacity-0');qs('.model_tooltip').classList.toggle('-z-1')" title="informações do modelo ">

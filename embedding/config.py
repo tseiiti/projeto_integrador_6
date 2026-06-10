@@ -10,7 +10,7 @@ API_PORT = int(os.getenv("API_PORT", "8000"))
 
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "500"))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "100"))
-TOP_K = int(os.getenv("TOP_K", "5"))
+TOP_K = int(os.getenv("TOP_K", "8"))
 
 CHROMA_DB_PATH = os.getenv("CHROMA_DB_PATH", "./db")
 STORAGE_PATH = os.getenv("STORAGE_PATH", "./docs")

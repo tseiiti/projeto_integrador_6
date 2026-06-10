@@ -3,6 +3,14 @@
  * Funções acopladas ao html
  ******************************************************************************/
 
+// evento enter
+const handle_enter = e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    e.target.form.requestSubmit();
+  }
+}
+
 const resize_select = () => {
   const select = qs('.categories');
   const selectedText = select.options[select.selectedIndex].text;
@@ -79,14 +87,13 @@ const select_model = (cur_mod) => {
 // insere mensagem do usuário
 const insert_user_message = (msg) => {
   let html = markdown_to_html(msg.content);
-  cl(html)
   html = `
     <!-- User Message -->
     <div class="flex flex-col items-end group" id="msg_usr_${msg.id}">
       <div class="max-w-[80%] flex items-start gap-4 flex-row-reverse">
         <div
           class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
-          <span class="material-symbols-outlined text-primary text-xs"
+          <span class="material-symbols-outlined text-primary text-sm"
             style="font-variation-settings: 'FILL' 1;">person</span>
         </div>
         <div class="relative">
@@ -98,7 +105,7 @@ const insert_user_message = (msg) => {
             ${msg.times.created_at}
           </span>
         </div>
-        <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background opacity-0 group-hover:opacity-100 "
+        <button class="cursor-pointer p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background opacity-0 group-hover:opacity-100 "
           onclick="copy_msg_usr_id('${msg.id}')">
           <span class="material-symbols-outlined text-[24px]">content_copy</span>
         </button>
@@ -116,13 +123,12 @@ const insert_ia_message = (msg) => {
   let context = ctx ? ` | contextos: ${ctxs.length}, max: ${Math.round(180 - ctx.score * 100)}, min: ${Math.round(180 - ltx.score * 100)}` : '';
   
   let html = markdown_to_html(msg.content);
-  cl(html)
   html = `
     <!-- AI Message -->
     <div class="flex flex-col items-start group" id="msg_ia_${msg.id}">
       <div class="max-w-[95%] sm:max-w-[85%] sm:flex sm:items-start gap-2 space-y-2">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-1 shadow-md shadow-primary/10">
-          <span class="material-symbols-outlined text-white text-xs"
+          <span class="material-symbols-outlined text-white text-sm"
             style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
         </div>
         <div class="bg-white rounded-lg rounded-tl-none p-5 space-y-4 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-outline-variant/50">
@@ -130,13 +136,13 @@ const insert_ia_message = (msg) => {
             <div class="text-on-surface content [&>*]:pb-2 [&>ul]:list-disc [&_ul]:pl-5 [&>ul]:[&_ul]:list-['⮞'] [&_ol]:list-decimal [&_ol]:pl-5">${html}</div>
           </div>
           <div class="flex items-center gap-3">
-            <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background">
+            <button class="cursor-pointer p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background">
               <span class="material-symbols-outlined text-[24px] like" style="font-variation-settings: 'FILL' ${msg.like == 1 ? 1 : 0};" onclick="messages_like(this, '${msg.id}', 1);">thumb_up</span>
             </button>
-            <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background">
+            <button class="cursor-pointer p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background">
               <span class="material-symbols-outlined text-[24px] like" style="font-variation-settings: 'FILL' ${msg.like == -1 ? 1 : 0};" onclick="messages_like(this, '${msg.id}', -1);">thumb_down</span>
             </button>
-            <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background"
+            <button class="cursor-pointer p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background"
               onclick="copy_msg_ia_id('${msg.id}')">
               <span class="material-symbols-outlined text-[24px]">content_copy</span>
             </button>
@@ -162,7 +168,7 @@ const ia_thinking_state = (cur_mod) => {
   let html = `
     <div class="flex items-start gap-4 ia_thinking_state">
       <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-1 opacity-50">
-        <span class="material-symbols-outlined text-white text-xs"
+        <span class="material-symbols-outlined text-white text-sm"
           style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
       </div>
       <div class="bg-primary-container text-on-primary-container rounded-full px-4 py-2 flex items-center gap-2.5 animate-pulse shadow-sm border border-primary/10">
@@ -300,7 +306,6 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
       })
     });
 
-    cl(KEYS.API_CHAT_URL);
     const reader = response.body?.getReader();
     if (!reader) return;
 
@@ -346,6 +351,7 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
 
 // pega contexto embedding da pergunta
 const get_context = async (prompt, cate, score) => {
+  cl(prompt);
   try {
     const response = await fetch(KEYS.CONTEXT_URL, {
       method: 'POST',
@@ -358,7 +364,6 @@ const get_context = async (prompt, cate, score) => {
         cate: cate
       })
     });
-    cl(KEYS.CONTEXT_URL);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -402,17 +407,57 @@ const send_query = async () => {
   // define o contexto da questão
   let aux = MESSAGES.lst()
     .filter(m => m.role == 'assistant' && m.contexts.length > 0)
-    .slice(-3)
+    .slice(-2)
     .map(m => { return m.prompt }).join('\n') + '\n' + prompt;
-  // cl(aux);
   let contexts = await get_context(aux, cate, score);
 
   // chamada da api do assistente
-  call_api_chat(msgs, cate, score, temperature, contexts, prompt, context_at);
+  await call_api_chat(msgs, cate, score, temperature, contexts, prompt, context_at);
+  return false;
 }
 
 // alguns processos iniciais
-const init = () => {
+const load = async () => {
+  // evento submit
+  qs('#form_chat_api').addEventListener('submit', function(e) {
+    e.preventDefault();
+    send_query();
+    return;
+  });
+
+  // carrega histórico de mensagens
+  for (let msg of MESSAGES.lst()) {
+    if (msg.role == 'user') {
+      insert_user_message(msg);
+    } else if (msg.role == 'assistant') {
+      insert_ia_message(msg);
+    }
+  }
+
+  // carrega categorias
+  await fetch(KEYS.CATEGORIES_URL)
+  .then(response => { return response.json(); })
+  .then(json => {
+    CATEGORIES = ['Todos'].concat(json); 
+    let html = '';
+    for (let i in CATEGORIES) {
+      html += `<option class="bg-transparent border-none" value="${i}">${CATEGORIES[i]}</option>`;
+    }
+    qs('.categories').innerHTML = html;
+    resize_select();
+  })
+  .catch(error => ce(error));
+
+  // carrega lista de modelos
+  await fetch(KEYS.API_TAGS_URL)
+  .then(response => { return response.json(); })
+  .then(json => {
+    MODELS = json.models.filter(m => !m.capabilities.includes('embedding')).sort(
+      (a, b) => a.name.localeCompare(b.name)
+    );
+  })
+  .catch(error => ce(error));
+
   let cur_mod = get(
     KEYS.CURRENT_MODEL,
     MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
@@ -434,47 +479,5 @@ const init = () => {
  ******************************************************************************/
 
 document.addEventListener('DOMContentLoaded', () => {
-  // evento submit
-  qs('#form_chat_api').addEventListener('submit', function(e) {
-    e.preventDefault();
-    send_query();
-    return;
-  });
-
-  // carrega histórico de mensagens
-  for (let msg of MESSAGES.lst()) {
-    if (msg.role == 'user') {
-      insert_user_message(msg);
-    } else if (msg.role == 'assistant') {
-      insert_ia_message(msg);
-    }
-  }
-
-  // carrega categorias
-  fetch(KEYS.CATEGORIES_URL)
-  .then(response => { return response.json(); })
-  .then(json => {
-    cl(KEYS.CATEGORIES_URL);
-    CATEGORIES = ['Todos'].concat(json); 
-    let html = '';
-    for (let i in CATEGORIES) {
-      html += `<option class="bg-transparent border-none" value="${i}">${CATEGORIES[i]}</option>`;
-    }
-    qs('.categories').innerHTML = html;
-    resize_select();
-  })
-  .catch(error => ce(error));
-
-  // carrega lista de modelos
-  fetch(KEYS.API_TAGS_URL)
-  .then(response => { return response.json(); })
-  .then(json => {
-    cl(KEYS.API_TAGS_URL);
-    MODELS = json.models.filter(m => !m.model.includes('embed')).sort(
-      (a, b) => a.name.localeCompare(b.name)
-    );
-
-    init();
-  })
-  .catch(error => ce(error));
+  load();
 });

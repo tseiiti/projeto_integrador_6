@@ -12,6 +12,7 @@ vector_store = Chroma(
 )
 
 
+
 ###############################################################################
 # insere documento no banco
 ###############################################################################
@@ -41,6 +42,7 @@ with open(path, "rb") as f:
   vector_store.add_documents(documents=splitter.split_documents(docs))
 
 
+
 ###############################################################################
 # recupera contexto
 ###############################################################################
@@ -55,3 +57,53 @@ result = vector_store.similarity_search_with_score(query, k=5)
 for doc, score in result:
   print(f"content:  {doc.page_content.strip()[:100].replace("\n", " ")}...")
   print(f"metadata: {doc.metadata}", "\nscore:", score, "\n")
+
+
+
+###############################################################################
+# visualizando o vetor
+###############################################################################
+
+import ollama
+client = ollama.Client(host="http://ollama:11434")
+response = client.embed(model="embeddinggemma:300m", input=query)
+vector = response["embeddings"][0]
+
+
+
+###############################################################################
+# acessar um modelo 1
+###############################################################################
+
+import ollama
+client = ollama.Client(host="http://ollama:11434")
+
+stream = client.chat("gemma3:1b", messages=[{ "role": "user", "content": "Por que o céu é azul?" }], stream=True)
+
+for part in stream:
+  print(part.message.content, end='', flush=True)
+
+
+
+###############################################################################
+# acessar um modelo 2
+###############################################################################
+
+import ollama
+
+client = ollama.Client(host="http://ollama:11434")
+
+messages = [{
+  "role": "system",
+  "content": "O usuário irá fornecer um contexto, e você é um especialista no assunto deste contexto. Você deve criar diversas perguntas para testar um Modelo Linguagem Natura (LLM) de acordo com o contexto fornecido. Crie a quantidade de perguntas solicitadas sempre em português. Não acrescente mais nada que não seja as perguntas solicidades."
+},{
+  "role": "user",
+  "content": f"crie 5 perguntas EM PORTUGUÊS sobre o contexto abaixo: \n\n{"\n\n".join([d.page_content for d in docs])}",
+},]
+
+stream = client.chat("gemma3:1b", messages=messages, stream=True, think=False)
+
+for part in stream:
+  print(part.message.content, end='', flush=True)
+
+print()

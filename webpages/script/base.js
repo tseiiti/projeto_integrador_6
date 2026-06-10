@@ -10,13 +10,7 @@ const qs = arg => document.querySelector(arg);
 const qsa = arg => document.querySelectorAll(arg);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// evento enter
-const handle_enter = ev => {
-  if (ev.key === 'Enter' && !ev.shiftKey) {
-    ev.preventDefault();
-    ev.target.form.requestSubmit();
-  }
-}
+
 
 // funções de armazenamento
 const get = (key, defaultValue) => {
@@ -78,19 +72,26 @@ class StorageArray {
 
 
 // copia texto para área de transferência
-const copy_text = (text) => {
-  const textArea = document.createElement("textarea");
-  textArea.value = text;
-  document.body.appendChild(textArea);
-  textArea.select();
+const copy_text = async (text) => {
   try {
-    document.execCommand('copy');
+    await navigator.clipboard.writeText(text);
     if (text.length > 50) text = `${text.substring(0, 47).trim()}...`
     show_toast('Copiado:', `Texto "${text}" copiado!`);
-  } catch (err) {
+  } catch (error) {
     ce(error);
   }
-  document.body.removeChild(textArea);
+};
+
+const paste_text = async (e) => {
+  try {
+    let text = await navigator.clipboard.readText();
+    e.value = text;
+    if (text.length > 50) text = `${text.substring(0, 47).trim()}...`
+    show_toast('Colado:', `Texto "${text}" colado!`);
+    e.focus();
+  } catch (error) {
+    ce(error);
+  }
 };
 
 // mostra alerta (toast)
@@ -107,7 +108,6 @@ const show_toast = (title, text) => {
   }, 3000);
 }
 
-
 const markdown_to_html = (text) => {
   // trata latex
   text = text.replace(/\$+(.*?)\$+/g,  (match, value) => {
@@ -123,6 +123,8 @@ const markdown_to_html = (text) => {
   return converter.makeHtml(text);
 }
 
+
+
 /******************************************************************************
  * Variáveis globais
  ******************************************************************************/
@@ -131,15 +133,15 @@ const BASE = ['192.168.', 'localhos'].includes(window.location.hostname.substrin
   'https://tseiiti.duckdns.org';
 
 const KEYS = {
-  MODELS:        'models',
-  CURRENT_MODEL: 'current_model',
-  MESSAGES:      'messages',
-  TOKENS:        'tokens',
-  API_CHAT_URL:  `${BASE}:11434/api/chat`,
-  API_TAGS_URL:  `${BASE}:11434/api/tags`,
-  API_PS_URL:    `${BASE}:11434/api/ps`,
-  API_GEN_URL:   `${BASE}:11434/api/generate`,
-  CONTEXT_URL:   `${BASE}:8000/context`,
+  MODELS:         'models',
+  CURRENT_MODEL:  'current_model',
+  MESSAGES:       'messages',
+  TOKENS:         'tokens',
+  API_CHAT_URL:   `${BASE}:11434/api/chat`,
+  API_TAGS_URL:   `${BASE}:11434/api/tags`,
+  API_PS_URL:     `${BASE}:11434/api/ps`,
+  API_GEN_URL:    `${BASE}:11434/api/generate`,
+  CONTEXT_URL:    `${BASE}:8000/context`,
   CATEGORIES_URL: `${BASE}:8000/categories`,
   DEFAULT_MESSAGE: {
     role: 'system',
@@ -152,6 +154,8 @@ var MODELS     = [];
 var CATEGORIES = [];
 var PS         = [];
 var BUFFER     = '';
+
+
 
 /******************************************************************************
  * Processo principal
