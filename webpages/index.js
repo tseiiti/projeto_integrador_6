@@ -389,9 +389,10 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
   let content = `
     Pergunta: ${prompt}
 
-    Contexto: ${contexts.map(e => { return e.content; })}
+    Contexto: ${'\n' + contexts.map(e => { return '      - "' + e.content + '";'; }).join('\n')}
   `;
   msgs.push({ role: 'user', content: content });
+  console.log(content);
   cl(msgs);
 
   // ícone de espera do assistente
