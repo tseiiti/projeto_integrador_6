@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta http-equiv="content-language" content="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/latex.js/dist/latex.js"></script> 
+  <script type="module">
+    import { LaTeXJSComponent } from "https://cdn.jsdelivr.net/npm/latex.js/dist/latex.mjs"
+    customElements.define("latex-js", LaTeXJSComponent)
+  </script>
+
+  <style>
+    latex-js {
+      display: inline-block;
+      border: 1px solid red;
+      margin-right: 2em;
+      padding-right: 2em;
+    }
+  </style>
+
+  <title>LaTeX.js Web Component Test</title>
+</head>
+
+<body>
+  <h1>Compiling LaTeX</h1>
+
+  <latex-js baseURL="https://cdn.jsdelivr.net/npm/latex.js/dist/">
+    $$\text{IQ} = \frac{\text{Q}}{\text{M + N}}$$
+  </latex-js>
+
+
+  <latex-js hyphenate="false">
+    $$\text{IQ} = \frac{\text{Q}}{\text{M + N}}$$
+  </latex-js>
+
+  <script>
+    var text = "$$\text{IQ} = \frac{\text{Q}}{\text{M + N}}$$"
+
+    var generator = new latexjs.HtmlGenerator({ hyphenate: false })
+
+    generator = latexjs.parse(text, { generator: generator })
+
+    document.head.appendChild(generator.stylesAndScripts(""))
+    document.body.appendChild(generator.domFragment())
+  </script>
+</body>
+
+</html>

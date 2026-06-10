@@ -6,14 +6,11 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>AI Chat - Configurações</title>
     <link rel="icon" type="image/png" href="favicon.png">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <script src="config.js"></script>
+    <script src="/script/tailwind.js"></script>
+    <link href="/style/inter_manrope.css" rel="stylesheet">
+    <link href="/style/material_symbols_outlined.css" rel="stylesheet">
+    <script src="/script/base.js"></script>
+    <script src="/script/config.js"></script>
 </head>
 <body class="font-body overflow-hidden">
     <!-- TopNavBar Shell -->
@@ -61,14 +58,5 @@
             </div>
         </div>
     </main>
-
-    <!-- Alert Container -->
-    <div id="toast" class="fixed top-24 px-4 py-3 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2
-            gap-2 rounded-lg bg-green-100 px-4 py-3 text-green-800 shadow-lg border border-green-300 transition-all duration-300
-            transition-all duration-300 ease-in-out
-            opacity-0 -translate-y-4 pointer-events-none">
-        <span class="font-semibold">Successo</span>
-        <p>Action completed successfully.</p>
-    </div>
 </body>
 </html>

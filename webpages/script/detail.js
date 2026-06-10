@@ -1,89 +1,4 @@
-
-/******************************************************************************
- * Funções básicas
- ******************************************************************************/
-const ONLOG = true;
-const ONALERT = false;
-const cl = arg => { if (ONLOG) console.log(arg); };
-const ce = error => { console.error(error); if (ONALERT) alert(error); }
-const qs = arg => document.querySelector(arg);
-const qsa = arg => document.querySelectorAll(arg);
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-
-
-// funções de armazenamento
-const get = (key, defaultValue) => {
-  const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : defaultValue;
-};
-
-const set = (key, value) => {
-  localStorage.setItem(key, JSON.stringify(value));
-};
-
-class StorageArray {
-  constructor(key, init = []) {
-    this.key = key;
-    this.init = init;
-  }
-
-  lst() {
-    return get(this.key, this.init);
-  }
-
-  add(e, meta = true) {
-    let es = this.lst();
-    if (meta) {
-      let times = e.times;
-      e = {
-        ...e,
-        id: Math.random().toString(36).substring(2),
-        times: {
-          ...times,
-          created_at: (new Date()).toLocaleString(),
-        }
-      };
-    }
-    es.push(e);
-    set(this.key, es);
-    return e;
-  }
-
-  get(id) {
-    return this.lst().find(e => e.id === id);
-  }
-
-  upd(id, e) {
-    let es = this.lst();
-    let i = es.findIndex(e => e.id === id);
-    if (i !== -1) {
-      es[i] = {...es[i], ...e};
-      set(this.key, es);
-    }
-    return this.lst()[i];
-  }
-
-  clr() {
-    set(this.key, this.init);
-  }
-}
-
-// // mostra alerta (toast)
-// const show_toast = (title, text, time = 3000) => {
-//   qs('#toast span').innerHTML = title;
-//   qs('#toast p').innerHTML = text;
-
-//   const toast = qs('#toast');
-//   toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
-//   toast.classList.add('opacity-80', 'translate-y-0');
-//   setTimeout(() => {
-//     toast.classList.remove('opacity-80', 'translate-y-0');
-//     toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
-//   }, time);
-// }
-
-const x = (id) => {
+const load = (id) => {
   let msg = MESSAGES.get(id);
   
   qs('h3').innerHTML = `ID: ${id}`;
@@ -152,14 +67,7 @@ const x = (id) => {
   qs('.temperature').innerHTML = msg.temperature;
 }
 
-/******************************************************************************
- * Variáveis globais
- ******************************************************************************/
-const KEYS = {
-  MESSAGES:      'messages',
-}
-  
-var MESSAGES   = new StorageArray(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
+
 
 /******************************************************************************
  * Processo principal
@@ -167,6 +75,5 @@ var MESSAGES   = new StorageArray(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
 
 document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const id = urlParams.get('id');
-  x(id)
+  load(urlParams.get('id'))
 });

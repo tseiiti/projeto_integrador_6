@@ -1,93 +1,7 @@
 
 /******************************************************************************
- * Funções básicas
+ * Funções acopladas ao html
  ******************************************************************************/
-const ONLOG = false;
-const ONALERT = false;
-const cl = arg => { if (ONLOG) console.log(arg); };
-const ce = error => { console.error(error); if (ONALERT) alert(error); }
-const qs = arg => document.querySelector(arg);
-const qsa = arg => document.querySelectorAll(arg);
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// evento enter
-const handle_enter = ev => {
-  if (ev.key === 'Enter' && !ev.shiftKey) {
-    ev.preventDefault();
-    ev.target.form.requestSubmit();
-  }
-}
-
-// funções de armazenamento
-const get = (key, defaultValue) => {
-  const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : defaultValue;
-};
-
-const set = (key, value) => {
-  localStorage.setItem(key, JSON.stringify(value));
-};
-
-class StorageArray {
-  constructor(key, init = []) {
-    this.key = key;
-    this.init = init;
-  }
-
-  lst() {
-    return get(this.key, this.init);
-  }
-
-  add(e, meta = true) {
-    let es = this.lst();
-    if (meta) {
-      let times = e.times;
-      e = {
-        ...e,
-        id: Math.random().toString(36).substring(2),
-        times: {
-          ...times,
-          created_at: (new Date()).toLocaleString(),
-        }
-      };
-    }
-    es.push(e);
-    set(this.key, es);
-    return e;
-  }
-
-  get(id) {
-    return this.lst().find(e => e.id === id);
-  }
-
-  upd(id, e) {
-    let es = this.lst();
-    let i = es.findIndex(e => e.id === id);
-    if (i !== -1) {
-      es[i] = {...es[i], ...e};
-      set(this.key, es);
-    }
-    return this.lst()[i];
-  }
-
-  clr() {
-    set(this.key, this.init);
-  }
-}
-
-// mostra alerta (toast)
-const show_toast = (title, text) => {
-  qs('#toast span').innerHTML = title;
-  qs('#toast p').innerHTML = text;
-
-  const toast = qs('#toast');
-  toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
-  toast.classList.add('opacity-80', 'translate-y-0');
-  setTimeout(() => {
-    toast.classList.remove('opacity-80', 'translate-y-0');
-    toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
-  }, 3000);
-}
 
 const resize_select = () => {
   const select = qs('.categories');
@@ -104,35 +18,6 @@ const resize_select = () => {
   select.style.width = tempDiv.offsetWidth + 40 + 'px';
   document.body.removeChild(tempDiv);
 }
-
-// copia texto para área de transferência
-const copy_text = (text) => {
-  const textArea = document.createElement("textarea");
-  textArea.value = text;
-  document.body.appendChild(textArea);
-  textArea.select();
-  try {
-    document.execCommand('copy');
-    if (text.length > 50) text = `${text.substring(0, 47).trim()}...`
-    show_toast('Copiado:', `Texto "${text}" copiado!`);
-  } catch (err) {
-    ce(error);
-  }
-  document.body.removeChild(textArea);
-};
-
-const fmt = (text) => {
-  // trata latex
-  text = text.replace(/\$+(.*?)\$+/g, (match, value) => {
-    return '<i>' + value.replace(/\\text\{(.*?)\}/g, '$1').replace(/\\times/g, '*').replace(/\s\\%/g, '%') + '</i>';
-  });
-  const converter = new showdown.Converter({optionKey: 'value'});
-  return converter.makeHtml(text);
-}
-
-/******************************************************************************
- * Funções acopladas ao html
- ******************************************************************************/
 
 // seleção, lista e detalhes informativos de models de ia
 const select_model = (cur_mod) => {
@@ -193,7 +78,7 @@ const select_model = (cur_mod) => {
 
 // insere mensagem do usuário
 const insert_user_message = (msg) => {
-  let html = fmt(msg.content);
+  let html = markdown_to_html(msg.content);
   cl(html)
   html = `
     <!-- User Message -->
@@ -230,7 +115,7 @@ const insert_ia_message = (msg) => {
   let ltx = ctxs.at(-1);
   let context = ctx ? ` | contextos: ${ctxs.length}, max: ${Math.round(180 - ctx.score * 100)}, min: ${Math.round(180 - ltx.score * 100)}` : '';
   
-  let html = fmt(msg.content);
+  let html = markdown_to_html(msg.content);
   cl(html)
   html = `
     <!-- AI Message -->
@@ -370,7 +255,7 @@ const get_content = (msg, json) => {
       });
       qs('.up_tokens').innerHTML = `${tk.up_tokens + json.prompt_eval_count} TOKENS ENVIADO`;
       qs('.dw_tokens').innerHTML = `${tk.dw_tokens + json.eval_count} TOKENS RECEBIDOS`;
-      pcont.innerHTML = fmt(BUFFER);
+      pcont.innerHTML = markdown_to_html(BUFFER);
     } else {
       BUFFER += json.message.content
       pcont.innerHTML = BUFFER;
@@ -392,7 +277,6 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
     Contexto: ${'\n' + contexts.map(e => { return '      - "' + e.content + '";'; }).join('\n')}
   `;
   msgs.push({ role: 'user', content: content });
-  console.log(content);
   cl(msgs);
 
   // ícone de espera do assistente
@@ -543,38 +427,6 @@ const init = () => {
   qs('.dw_tokens').innerHTML = `${tk.dw_tokens} TOKENS RECEBIDOS`;
 }
 
-
-/******************************************************************************
- * Variáveis globais
- ******************************************************************************/
-const BASE = ['192.168.', 'localhos'].includes(window.location.hostname.substring(0, 8)) ?
-  `${window.location.protocol}//${window.location.hostname}` :
-  'https://tseiiti.duckdns.org';
-
-const KEYS = {
-  MODELS:        'models',
-  CURRENT_MODEL: 'current_model',
-  MESSAGES:      'messages',
-  TOKENS:        'tokens',
-  API_CHAT_URL:  `${BASE}:11434/api/chat`,
-  API_TAGS_URL:  `${BASE}:11434/api/tags`,
-  API_PS_URL:    `${BASE}:11434/api/ps`,
-  CONTEXT_URL:   `${BASE}:8000/context`,
-  CATEGORIES_URL: `${BASE}:8000/categories`,
-  DEFAULT_MESSAGE: {
-    role: 'system',
-    content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema EGA, e diga também que a seleção da categoria pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português, bem elaborada e completa, entre um a quatro parágrafos fluidos, a menos que esteja explícito outro formato na pergunta.\n'
-  },
-}
-
-    // content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema EGA, e diga também que a seleção da categoria pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português com clareza, em parágrafos fluidos. Não use qualquer tipo de formatação. A resposta deve ser em poucos parágrafos, bem elaborado e completo, a menos que esteja explícito outro formato na pergunta. E não use LaTex!\n'
-// Não acrescente nada que não seja a resposta. Não diga que foi com base no contexto fornecido. 
-
-
-var MESSAGES   = new StorageArray(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
-var MODELS     = [];
-var CATEGORIES = [];
-var BUFFER     = '';
 
 
 /******************************************************************************
