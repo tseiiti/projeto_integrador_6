@@ -2,14 +2,14 @@ import os
 from pathlib import Path
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "embeddinggemma:300m")
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "embeddinggemma:300m") # nomic-embed-text-v2-moe nomic-embed-text
 
 API_HOST = os.getenv("API_HOST", "localhost")
 API_PORT = int(os.getenv("API_PORT", "8000"))
 
-CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "500"))
-CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "100"))
-TOP_K = int(os.getenv("TOP_K", "5"))
+CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "400"))
+CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "80"))
+TOP_K = int(os.getenv("TOP_K", "8"))
 
 CHROMA_DB_PATH = os.getenv("CHROMA_DB_PATH", "./db")
 STORAGE_PATH = os.getenv("STORAGE_PATH", "./docs")
