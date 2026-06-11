@@ -123,6 +123,20 @@ const markdown_to_html = (text) => {
   return converter.makeHtml(text);
 }
 
+const base_load = async () => {
+  let html = `
+    <!-- Alert Container -->
+    <div id="toast" class="fixed top-24 px-4 py-3 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2
+            gap-2 rounded-lg bg-green-100 px-4 py-3 text-green-800 shadow-lg border border-green-300 transition-all duration-300
+            transition-all duration-300 ease-in-out
+            opacity-0 -translate-y-4 pointer-events-none">
+        <span class="font-semibold">Successo</span>
+        <p>Action completed successfully.</p>
+    </div>
+  `;
+  document.body.insertAdjacentHTML("beforeend", html);
+}
+
 
 
 /******************************************************************************
@@ -133,7 +147,6 @@ const BASE = ['192.168.', 'localhos'].includes(window.location.hostname.substrin
   'https://tseiiti.duckdns.org';
 
 const KEYS = {
-  MODELS:         'models',
   CURRENT_MODEL:  'current_model',
   MESSAGES:       'messages',
   TOKENS:         'tokens',
@@ -162,15 +175,5 @@ var BUFFER     = '';
  ******************************************************************************/
 
 document.addEventListener('DOMContentLoaded', () => {
-  let html = `
-    <!-- Alert Container -->
-    <div id="toast" class="fixed top-24 px-4 py-3 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2
-            gap-2 rounded-lg bg-green-100 px-4 py-3 text-green-800 shadow-lg border border-green-300 transition-all duration-300
-            transition-all duration-300 ease-in-out
-            opacity-0 -translate-y-4 pointer-events-none">
-        <span class="font-semibold">Successo</span>
-        <p>Action completed successfully.</p>
-    </div>
-  `;
-  document.body.insertAdjacentHTML("beforeend", html);
+  base_load();
 });

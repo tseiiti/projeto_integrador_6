@@ -1,511 +1,540 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+
+<html class="light" lang="pt-BR">
+
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Configurações-AI Chat</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Configurações - Chat Pro</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-background": "#191c1d",
+            "on-secondary-container": "#5c6274",
+            "surface-bright": "#f8f9fa",
+            "primary-fixed": "#e2dfff",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed-dim": "#ffb695",
+            "surface-container": "#edeeef",
+            "on-tertiary-fixed": "#351000",
+            "on-primary": "#ffffff",
+            "on-secondary-fixed": "#141b2b",
+            "primary-fixed-dim": "#c3c0ff",
+            "secondary-fixed-dim": "#c0c6db",
+            "on-secondary": "#ffffff",
+            "error-container": "#ffdad6",
+            "outline": "#777587",
+            "on-error": "#ffffff",
+            "surface-container-highest": "#e1e3e4",
+            "surface-container-low": "#f3f4f5",
+            "outline-variant": "#c7c4d8",
+            "on-primary-fixed-variant": "#3323cc",
+            "surface-container-high": "#e7e8e9",
+            "text-main": "#111827",
+            "surface-variant": "#e1e3e4",
+            "inverse-surface": "#2e3132",
+            "on-error-container": "#93000a",
+            "secondary-container": "#d9dff5",
+            "background": "#f8f9fa",
+            "surface-tint": "#4d44e3",
+            "surface-white": "#FFFFFF",
+            "secondary-fixed": "#dce2f7",
+            "inverse-primary": "#c3c0ff",
+            "surface-container-lowest": "#ffffff",
+            "primary": "#3525cd",
+            "tertiary": "#7e3000",
+            "text-muted": "#4B5563",
+            "error": "#ba1a1a",
+            "surface-dim": "#d9dadb",
+            "on-secondary-fixed-variant": "#404758",
+            "primary-container": "#4f46e5",
+            "on-tertiary-container": "#ffd2be",
+            "on-tertiary-fixed-variant": "#7b2f00",
+            "on-surface": "#191c1d",
+            "inverse-on-surface": "#f0f1f2",
+            "on-primary-fixed": "#0f0069",
+            "on-surface-variant": "#464555",
+            "secondary": "#575e70",
+            "on-primary-container": "#dad7ff",
+            "tertiary-container": "#a44100",
+            "border-subtle": "#E5E7EB",
+            "surface": "#f8f9fa",
+            "tertiary-fixed": "#ffdbcc"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "container-max": "1280px",
+            "sm": "8px",
+            "xl": "32px",
+            "md": "16px",
+            "xs": "4px",
+            "base": "4px",
+            "2xl": "48px",
+            "lg": "24px",
+            "3xl": "64px",
+            "gutter": "24px"
+          },
+          "fontFamily": {
+            "body-md": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-lg-mobile": ["Inter"]
+          },
+          "fontSize": {
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "headline-lg": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
 
-    <script src="/script/tailwind.js"></script>
-    <style type="text/tailwindcss">
-      @theme {
-        --color-primary: #4F46E5;
-        --color-primary-dim: #4338CA;
-        --color-primary-container: #E0E7FF;
-        --color-on-primary: #FFFFFF;
-        --color-on-primary-container: #1E1B4B;
-        --color-secondary: #6366F1;
-        --color-secondary-container: #EEF2FF;
-        --color-on-secondary-container: #312E81;
-        --color-surface: #F9FAFB;
-        --color-surface-dim: #F3F4F6;
-        --color-surface-bright: #FFFFFF;
-        --color-surface-container-lowest: #FFFFFF;
-        --color-surface-container-low: #F9FAFB;
-        --color-surface-container: #F3F4F6;
-        --color-surface-container-high: #E5E7EB;
-        --color-surface-container-highest: #D1D5DB;
-        --color-on-surface: #111827;
-        --color-on-surface-variant: #4B5563;
-        --color-outline: #9CA3AF;
-        --color-outline-variant: #E5E7EB;
-        --color-background: #F9FAFB;
-        --color-on-background: #111827;
-        
-        --font-family-headline: Inter, sans-serif;
-        --font-family-body: Inter, sans-serif;
-        --font-family-label: Inter, sans-serif;
+    .active-tab {
+      background-color: #575e70;
+      color: #f8f9fa;
+      border-radius: 0.5rem;
+    }
 
-        --rounded: 0.125rem;
-        --rounded-lg: 0.25rem;
-        --rounded-xl: 0.5rem;
-        --rounded-full: 0.75rem;
-        --spacing-container-max: 1280px;
-        --spacing-sm: 8px;
-        --spacing-xl: 32px;
-        --spacing-md: 16px;
-        --spacing-xs: 4px;
-        --spacing-base: 4px;
-        --spacing-2xl: 48px;
-        --spacing-lg: 24px;
-        --spacing-3xl: 64px;
-        --spacing-gutter: 24px;
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #3525cd;
+      cursor: pointer;
+      box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    }
 
-        /* --text-body-md: 14px;
-        --text-body-md--line-height: 20px;
-        --text-body-md--font-weight: 400;
-        --text-label-md: 14px;
-        --text-label-md--line-height: 20px;
-        --text-label-md--font-weight: 500;
-        --text-headline-lg: 30px;
-        --text-headline-lg--line-height: 36px;
-        --text-headline-lg--letter-spacing: -0.02em;
-        --text-headline-lg--font-weight: 700;
-        --text-headline-md: 20px;
-        --text-headline-md--line-height: 28px;
-        --text-headline-md--letter-spacing: -0.01em;
-        --text-headline-md--font-weight: 600;
-        --text-body-lg: 16px;
-        --text-body-lg--line-height: 24px;
-        --text-body-lg--font-weight: 400;
-        --text-label-sm: 12px;
-        --text-label-sm--line-height: 16px;
-        --text-label-sm--letter-spacing: 0.05em;
-        --text-label-sm--font-weight: 600;
-        --text-headline-lg-mobile: 24px;
-        --text-headline-lg-mobile--line-height: 32px;
-        --text-headline-lg-mobile--letter-spacing: -0.02em;
-        --text-headline-lg-mobile--font-weight: 700; */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
 
-      }
-    </style>
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
 
-    <link href="/style/inter_manrope.css" rel="stylesheet">
-    <link href="/style/material_symbols_outlined.css" rel="stylesheet">
-    <link href="/style/teste.css" rel="stylesheet">
-    <script src="/script/base.js"></script>
-    <script src="/script/teste.js"></script>
+    ::-webkit-scrollbar-thumb {
+      background: #c7c4d8;
+      border-radius: 10px;
+    }
+
+    .model-card-glow {
+      box-shadow: 0 0 15px -3px rgba(53, 37, 205, 0.4);
+    }
+  </style>
 </head>
 
-<body class="font-body overflow-hidden">
-    <!-- TopNavBar Shell -->
-    <header class="fixed top-0 right-0 left-0 h-16 z-40 bg-white/80 dark:bg-white/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-8 w-auto">
-        <div class="flex items-center gap-8 flex-1 min-w-0">
-            <a href="/">
-                <h2 class="text-lg font-black tracking-tighter text-on-secondary-container shrink-0">
-                    Chat IA
-                </h2>
-            </a>
-            <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative py-1 custom-scrollbar">
-                <div class="flex items-center gap-6 whitespace-nowrap font-['Inter'] text-sm font-semibold px-2 uppercase">
-                    <p class="text-on-surface-variant">
-                        Configurações
-                    </p>
-                </div>
-            </nav>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex">
+  <main class="flex-grow flex flex-col h-screen overflow-hidden">
+    <header class="bg-surface border-b border-border-subtle">
+      <div class="flex justify-between items-center w-full px-lg py-md max-w-container-max mx-auto">
+        <div class="flex items-center gap-lg">
+          <h1 class="font-headline-md text-headline-md font-bold text-on-surface">Configurações</h1>
+          <nav class="hidden md:flex gap-lg">
+            <a class="text-primary border-b-2 border-primary pb-1 font-label-md bg-primary/5 px-md py-1 rounded-lg"
+              href="#perfil">Geral</a>
+            <a class="text-text-muted hover:text-text-main transition-colors font-label-md"
+              href="#faturamento">Faturamento</a>
+            <a class="text-text-muted hover:text-text-main transition-colors font-label-md"
+              href="#notificacoes">Notificações</a>
+          </nav>
         </div>
+        <div class="flex items-center gap-md">
+          <div class="relative hidden sm:block">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[20px]">search</span>
+            <input
+              class="bg-surface-container-low border border-outline-variant rounded-full py-xs pl-10 pr-md text-body-md w-64 focus:outline-none focus:border-primary"
+              placeholder="Buscar configurações..." type="text" />
+          </div>
+          <button class="p-sm text-text-muted hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">notifications</span>
+          </button>
+          <button class="p-sm text-text-muted hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">more_vert</span>
+          </button>
+          <img alt="Avatar do usuário"
+            class="w-8 h-8 rounded-full border border-border-subtle cursor-pointer active:scale-95 transition-all"
+            src="https://lh3.googleusercontent.com/aida/AP1WRLsLn1ccWMcCrIxukEg3zR8sh-ooIP4KJ5A_ddkwl7CuClwYZTDmy4vV5enZO07_fBwi_V5PLCq7M-HI8la_fvzVU1XpqxgPzHcI1EyQegisbIh8Qv7Dsv4SMi205joOfj7xWSmzyKMZNzmEE6LQSKdyUrn7ssC39LtoGHYAs9Ye_C27z3b4Dmp9OJgqTeKS6M3apnryeSfItZ2XP5er0ETwA64_UwNGLxr2BZ976Ncd2Kqzbg3nfelSiA" />
+        </div>
+      </div>
     </header>
-
-    <main class="ml-0 mt-16 h-[calc(100dvh-64px)] relative flex flex-col glow-accent">
-        <section class="flex-grow overflow-y-auto bg-background p-lg">
-            <div class="max-w-[1000px] mx-auto space-y-lg">
-                <!-- Section: AI Model Selection (Updated Grid) -->
-                <div class="bg-white border border-outline-variant rounded-xl p-lg">
-                    <div class="flex items-center gap-sm mb-lg">
-                        <span class="material-symbols-outlined text-primary"
-                            style="font-variation-settings: 'FILL' 1;">model_training</span>
-                        <h2 class="font-headline-md text-headline-md text-text-main">Modelo de IA</h2>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-md models">
-                        <!-- Model 1 (Selected) -->
-                        <div
-                            class="border-2 border-primary bg-primary-fixed/10 rounded-xl p-md relative flex flex-col justify-between">
-                            <div
-                                class="absolute -top-3 right-4 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">
-                                Modelo Atual</div>
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">GPT-4o</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">O mais avançado
-                                    para raciocínio
-                                    complexo e tarefas criativas.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs bg-primary text-white rounded-lg text-label-sm font-bold">Selecionado</button>
-                        </div>
-                        <!-- Model 2 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Claude 3.5 Sonnet</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Excelente para
-                                    escrita natural e
-                                    análise detalhada de código.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 3 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Gemini 1.5 Pro</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Janela de contexto
-                                    massiva para
-                                    análise de grandes documentos.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 4 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Llama 3 70B</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Modelo open-source
-                                    de alta
-                                    performance da Meta.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 5 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Mistral Large</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Equilíbrio
-                                    perfeito entre
-                                    eficiência e inteligência avançada.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 6 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">DeepSeek Coder</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Especializado em
-                                    programação e
-                                    geração de código.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 7 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">GPT-4 Turbo</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Versão otimizada e
-                                    rápida do
-                                    renomado GPT-4.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 8 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Claude 3 Opus</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">O modelo mais
-                                    poderoso da
-                                    Anthropic para tarefas complexas.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 9 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Gemini 1.0 Ultra</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Projetado para ser
-                                    o modelo mais
-                                    capaz da Google.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 10 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">DALL-E 3</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Geração de imagens
-                                    fotorrealistas
-                                    a partir de texto.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 11 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Stable Diffusion 3</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Geração de imagens
-                                    de última
-                                    geração com controle total.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 12 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Command R+</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Otimizado para RAG
-                                    e ferramentas
-                                    de produtividade empresarial.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 13 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Mistral NeMo</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Modelo compacto e
-                                    eficiente para
-                                    uso local ou em nuvem.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 14 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Grok-1.5</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Modelo com acesso
-                                    a informações em
-                                    tempo real via X.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 15 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Qwen 2.5</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Poderoso modelo
-                                    multilíngue do
-                                    Alibaba Group.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 16 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Phi-3 Medium</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">SLM da Microsoft
-                                    com capacidade
-                                    comparável a LLMs gigantes.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 17 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Llama 3 8B</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Modelo leve e
-                                    extremamente rápido
-                                    para tarefas simples.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 18 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Codestral</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Modelo da Mistral
-                                    AI desenhado
-                                    especificamente para devs.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 19 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Gemma 2</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Modelo aberto do
-                                    Google focado em
-                                    performance e ética.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                        <!-- Model 20 -->
-                        <div
-                            class="border border-outline-variant hover:border-primary/50 transition-colors rounded-xl p-md flex flex-col justify-between">
-                            <div>
-                                <h3 class="font-label-md text-text-main mb-xs">Claude 3 Haiku</h3>
-                                <p class="text-label-sm text-text-muted leading-relaxed line-clamp-2">Quase instantâneo,
-                                    ideal para
-                                    suporte e chats em tempo real.</p>
-                            </div>
-                            <button
-                                class="mt-md w-full py-xs border border-primary text-primary hover:bg-primary/5 rounded-lg text-label-sm font-bold transition-colors">Selecionar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
-                    <!-- Section: Configurações de Chat -->
-                    <div class="lg:col-span-7">
-                        <div class="bg-white border border-outline-variant rounded-xl p-lg h-full">
-                            <div class="flex items-center gap-sm mb-lg">
-                                <span class="material-symbols-outlined text-primary"
-                                    style="font-variation-settings: 'FILL' 1;">psychology</span>
-                                <h2 class="font-headline-md text-headline-md text-text-main">Configurações de Chat</h2>
-                            </div>
-                            <div class="space-y-2xl">
-                                <!-- Temperature Control -->
-                                <div class="space-y-md">
-                                    <div class="flex justify-between items-center">
-                                        <label class="font-label-md text-label-md text-text-main">Temperatura</label>
-                                        <span
-                                            class="bg-primary-container text-on-primary-container-variant px-sm py-xs rounded text-label-sm"
-                                            id="temp-value">0.7</span>
-                                    </div>
-                                    <input
-                                        class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary"
-                                        id="temp-range" max="1" min="0" step="0.1" type="range" value="0.7" />
-                                    <div class="flex justify-between text-label-sm text-text-muted">
-                                        <span>Preciso (0.0)</span>
-                                        <span>Criativo (1.0)</span>
-                                    </div>
-                                    <p class="text-label-sm text-text-muted mt-sm italic">Define a aleatoriedade das
-                                        respostas. Valores
-                                        baixos são mais determinísticos.</p>
-                                </div>
-                                <!-- Category Selection -->
-                                <div class="space-y-md">
-                                    <label class="font-label-md text-label-md text-text-main">Categoria Padrão</label>
-                                    <div class="relative">
-                                        <select
-                                            class="w-full appearance-none bg-white border border-outline-variant rounded-lg py-md px-md pr-xl text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
-                                            <option value="coding">Desenvolvimento de Software</option>
-                                            <option selected="" value="creative">Escrita Criativa</option>
-                                            <option value="academic">Pesquisa Acadêmica</option>
-                                            <option value="business">Análise de Negócios</option>
-                                        </select>
-                                        <span
-                                            class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-text-muted">expand_more</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Section: Segurança -->
-                    <div class="lg:col-span-5">
-                        <div class="bg-white border border-outline-variant rounded-xl p-lg h-full flex flex-col">
-                            <div class="flex items-center gap-sm mb-lg">
-                                <span class="material-symbols-outlined text-primary"
-                                    style="font-variation-settings: 'FILL' 1;">security</span>
-                                <h2 class="font-headline-md text-headline-md text-text-main">Segurança</h2>
-                            </div>
-                            <div class="space-y-lg flex-grow">
-                                <button
-                                    class="w-full flex items-center justify-between p-md border border-outline-variant rounded-xl hover:bg-surface-container-low transition-colors group">
-                                    <div class="flex items-center gap-md text-left">
-                                        <div
-                                            class="p-sm bg-surface-container-highest rounded-lg text-text-muted group-hover:text-primary transition-colors">
-                                            <span class="material-symbols-outlined">lock_reset</span>
-                                        </div>
-                                        <div>
-                                            <p class="font-label-md text-label-md text-text-main">Alterar senha</p>
-                                            <p class="text-label-sm text-text-muted">Última alteração há 3 meses</p>
-                                        </div>
-                                    </div>
-                                    <span class="material-symbols-outlined text-text-muted">chevron_right</span>
-                                </button>
-                                <div
-                                    class="flex items-center justify-between p-md border border-outline-variant rounded-xl">
-                                    <div class="flex items-center gap-md">
-                                        <div class="p-sm bg-surface-container-highest rounded-lg text-text-muted">
-                                            <span class="material-symbols-outlined">verified_user</span>
-                                        </div>
-                                        <div>
-                                            <p class="font-label-md text-label-md text-text-main">Autenticação 2FA</p>
-                                            <p class="text-label-sm text-text-muted">Proteção adicional ativada</p>
-                                        </div>
-                                    </div>
-                                    <label class="relative inline-flex items-center cursor-pointer">
-                                        <input checked="" class="sr-only peer" type="checkbox" />
-                                        <div
-                                            class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="mt-xl">
-                                <div
-                                    class="bg-primary-container/30 p-md rounded-xl border border-primary-container flex gap-md items-start">
-                                    <span class="material-symbols-outlined text-primary">info</span>
-                                    <p class="text-label-sm text-on-primary-container-variant leading-relaxed">Sua conta
-                                        está protegida
-                                        seguindo os mais altos padrões de segurança de dados.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Action Footer -->
-                <div class="flex justify-end gap-md pt-lg">
-                    <button
-                        class="px-xl py-md text-text-muted font-label-md hover:text-text-main transition-colors">Cancelar</button>
-                    <button
-                        class="bg-primary hover:bg-primary-container text-white px-xl py-md rounded-xl font-label-md shadow-md active:scale-95 transition-all flex items-center gap-sm"
-                        onclick="handleSave()">
-                        Salvar Alterações
-                    </button>
-                </div>
+    <section class="flex-grow overflow-y-auto bg-background p-lg">
+      <div class="max-w-[1100px] mx-auto space-y-lg">
+        <!-- Section: Perfil -->
+        <div class="bg-surface-white border border-border-subtle rounded-xl p-lg">
+          <div class="flex flex-col md:flex-row items-center gap-xl">
+            <div class="relative group">
+              <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-primary-fixed shadow-sm">
+                <img alt="Foto de perfil" class="w-full h-full object-cover"
+                  src="https://lh3.googleusercontent.com/aida/AP1WRLsLn1ccWMcCrIxukEg3zR8sh-ooIP4KJ5A_ddkwl7CuClwYZTDmy4vV5enZO07_fBwi_V5PLCq7M-HI8la_fvzVU1XpqxgPzHcI1EyQegisbIh8Qv7Dsv4SMi205joOfj7xWSmzyKMZNzmEE6LQSKdyUrn7ssC39LtoGHYAs9Ye_C27z3b4Dmp9OJgqTeKS6M3apnryeSfItZ2XP5er0ETwA64_UwNGLxr2BZ976Ncd2Kqzbg3nfelSiA" />
+              </div>
+              <button
+                class="absolute bottom-0 right-0 bg-primary text-white p-xs rounded-full shadow-lg hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-[18px]">edit</span>
+              </button>
             </div>
-        </section>
-    </main>
-    <!-- Toast Notification (Success) -->
-    <div class="fixed bottom-lg right-lg transform translate-y-20 opacity-0 transition-all duration-300 bg-inverse-surface text-inverse-on-surface px-xl py-md rounded-xl shadow-2xl flex items-center gap-md z-50"
-        id="success-toast">
-        <span class="material-symbols-outlined text-green-400">check_circle</span>
-        <div>
-            <p class="font-label-md text-label-md">Sucesso!</p>
-            <p class="text-label-sm opacity-80">Suas configurações foram atualizadas.</p>
+            <div class="flex-grow text-center md:text-left">
+              <h2 class="font-headline-md text-headline-md text-text-main mb-xs">Perfil do Usuário</h2>
+              <p class="font-body-md text-body-md text-text-muted">Gerencie suas informações básicas e
+                como elas aparecem para os assistentes.</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-lg mt-xl">
+            <div class="space-y-xs">
+              <label class="font-label-md text-label-md text-text-main">Nome</label>
+              <input
+                class="w-full bg-white border border-border-subtle rounded-lg py-md px-md text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                type="text" value="Usuário Premium" />
+            </div>
+            <div class="space-y-xs">
+              <label class="font-label-md text-label-md text-text-main">E-mail</label>
+              <input
+                class="w-full bg-white border border-border-subtle rounded-lg py-md px-md text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                type="email" value="usuario@chatpro.ai" />
+            </div>
+          </div>
         </div>
+        <!-- Section: AI Model Selection (Enhanced) -->
+        <div class="bg-surface-white border border-border-subtle rounded-xl p-lg">
+          <div class="flex items-center justify-between mb-lg">
+            <div class="flex items-center gap-sm">
+              <span class="material-symbols-outlined text-primary"
+                style="font-variation-settings: 'FILL' 1;">model_training</span>
+              <h2 class="font-headline-md text-headline-md text-text-main">Modelo de IA</h2>
+            </div>
+            <span class="text-label-sm text-text-muted">20 modelos disponíveis</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-md">
+            <!-- Model Card 1 (Selected) -->
+            <div
+              class="relative flex flex-col bg-surface-white border-2 border-primary rounded-xl overflow-hidden model-card-glow transition-all hover:scale-[1.02] cursor-pointer">
+              <div class="absolute top-2 right-2 flex gap-1">
+                <span
+                  class="bg-primary text-white text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">Ativo</span>
+              </div>
+              <div class="p-md pb-sm border-b border-border-subtle/50 bg-primary/5">
+                <div class="flex items-start justify-between mb-xs">
+                  <h3 class="font-label-md text-text-main text-[15px]">Gemma 3 27B</h3>
+                  <span
+                    class="bg-surface-container-highest px-1.5 py-0.5 rounded text-[10px] text-text-muted font-bold">Gemma
+                    3</span>
+                </div>
+                <div class="flex items-center gap-sm mt-xs">
+                  <span class="text-[13px] font-bold text-primary">27.01B</span>
+                  <span
+                    class="text-[10px] text-text-muted px-1.5 py-px border border-border-subtle rounded bg-white">GGUF
+                    • Q4_K_M</span>
+                </div>
+              </div>
+              <div class="p-md space-y-md flex-grow flex flex-col justify-between">
+                <div class="space-y-sm">
+                  <div class="flex flex-wrap gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-text-muted"
+                      title="Texto">text_snippet</span>
+                    <span class="material-symbols-outlined text-[16px] text-text-muted"
+                      title="Código">code</span>
+                    <span class="material-symbols-outlined text-[16px] text-text-muted"
+                      title="Lógica">psychology</span>
+                  </div>
+                  <div class="flex items-center gap-xs text-[11px] text-text-muted">
+                    <span class="material-symbols-outlined text-[14px]">schedule</span>
+                    <span class="">Modificado em 15 de Junho, 2024</span>
+                  </div>
+                </div>
+                <div class="flex justify-end items-center pt-sm">
+                  <div class="flex items-center gap-xs text-primary font-bold text-label-sm"><span
+                      class="material-symbols-outlined text-[20px]"
+                      style="font-variation-settings: 'FILL' 1;">check_circle</span><span
+                      class="">Ativo</span></div>
+                </div>
+              </div>
+            </div>
+            <!-- Model Card 2 -->
+            <div
+              class="relative flex flex-col bg-surface-white border border-border-subtle rounded-xl overflow-hidden transition-all hover:border-primary/50 hover:shadow-md cursor-pointer group">
+              <div class="p-md pb-sm border-b border-border-subtle/30">
+                <div class="flex items-start justify-between mb-xs">
+                  <h3 class="font-label-md text-text-main text-[15px]">Llama 3.1 70B</h3>
+                  <span
+                    class="bg-surface-container-highest px-1.5 py-0.5 rounded text-[10px] text-text-muted font-bold">Llama
+                    3</span>
+                </div>
+                <div class="flex items-center gap-sm mt-xs">
+                  <span class="text-[13px] font-bold text-text-main">70.00B</span>
+                  <span
+                    class="text-[10px] text-text-muted px-1.5 py-px border border-border-subtle rounded">GGUF
+                    • Q8_0</span>
+                </div>
+              </div>
+              <div class="p-md space-y-md flex-grow flex flex-col justify-between">
+                <div class="space-y-sm">
+                  <div class="flex flex-wrap gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-text-muted"
+                      title="Texto">text_snippet</span>
+                    <span class="material-symbols-outlined text-[16px] text-text-muted"
+                      title="Raciocínio">analytics</span>
+                  </div>
+                  <div class="flex items-center gap-xs text-[11px] text-text-muted">
+                    <span class="material-symbols-outlined text-[14px]">schedule</span>
+                    <span class="">Modificado em 10 de Julho, 2024</span>
+                  </div>
+                </div>
+                <div class="flex justify-end items-center pt-sm"><button
+                    class="p-xs rounded-full border border-outline-variant text-text-muted hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center"
+                    title="Selecionar modelo"><span
+                      class="material-symbols-outlined text-[20px]">radio_button_unchecked</span></button>
+                </div>
+              </div>
+            </div>
+            <!-- Model Card 3 -->
+            <div
+              class="relative flex flex-col bg-surface-white border border-border-subtle rounded-xl overflow-hidden transition-all hover:border-primary/50 hover:shadow-md cursor-pointer group">
+              <div class="p-md pb-sm border-b border-border-subtle/30">
+                <div class="flex items-start justify-between mb-xs">
+                  <h3 class="font-label-md text-text-main text-[15px]">Claude 3.5 Sonnet</h3>
+                  <span
+                    class="bg-surface-container-highest px-1.5 py-0.5 rounded text-[10px] text-text-muted font-bold">Claude</span>
+                </div>
+                <div class="flex items-center gap-sm mt-xs">
+                  <span class="text-[13px] font-bold text-text-main">Proprietário</span>
+                  <span
+                    class="text-[10px] text-text-muted px-1.5 py-px border border-border-subtle rounded">API</span>
+                </div>
+              </div>
+              <div class="p-md space-y-md flex-grow flex flex-col justify-between">
+                <div class="space-y-sm">
+                  <div class="flex flex-wrap gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-text-muted"
+                      title="Visão">visibility</span>
+                    <span class="material-symbols-outlined text-[16px] text-text-muted"
+                      title="Código">code</span>
+                  </div>
+                  <div class="flex items-center gap-xs text-[11px] text-text-muted">
+                    <span class="material-symbols-outlined text-[14px]">schedule</span>
+                    <span class="">Modificado em 20 de Junho, 2024</span>
+                  </div>
+                </div>
+                <div class="flex justify-end items-center pt-sm"><button
+                    class="p-xs rounded-full border border-outline-variant text-text-muted hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center"
+                    title="Selecionar modelo"><span
+                      class="material-symbols-outlined text-[20px]">radio_button_unchecked</span></button>
+                </div>
+              </div>
+            </div>
+            <!-- Model Card 4 -->
+            <div
+              class="relative flex flex-col bg-surface-white border border-border-subtle rounded-xl overflow-hidden transition-all hover:border-primary/50 hover:shadow-md cursor-pointer group">
+              <div class="p-md pb-sm border-b border-border-subtle/30">
+                <div class="flex items-start justify-between mb-xs">
+                  <h3 class="font-label-md text-text-main text-[15px]">GPT-4o mini</h3>
+                  <span
+                    class="bg-surface-container-highest px-1.5 py-0.5 rounded text-[10px] text-text-muted font-bold">GPT</span>
+                </div>
+                <div class="flex items-center gap-sm mt-xs">
+                  <span class="text-[13px] font-bold text-text-main">~8B</span>
+                  <span
+                    class="text-[10px] text-text-muted px-1.5 py-px border border-border-subtle rounded">API</span>
+                </div>
+              </div>
+              <div class="p-md space-y-md flex-grow flex flex-col justify-between">
+                <div class="space-y-sm">
+                  <div class="flex flex-wrap gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-text-muted"
+                      title="Velocidade">speed</span>
+                    <span class="material-symbols-outlined text-[16px] text-text-muted"
+                      title="Multimodal">perm_media</span>
+                  </div>
+                  <div class="flex items-center gap-xs text-[11px] text-text-muted">
+                    <span class="material-symbols-outlined text-[14px]">schedule</span>
+                    <span class="">Modificado em 18 de Julho, 2024</span>
+                  </div>
+                </div>
+                <div class="flex justify-end items-center pt-sm"><button
+                    class="p-xs rounded-full border border-outline-variant text-text-muted hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center"
+                    title="Selecionar modelo"><span
+                      class="material-symbols-outlined text-[20px]">radio_button_unchecked</span></button>
+                </div>
+              </div>
+            </div>
+            <!-- ... Outros modelos seguiriam o mesmo padrão rico ... -->
+          </div>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+          <!-- Section: Configurações de Chat -->
+          <div class="lg:col-span-12">
+            <div class="bg-surface-white border border-border-subtle rounded-xl p-lg h-full">
+              <div class="flex items-center gap-sm mb-lg">
+                <span class="material-symbols-outlined text-primary"
+                  style="font-variation-settings: 'FILL' 1;">psychology</span>
+                <h2 class="font-headline-md text-headline-md text-text-main">Configurações de Chat</h2>
+              </div>
+              <div class="space-y-2xl">
+                <!-- Temperature Control -->
+                <div
+                  class="space-y-md bg-surface-container-low p-md rounded-xl border border-border-subtle/50">
+                  <div class="flex justify-between items-center">
+                    <label class="font-label-md text-label-md text-text-main">Temperatura</label>
+                    <span
+                      class="bg-primary-fixed text-on-primary-fixed-variant px-sm py-xs rounded text-label-sm"
+                      id="temp-value">0.7</span>
+                  </div>
+                  <input
+                    class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary"
+                    id="temp-range" max="1" min="0" step="0.1" type="range" value="0.7" />
+                  <div class="flex justify-between text-label-sm text-text-muted">
+                    <span class="">Preciso (0.0)</span>
+                    <span class="">Criativo (1.0)</span>
+                  </div>
+                  <p class="text-label-sm text-text-muted mt-sm italic">Define a aleatoriedade das
+                    respostas. Valores baixos são mais determinísticos.</p>
+                </div>
+                <div
+                  class="space-y-md bg-surface-container-low p-md rounded-xl border border-border-subtle/50 mt-md">
+                  <div class="flex justify-between items-center">
+                    <label class="font-label-md text-label-md text-text-main">Score Mínimo do
+                      Contexto</label>
+                    <span
+                      class="bg-primary-fixed text-on-primary-fixed-variant px-sm py-xs rounded text-label-sm">75</span>
+                  </div>
+                  <input
+                    class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary"
+                    max="100" min="1" step="1" type="range" value="75" />
+                  <div class="flex justify-between text-label-sm text-text-muted">
+                    <span class="">Mínimo (1)</span>
+                    <span class="">Máximo (100)</span>
+                  </div>
+                  <p class="text-label-sm text-text-muted mt-sm italic">Define o nível mínimo de
+                    relevância para que um fragmento de contexto seja utilizado na resposta.</p>
+                </div>
+                <!-- Category Selection -->
+                <div class="space-y-md">
+                  <label class="font-label-md text-label-md text-text-main">Categoria Padrão</label>
+                  <div class="relative">
+                    <select
+                      class="w-full appearance-none bg-white border border-border-subtle rounded-lg py-md px-md pr-xl text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                      <option value="coding">Desenvolvimento de Software</option>
+                      <option selected="" value="creative">Escrita Criativa</option>
+                      <option value="academic">Pesquisa Acadêmica</option>
+                      <option value="business">Análise de Negócios</option>
+                    </select>
+                    <span
+                      class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-text-muted">expand_more</span>
+                  </div>
+                </div>
+                <!-- Modo Thinking Toggle -->
+                <div
+                  class="flex items-center justify-between p-md bg-surface-container-low rounded-xl border border-border-subtle/50 mt-md">
+                  <div class="flex items-center gap-md">
+                    <div class="p-sm bg-surface-container-highest rounded-lg text-text-muted">
+                      <span class="material-symbols-outlined">psychology_alt</span>
+                    </div>
+                    <div>
+                      <p class="font-label-md text-label-md text-text-main">Modo Thinking</p>
+                      <p class="text-label-sm text-text-muted">Habilita o processo de raciocínio
+                        detalhado da IA</p>
+                    </div>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input class="sr-only peer" type="checkbox" />
+                    <div
+                      class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                    </div>
+                  </label>
+                </div>
+                <!-- Quantidade de Contexto Slider -->
+                <div
+                  class="space-y-md bg-surface-container-low p-md rounded-xl border border-border-subtle/50 mt-md">
+                  <div class="flex justify-between items-center">
+                    <label class="font-label-md text-label-md text-text-main">Quantidade de
+                      Contexto</label>
+                    <span
+                      class="bg-primary-fixed text-on-primary-fixed-variant px-sm py-xs rounded text-label-sm">10</span>
+                  </div>
+                  <input
+                    class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary"
+                    max="50" min="1" step="1" type="range" value="10" />
+                  <div class="flex justify-between text-label-sm text-text-muted">
+                    <span>1 doc/msg</span>
+                    <span>50 docs/msgs</span>
+                  </div>
+                  <p class="text-label-sm text-text-muted mt-sm italic">Define o número máximo de
+                    documentos ou mensagens recuperadas para compor a resposta.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Section: Segurança -->
+        </div>
+        <!-- Action Footer -->
+        <div class="flex justify-end gap-md pt-lg">
+          <button
+            class="px-xl py-md text-text-muted font-label-md hover:text-text-main transition-colors">Cancelar</button>
+          <button
+            class="bg-primary hover:bg-primary-container text-white px-xl py-md rounded-xl font-label-md shadow-md active:scale-95 transition-all flex items-center gap-sm"
+            onclick="handleSave()"><span class="material-symbols-outlined">save</span><span>Salvar
+              Alterações</span></button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Toast Notification (Success) -->
+  <div class="fixed bottom-lg right-lg transform translate-y-20 opacity-0 transition-all duration-300 bg-inverse-surface text-inverse-on-surface px-xl py-md rounded-xl shadow-2xl flex items-center gap-md z-50"
+    id="success-toast">
+    <span class="material-symbols-outlined text-green-400">check_circle</span>
+    <div>
+      <p class="font-label-md text-label-md">Sucesso!</p>
+      <p class="text-label-sm opacity-80">Suas configurações foram atualizadas.</p>
     </div>
-    <script>
-        // Temperature range display interaction
-        const tempRange = document.getElementById('temp-range');
-        const tempValue = document.getElementById('temp-value');
+  </div>
+  <script>
+    // Temperature range display interaction
+    const tempRange = document.getElementById('temp-range');
+    const tempValue = document.getElementById('temp-value');
 
-        tempRange.addEventListener('input', (e) => {
-            tempValue.textContent = e.target.value;
-        });
+    tempRange.addEventListener('input', (e) => {
+      tempValue.textContent = e.target.value;
+    });
 
-        // Save simulation
-        function handleSave() {
-            const toast = document.getElementById('success-toast');
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
+    // Save simulation
+    function handleSave() {
+      const toast = document.getElementById('success-toast');
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
 
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-                toast.classList.remove('translate-y-0', 'opacity-100');
-            }, 3000);
-        }
-    </script>
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3000);
+    }
+  </script>
 </body>
+
 </html>

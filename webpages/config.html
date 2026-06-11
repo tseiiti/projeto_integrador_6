@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Configurações-AI Chat</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <script src="/script/tailwind.js"></script>
+    <style type="text/tailwindcss">
+      @theme {
+        --color-primary: #4F46E5;
+        --color-primary-dim: #4338CA;
+        --color-primary-container: #E0E7FF;
+        --color-on-primary: #FFFFFF;
+        --color-on-primary-container: #1E1B4B;
+        --color-secondary: #6366F1;
+        --color-secondary-container: #EEF2FF;
+        --color-on-secondary-container: #312E81;
+        --color-surface: #F9FAFB;
+        --color-surface-dim: #F3F4F6;
+        --color-surface-bright: #FFFFFF;
+        --color-surface-container-lowest: #FFFFFF;
+        --color-surface-container-low: #F9FAFB;
+        --color-surface-container: #F3F4F6;
+        --color-surface-container-high: #E5E7EB;
+        --color-surface-container-highest: #D1D5DB;
+        --color-on-surface: #111827;
+        --color-on-surface-variant: #4B5563;
+        --color-outline: #9CA3AF;
+        --color-outline-variant: #E5E7EB;
+        --color-background: #F9FAFB;
+        --color-on-background: #111827;
+        
+        --font-family-headline: Inter, sans-serif;
+        --font-family-body: Inter, sans-serif;
+        --font-family-label: Inter, sans-serif;
+
+        --rounded: 0.125rem;
+        --rounded-lg: 0.25rem;
+        --rounded-xl: 0.5rem;
+        --rounded-full: 0.75rem;
+        --spacing-container-max: 1280px;
+        --spacing-sm: 8px;
+        --spacing-xl: 32px;
+        --spacing-md: 16px;
+        --spacing-xs: 4px;
+        --spacing-base: 4px;
+        --spacing-2xl: 48px;
+        --spacing-lg: 24px;
+        --spacing-3xl: 64px;
+        --spacing-gutter: 24px;
+
+        --text-body-md: 14px;
+        --text-body-md--line-height: 20px;
+        --text-body-md--font-weight: 400;
+        --text-label-md: 14px;
+        --text-label-md-line-height: 20px;
+        --text-label-md-font-weight: 500;
+        --text-headline-lg: 30px;
+        --text-headline-lg--line-height: 36px;
+        --text-headline-lg--letter-spacing: -0.02em;
+        --text-headline-lg--font-weight: 700;
+        --text-headline-md: 20px;
+        --text-headline-md--line-height: 28px;
+        --text-headline-md--letter-spacing: -0.01em;
+        --text-headline-md--font-weight: 600;
+        --text-body-lg: 16px;
+        --text-body-lg--line-height: 24px;
+        --text-body-lg--font-weight: 400;
+        --text-label-sm: 12px;
+        --text-label-sm--line-height: 16px;
+        --text-label-sm--letter-spacing: 0.05em;
+        --text-label-sm--font-weight: 600;
+        --text-headline-lg-mobile: 24px;
+        --text-headline-lg-mobile--line-height: 32px;
+        --text-headline-lg-mobile--letter-spacing: -0.02em;
+        --text-headline-lg-mobile--font-weight: 700;
+      }
+    </style>
+
+    <link href="/style/inter_manrope.css" rel="stylesheet">
+    <link href="/style/material_symbols_outlined.css" rel="stylesheet">
+    <link href="/style/config.css" rel="stylesheet">
+    <script src="/script/base.js"></script>
+    <script src="/script/config.js"></script>
+</head>
+
+<body class="font-body overflow-hidden">
+    <!-- TopNavBar Shell -->
+    <header class="fixed top-0 right-0 left-0 h-16 z-40 bg-white/80 dark:bg-white/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-8 w-auto">
+        <div class="flex items-center gap-8 flex-1 min-w-0">
+            <a href="/">
+                <h2 class="text-lg font-black tracking-tighter text-on-secondary-container shrink-0">
+                    Chat IA
+                </h2>
+            </a>
+            <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative py-1 custom-scrollbar">
+                <div class="flex items-center gap-6 whitespace-nowrap font-['Inter'] text-sm font-semibold px-2 uppercase">
+                    <p class="text-on-surface-variant">
+                        Configurações
+                    </p>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="ml-0 mt-16 h-[calc(100dvh-64px)] relative flex flex-col glow-accent">
+        <section class="flex-grow overflow-y-auto bg-background p-lg max-w-[1440px] mx-auto">
+            <div class="space-y-lg">
+
+                <!-- Section: AI Model Selection (Enhanced) -->
+                <div class="bg-white border border-outline-variant rounded-xl p-lg">
+                    <div class="flex items-center justify-between mb-lg">
+                        <div class="flex items-center gap-sm">
+                            <span class="material-symbols-outlined text-primary"
+                                style="font-variation-settings: 'FILL' 1;">model_training</span>
+                            <h2 class="font-headline-md text-headline-md text-text-main">Modelo de IA</h2>
+                        </div>
+                        <span class="text-label-sm text-text-muted disp"></span>
+                    </div>
+                    
+                    <!-- Model Cards -->
+                    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-md models"></div>
+                </div>
+
+                <!-- Section: Configurações de Chat -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+                    <div class="lg:col-span-7">
+                        <div class="bg-white border border-outline-variant rounded-xl p-lg h-full">
+                            <div class="flex items-center gap-sm mb-lg">
+                                <span class="material-symbols-outlined text-primary"
+                                    style="font-variation-settings: 'FILL' 1;">psychology</span>
+                                <h2 class="font-headline-md text-headline-md text-text-main">Configurações de Chat</h2>
+                            </div>
+                            <div class="space-y-2xl">
+                                <!-- Temperature Control -->
+                                <div class="space-y-md">
+                                    <div class="flex justify-between items-center">
+                                        <label class="font-label-md text-label-md text-text-main">Temperatura</label>
+                                        <span
+                                            class="bg-primary-container text-on-primary-container-variant px-sm py-xs rounded text-label-sm"
+                                            id="temp-value">0.7</span>
+                                    </div>
+                                    <input
+                                        class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary"
+                                        id="temp-range" max="1" min="0" step="0.1" type="range" value="0.7" />
+                                    <div class="flex justify-between text-label-sm text-text-muted">
+                                        <span>Preciso (0.0)</span>
+                                        <span>Criativo (1.0)</span>
+                                    </div>
+                                    <p class="text-label-sm text-text-muted mt-sm italic">Define a aleatoriedade das
+                                        respostas. Valores
+                                        baixos são mais determinísticos.</p>
+                                </div>
+                                <!-- Category Selection -->
+                                <div class="space-y-md">
+                                    <label class="font-label-md text-label-md text-text-main">Categoria Padrão</label>
+                                    <div class="relative">
+                                        <select
+                                            class="w-full appearance-none bg-white border border-outline-variant rounded-lg py-md px-md pr-xl text-body-md focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                                            <option value="coding">Desenvolvimento de Software</option>
+                                            <option selected="" value="creative">Escrita Criativa</option>
+                                            <option value="academic">Pesquisa Acadêmica</option>
+                                            <option value="business">Análise de Negócios</option>
+                                        </select>
+                                        <span
+                                            class="material-symbols-outlined absolute right-md top-1/2 -translate-y-1/2 pointer-events-none text-text-muted">expand_more</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Section: Segurança -->
+                    <div class="lg:col-span-5">
+                        <div class="bg-white border border-outline-variant rounded-xl p-lg h-full flex flex-col">
+                            <div class="flex items-center gap-sm mb-lg">
+                                <span class="material-symbols-outlined text-primary"
+                                    style="font-variation-settings: 'FILL' 1;">security</span>
+                                <h2 class="font-headline-md text-headline-md text-text-main">Segurança</h2>
+                            </div>
+                            <div class="space-y-lg flex-grow">
+                                <button
+                                    class="w-full flex items-center justify-between p-md border border-outline-variant rounded-xl hover:bg-surface-container-low transition-colors group">
+                                    <div class="flex items-center gap-md text-left">
+                                        <div
+                                            class="p-sm bg-surface-container-highest rounded-lg text-text-muted group-hover:text-primary transition-colors">
+                                            <span class="material-symbols-outlined">lock_reset</span>
+                                        </div>
+                                        <div>
+                                            <p class="font-label-md text-label-md text-text-main">Alterar senha</p>
+                                            <p class="text-label-sm text-text-muted">Última alteração há 3 meses</p>
+                                        </div>
+                                    </div>
+                                    <span class="material-symbols-outlined text-text-muted">chevron_right</span>
+                                </button>
+                                <div
+                                    class="flex items-center justify-between p-md border border-outline-variant rounded-xl">
+                                    <div class="flex items-center gap-md">
+                                        <div class="p-sm bg-surface-container-highest rounded-lg text-text-muted">
+                                            <span class="material-symbols-outlined">verified_user</span>
+                                        </div>
+                                        <div>
+                                            <p class="font-label-md text-label-md text-text-main">Autenticação 2FA</p>
+                                            <p class="text-label-sm text-text-muted">Proteção adicional ativada</p>
+                                        </div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input checked="" class="sr-only peer" type="checkbox" />
+                                        <div
+                                            class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-xl">
+                                <div
+                                    class="bg-primary-container/30 p-md rounded-xl border border-primary-container flex gap-md items-start">
+                                    <span class="material-symbols-outlined text-primary">info</span>
+                                    <p class="text-label-sm text-on-primary-container-variant leading-relaxed">Sua conta
+                                        está protegida
+                                        seguindo os mais altos padrões de segurança de dados.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Toast Notification (Success) -->
+    <div class="fixed bottom-lg right-lg transform translate-y-20 opacity-0 transition-all duration-300 bg-inverse-surface text-inverse-on-surface px-xl py-md rounded-xl shadow-2xl flex items-center gap-md z-50"
+        id="success-toast">
+        <span class="material-symbols-outlined text-green-400">check_circle</span>
+        <div>
+            <p class="font-label-md text-label-md">Sucesso!</p>
+            <p class="text-label-sm opacity-80">Suas configurações foram atualizadas.</p>
+        </div>
+    </div>
+    <script>
+        // Temperature range display interaction
+        const tempRange = document.getElementById('temp-range');
+        const tempValue = document.getElementById('temp-value');
+
+        tempRange.addEventListener('input', (e) => {
+            tempValue.textContent = e.target.value;
+        });
+
+        // Save simulation
+        function handleSave() {
+            const toast = document.getElementById('success-toast');
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

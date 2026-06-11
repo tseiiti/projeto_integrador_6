@@ -8,31 +8,6 @@
 
     <script src="/script/tailwind.js"></script>
     <style type="text/tailwindcss">
-        /* x {
-
-        --color-primary: #4F46E5;
-        --color-primary-dim: #4338CA;
-        --color-primary-container: #E0E7FF;
-        --color-on-primary: #FFFFFF;
-        --color-on-primary-container: #1E1B4B;
-        --color-secondary: #6366F1;
-        --color-secondary-container: #EEF2FF;
-        --color-on-secondary-container: #312E81;
-        --color-surface: #F9FAFB;
-        --color-surface-dim: #F3F4F6;
-        --color-surface-bright: #FFFFFF;
-        --color-surface-container-lowest: #FFFFFF;
-        --color-surface-container-low: #F9FAFB;
-        --color-surface-container: #F3F4F6;
-        --color-surface-container-high: #E5E7EB;
-        --color-surface-container-highest: #D1D5DB;
-        --color-on-surface: #111827;
-        --color-on-surface-variant: #4B5563;
-        --color-outline: #9CA3AF;
-        --color-outline-variant: #E5E7EB;
-        --color-background: #F9FAFB;
-        --color-on-background: #111827;
-        } */
       @theme {
         --color-primary: #4F46E5;
         --color-primary-dim: #4338CA;
@@ -75,6 +50,32 @@
         --spacing-lg: 24px;
         --spacing-3xl: 64px;
         --spacing-gutter: 24px;
+
+        --text-body-md: 14px;
+        --text-body-md--line-height: 20px;
+        --text-body-md--font-weight: 400;
+        --text-label-md: 14px;
+        --text-label-md--line-height: 20px;
+        --text-label-md--font-weight: 500;
+        --text-headline-lg: 30px;
+        --text-headline-lg--line-height: 36px;
+        --text-headline-lg--letter-spacing: -0.02em;
+        --text-headline-lg--font-weight: 700;
+        --text-headline-md: 20px;
+        --text-headline-md--line-height: 28px;
+        --text-headline-md--letter-spacing: -0.01em;
+        --text-headline-md--font-weight: 600;
+        --text-body-lg: 16px;
+        --text-body-lg--line-height: 24px;
+        --text-body-lg--font-weight: 400;
+        --text-label-sm: 12px;
+        --text-label-sm--line-height: 16px;
+        --text-label-sm--letter-spacing: 0.05em;
+        --text-label-sm--font-weight: 600;
+        --text-headline-lg-mobile: 24px;
+        --text-headline-lg-mobile--line-height: 32px;
+        --text-headline-lg-mobile--letter-spacing: -0.02em;
+        --text-headline-lg-mobile--font-weight: 700;
       }
     </style>
     <link href="/style/inter_manrope.css" rel="stylesheet">
@@ -86,27 +87,33 @@
 </head>
 <body class="font-body overflow-hidden">
     <!-- TopNavBar Shell -->
-    <header class="fixed top-0 right-0 left-0 h-16 z-40 bg-white/80 dark:bg-white/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-8 w-auto">
+    <header class="fixed top-0 right-0 left-0 h-16 z-40 bg-white/80 backdrop-blur-md border-b border-outline-variant items-center">
+        <section class="max-w-[1440px] mx-auto mt-1.5 flex justify-between items-center px-8">
         <div class="flex items-center gap-8 flex-1 min-w-0">
             <a href="/">
                 <h2 class="text-lg font-black tracking-tighter text-on-secondary-container shrink-0">
                     Chat IA
                 </h2>
             </a>
-            <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative pt-2 h-12 custom-scrollbar">
-                <div class="flex items-center gap-6 whitespace-nowrap font-['Inter'] text-sm font-semibold px-2 uppercase models"></div>
+            <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative pt-1 h-12 custom-scrollbar">
+                <div class="flex items-center gap-6 whitespace-nowrap font-['Inter'] text-sm font-semibold px-2 uppercase">
+                    <p class="text-on-surface-variant model">
+                    </p>
+                </div>
             </nav>
         </div>
         <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-violet-600 shadow-sm border border-slate-100 shrink-0 ml-4">
             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-user" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="M6.376 18.91a6 6 0 0 1 11.249.003"></path><circle cx="12" cy="11" r="4"></circle></svg>
         </div>
+        </section>
     </header>
 
     <!-- Main Content Canvas -->
     <main class="ml-0 mt-16 h-[calc(100dvh-64px)] relative flex flex-col glow-accent">
+        <section class="flex-grow overflow-y-auto bg-background p-lg max-w-[1440px] mx-auto">
 
         <!-- Message Stream Area -->
-        <div class="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-8 lg:px-24 space-y-8">
+        <div class="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-8 space-y-8">
             <div class="messages"></div>
             <div class="messages-end"></div>
         </div>
@@ -174,6 +181,7 @@
                 </div>
             </div>
         </div>
+        </section>
     </main>
 
     <!-- Floating Background Decorative Elements -->

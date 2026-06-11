@@ -27,62 +27,62 @@ const resize_select = () => {
   document.body.removeChild(tempDiv);
 }
 
-// seleção, lista e detalhes informativos de models de ia
-const select_model = (cur_mod) => {
-  const get_p = (label, text, tclass = 'text-gray-900') => {
-    return `
-      <p class="p-1">
-        <span class="text-gray-500">${label}:</span><br>
-        <span class="${tclass}">${text}</span>
-      </p>`;
-  }
+// // seleção, lista e detalhes informativos de models de ia
+// const select_model = (cur_mod) => {
+//   const get_p = (label, text, tclass = 'text-gray-900') => {
+//     return `
+//       <p class="p-1">
+//         <span class="text-gray-500">${label}:</span><br>
+//         <span class="${tclass}">${text}</span>
+//       </p>`;
+//   }
 
-  set(KEYS.CURRENT_MODEL, cur_mod);
+//   set(KEYS.CURRENT_MODEL, cur_mod);
 
-  let cm = MODELS.find(e => e.model == cur_mod);
-  let html = `
-    <h4 class="font-semibold mb-2 text-[12px] text-gray-800 uppercase">${cm.name}</h4>
-    <div class="text-[10px]">
-      ${get_p('tokens enviados', '0', 'text-green-600 up_tokens')}
-      ${get_p('tokens recebidos', '0', 'text-green-600 dw_tokens')}
-      ${get_p('family', cm.details.family)}
-      ${get_p('modified_at', (new Date(cm.modified_at)).toLocaleString())}
-      ${get_p('size', (cm.size / 1024 ** 2).toFixed(2) + 'MB')}
-      ${get_p('parameter_size', cm.details.parameter_size)}
-      ${get_p('quantization_level', cm.details.quantization_level)}
-      <!-- ${get_p('digest', cm.digest, 'text-gray-600')} -->
-      ${get_p('format', cm.details.format, 'text-gray-600')}
-      ${get_p('parent_model', cm.details.parent_model, 'text-gray-600')}
-      <p class="p-1 text-gray-400 italic">
-        - "NOVO CHAT" permite limpar a conversa<br>
-        <span class="ml-2">e todo histórico será excluído.</span>
-      </p>
-      <p class="p-1 text-gray-400 italic">
-        - "SCORE" define o valor de precisão do contexto<br>
-        <span class="ml-2">entre 1 a 100, sendo os valores mais altos</span><br>
-        <span class="ml-2">serão os mais precisos, porém</span><br>
-        <span class="ml-2">difíceis de corresponder a questão.</span>
-      </p>
-    </div>
-  `;
-  qs('.model_tooltip').innerHTML = html;
-  qs('.model').innerHTML = `${cm.name}`;
+//   let cm = MODELS.find(e => e.model == cur_mod);
+//   let html = `
+//     <h4 class="font-semibold mb-2 text-[12px] text-gray-800 uppercase">${cm.name}</h4>
+//     <div class="text-[10px]">
+//       ${get_p('tokens enviados', '0', 'text-green-600 up_tokens')}
+//       ${get_p('tokens recebidos', '0', 'text-green-600 dw_tokens')}
+//       ${get_p('family', cm.details.family)}
+//       ${get_p('modified_at', (new Date(cm.modified_at)).toLocaleString())}
+//       ${get_p('size', (cm.size / 1024 ** 2).toFixed(2) + 'MB')}
+//       ${get_p('parameter_size', cm.details.parameter_size)}
+//       ${get_p('quantization_level', cm.details.quantization_level)}
+//       <!-- ${get_p('digest', cm.digest, 'text-gray-600')} -->
+//       ${get_p('format', cm.details.format, 'text-gray-600')}
+//       ${get_p('parent_model', cm.details.parent_model, 'text-gray-600')}
+//       <p class="p-1 text-gray-400 italic">
+//         - "NOVO CHAT" permite limpar a conversa<br>
+//         <span class="ml-2">e todo histórico será excluído.</span>
+//       </p>
+//       <p class="p-1 text-gray-400 italic">
+//         - "SCORE" define o valor de precisão do contexto<br>
+//         <span class="ml-2">entre 1 a 100, sendo os valores mais altos</span><br>
+//         <span class="ml-2">serão os mais precisos, porém</span><br>
+//         <span class="ml-2">difíceis de corresponder a questão.</span>
+//       </p>
+//     </div>
+//   `;
+//   qs('.model_tooltip').innerHTML = html;
+//   qs('.model').innerHTML = `${cm.name}`;
 
-  html = '';
-  for (let model of MODELS) {
-    let aux;
-    if (model.model == cur_mod) aux = 'text-primary border-b-2 border-primary pb-1';
-    else aux = 'text-on-surface-variant hover:text-on-surface transition-opacity';
+//   // html = '';
+//   // for (let model of MODELS) {
+//   //   let aux;
+//   //   if (model.model == cur_mod) aux = 'text-primary border-b-2 border-primary pb-1';
+//   //   else aux = 'text-on-surface-variant hover:text-on-surface transition-opacity';
 
-    html += `
-      <a class="${aux} shrink-0"
-        href="javascript: select_model('${model.model}')">
-        ${model.name}
-      </a>`;
-  }
-  qs('.models').innerHTML = html;
-  qs('.prompt').focus();
-}
+//   //   html += `
+//   //     <a class="${aux} shrink-0"
+//   //       href="javascript: select_model('${model.model}')">
+//   //       ${model.name}
+//   //     </a>`;
+//   // }
+//   // qs('.models').innerHTML = html;
+//   qs('.prompt').focus();
+// }
 
 // insere mensagem do usuário
 const insert_user_message = (msg) => {
@@ -461,15 +461,16 @@ const load = async () => {
   let cur_mod = get(
     KEYS.CURRENT_MODEL,
     MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
-  select_model(cur_mod);
+  // select_model(cur_mod);
+  qs('.model').innerHTML = cur_mod;
 
   qs('.messages-end').scrollIntoView({
     behavior: 'smooth',
   });
 
   let tk = get(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
-  qs('.up_tokens').innerHTML = `${tk.up_tokens} TOKENS ENVIADO`;
-  qs('.dw_tokens').innerHTML = `${tk.dw_tokens} TOKENS RECEBIDOS`;
+  // qs('.up_tokens').innerHTML = `${tk.up_tokens} TOKENS ENVIADO`;
+  // qs('.dw_tokens').innerHTML = `${tk.dw_tokens} TOKENS RECEBIDOS`;
 }
 
 
