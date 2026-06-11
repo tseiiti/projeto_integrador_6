@@ -8,6 +8,31 @@
 
     <script src="/script/tailwind.js"></script>
     <style type="text/tailwindcss">
+        /* x {
+
+        --color-primary: #4F46E5;
+        --color-primary-dim: #4338CA;
+        --color-primary-container: #E0E7FF;
+        --color-on-primary: #FFFFFF;
+        --color-on-primary-container: #1E1B4B;
+        --color-secondary: #6366F1;
+        --color-secondary-container: #EEF2FF;
+        --color-on-secondary-container: #312E81;
+        --color-surface: #F9FAFB;
+        --color-surface-dim: #F3F4F6;
+        --color-surface-bright: #FFFFFF;
+        --color-surface-container-lowest: #FFFFFF;
+        --color-surface-container-low: #F9FAFB;
+        --color-surface-container: #F3F4F6;
+        --color-surface-container-high: #E5E7EB;
+        --color-surface-container-highest: #D1D5DB;
+        --color-on-surface: #111827;
+        --color-on-surface-variant: #4B5563;
+        --color-outline: #9CA3AF;
+        --color-outline-variant: #E5E7EB;
+        --color-background: #F9FAFB;
+        --color-on-background: #111827;
+        } */
       @theme {
         --color-primary: #4F46E5;
         --color-primary-dim: #4338CA;
@@ -31,9 +56,25 @@
         --color-outline-variant: #E5E7EB;
         --color-background: #F9FAFB;
         --color-on-background: #111827;
-        --font-family-headline: Manrope, sans-serif;
+        
+        --font-family-headline: Inter, sans-serif;
         --font-family-body: Inter, sans-serif;
         --font-family-label: Inter, sans-serif;
+
+        --rounded: 0.125rem;
+        --rounded-lg: 0.25rem;
+        --rounded-xl: 0.5rem;
+        --rounded-full: 0.75rem;
+        --spacing-container-max: 1280px;
+        --spacing-sm: 8px;
+        --spacing-xl: 32px;
+        --spacing-md: 16px;
+        --spacing-xs: 4px;
+        --spacing-base: 4px;
+        --spacing-2xl: 48px;
+        --spacing-lg: 24px;
+        --spacing-3xl: 64px;
+        --spacing-gutter: 24px;
       }
     </style>
     <link href="/style/inter_manrope.css" rel="stylesheet">
@@ -47,9 +88,11 @@
     <!-- TopNavBar Shell -->
     <header class="fixed top-0 right-0 left-0 h-16 z-40 bg-white/80 dark:bg-white/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-8 w-auto">
         <div class="flex items-center gap-8 flex-1 min-w-0">
-            <h2 class="text-lg font-black tracking-tighter text-on-secondary-container shrink-0">
-                Chat IA
-            </h2>
+            <a href="/">
+                <h2 class="text-lg font-black tracking-tighter text-on-secondary-container shrink-0">
+                    Chat IA
+                </h2>
+            </a>
             <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative pt-2 h-12 custom-scrollbar">
                 <div class="flex items-center gap-6 whitespace-nowrap font-['Inter'] text-sm font-semibold px-2 uppercase models"></div>
             </nav>
