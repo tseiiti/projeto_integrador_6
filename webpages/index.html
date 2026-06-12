@@ -36,10 +36,10 @@
         --font-family-body: Inter, sans-serif;
         --font-family-label: Inter, sans-serif;
 
-        --rounded: 0.125rem;
-        --rounded-lg: 0.25rem;
-        --rounded-xl: 0.5rem;
-        --rounded-full: 0.75rem;
+        --rounded: 0.25rem;
+        --rounded-lg: 0.5rem;
+        --rounded-xl: 0.75rem;
+        --rounded-full: 9999px;
         --spacing-container-max: 1280px;
         --spacing-sm: 8px;
         --spacing-xl: 32px;
@@ -87,111 +87,92 @@
 </head>
 <body class="font-body overflow-hidden">
     <!-- TopNavBar Shell -->
-    <header class="fixed top-0 right-0 left-0 h-16 z-40 bg-white/80 backdrop-blur-md border-b border-outline-variant items-center">
-        <section class="max-w-[1440px] mx-auto mt-1.5 flex justify-between items-center px-8">
-        <div class="flex items-center gap-8 flex-1 min-w-0">
-            <a href="/">
-                <h2 class="text-lg font-black tracking-tighter text-on-secondary-container shrink-0">
-                    Chat IA
-                </h2>
-            </a>
-            <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative pt-1 h-12 custom-scrollbar">
-                <div class="flex items-center gap-6 whitespace-nowrap font-['Inter'] text-sm font-semibold px-2 uppercase">
-                    <p class="text-on-surface-variant model">
-                    </p>
+    <header class="fixed top-0 right-0 left-0 h-16 z-40 bg-white/80 dark:bg-white/80 backdrop-blur-md border-b border-outline-variant flex items-center">
+        <div class="flex justify-between items-center px-md w-full max-w-[1200px] mx-auto relative">
+            <div class="flex items-center gap-8 flex-1 min-w-0 px-2">
+                <a href="/">
+                    <h2 class="text-lg font-black tracking-tighter text-on-secondary-container shrink-0">
+                        Chat IA
+                    </h2>
+                </a>
+                <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient pt-1 h-12 custom-scrollbar">
+                    <div class="flex items-center gap-6 whitespace-nowrap font-['Inter'] text-sm font-semibold px-2 uppercase">
+                        <p class="text-on-surface-variant model">
+                        </p>
+                    </div>
+                </nav>
+            </div>
+            <a href="/config.html">
+                <div class="w-12 h-12 rounded-2xl bg-white px-2 flex items-center justify-center text-violet-600 shadow-sm border border-slate-100 shrink-0 ml-4">
+                    <span class="material-symbols-outlined" style="font-size: 32px;">tune</span>
                 </div>
-            </nav>
+            </a>
+
+            <!-- Floating Background Decorative Elements -->
+            <div class="absolute top-16 left-8">
+                <!-- File -->
+                <div class="flex items-center justify-end mt-2 mb-1" title="Permite filtrar por uma categoria para geração do contexto">
+                    <span class="text-[12px] text-gray-400 pr-1">Categoria:</span>
+                    <select class="bg-transparent border-none focus:outline-none focus:ring-0 transition duration-300 ease placeholder:text-slate-400 cursor-pointer text-slate-700 text-sm p-0 categories" name="select_categories" onchange="resize_select()">
+                    </select>
+                </div>
+            </div>
         </div>
-        <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-violet-600 shadow-sm border border-slate-100 shrink-0 ml-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-user" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="M6.376 18.91a6 6 0 0 1 11.249.003"></path><circle cx="12" cy="11" r="4"></circle></svg>
-        </div>
-        </section>
     </header>
 
     <!-- Main Content Canvas -->
     <main class="ml-0 mt-16 h-[calc(100dvh-64px)] relative flex flex-col glow-accent">
-        <section class="flex-grow overflow-y-auto bg-background p-lg max-w-[1440px] mx-auto">
+        <section class="flex-grow overflow-y-auto custom-scrollbar bg-background p-md max-w-[1200px] mx-auto w-full h-full">
 
-        <!-- Message Stream Area -->
-        <div class="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-8 space-y-8">
-            <div class="messages"></div>
-            <div class="messages-end"></div>
-        </div>
+            <!-- Message Stream Area -->
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-8 lg:px-24 space-y-8 min-h-[calc(100dvh/2-164px)]">
+                <div class="messages"></div>
+                <div class="messages-end"></div>
+            </div>
 
-        <!-- Shell Area -->
-        <div class="px-2 sm:px-12 lg:px-24 py-4 bg-gradient-to-t from-background via-background to-transparent">
-            <div class="max-w-4xl mx-auto">
+            <!-- Shell Area -->
+            <div class="sm:px-12 lg:px-24 py-4 bg-gradient-to-t from-background via-background to-transparent">
+                <div class="max-w-4xl mx-auto">
 
-                <!-- Input Area -->
-                <div class="bg-white rounded-2xl px-2 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-outline-variant focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/5 transition-all duration-500">
-                    <form id="form_chat_api">
-                        <div class="flex items-center gap-2 px-2 py-1">
-                            <span class="material-symbols-outlined ml-2 text-outline text-on-surface cursor-pointer" onclick="paste_text(qs('.prompt'))">article</span>
-                            <textarea name="textarea_prompt"
-                                class="flex-1 bg-transparent border-none focus:outline-none focus:ring-0 text-sm py-3 px-2 resize-none h-11 max-h-48 custom-scrollbar placeholder:text-outline text-on-surface font-medium prompt"
-                                placeholder="Escreva a mensagem a ser enviada ao Assistente" rows="1"
-                                onkeydown="handle_enter(event)"></textarea>
-                            <div class="flex items-center gap-1 mb-0.5">
-                                <button type="submit"
-                                    class="ml-2 w-10 h-10 rounded-xl bg-primary text-white cursor-pointer flex items-center justify-center shadow-lg shadow-primary/20 hover:bg-primary-dim hover:scale-105 active:scale-95 transition-all">
-                                    <span class="material-symbols-outlined"
-                                        style="font-variation-settings: 'FILL' 1;">send</span>
-                                </button>
+                    <!-- Input Area -->
+                    <div class="bg-white rounded-2xl p-2 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-outline-variant focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/5 transition-all duration-500">
+                        <form id="form_chat_api">
+                            <div class="flex items-center gap-2 px-2 py-1">
+                                <span class="material-symbols-outlined ml-1 text-outline text-on-surface cursor-pointer" onclick="paste_text(qs('.prompt'))">article</span>
+                                <textarea name="textarea_prompt"
+                                    class="flex-1 bg-transparent border-none focus:outline-none focus:ring-0 text-sm py-3 px-2 resize-none h-11 max-h-48 custom-scrollbar placeholder:text-outline text-on-surface font-medium prompt"
+                                    placeholder="Escreva a mensagem a ser enviada ao Assistente" rows="2"
+                                    onkeydown="handle_enter(event)"></textarea>
+                                <div class="flex items-center gap-1 mb-0.5">
+                                    <button type="submit"
+                                        class="ml-2 w-10 h-10 rounded-xl bg-primary text-white cursor-pointer flex items-center justify-center shadow-lg shadow-primary/20 hover:bg-primary-dim hover:scale-105 active:scale-95 transition-all">
+                                        <span class="material-symbols-outlined"
+                                            style="font-variation-settings: 'FILL' 1;">send</span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Info Area -->
-                <div class="relative flex justify-center mt-2">
-                    <!-- Model -->
-                    <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold cursor-pointer pr-5"
-                        onclick="qs('.model_tooltip').classList.toggle('opacity-0');qs('.model_tooltip').classList.toggle('-z-1')" title="informações do modelo ">
-                        <span class="material-symbols-outlined text-[24px] text-primary">graph_8</span>
-                        <span class="uppercase model"></span>
-                    </p>
-
-                    <!-- Clear -->
-                    <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1 font-bold cursor-pointer pr-5"
-                        onclick="messages_clear();"
-                        title="Limpar a conversa">
-                        <span class="material-symbols-outlined text-[20px] text-primary">contract_delete</span>
-                        <span class="token">NOVO CHAT</span>
-                    </p>
-
-                    <!-- Score -->
-                    <div class="flex items-center gap-1 font-bold" title="define a precisão do contexto">
-                        <span class="material-symbols-outlined text-[24px] text-primary">scoreboard</span>
-                        <span class="text-[10px] text-on-surface-variant/80 font-bold pr-1">SCORE:</span>
-                        <input type="number" value="70" min="1" max="100" name="input_score"
-                            class="w-8 bg-transparent font-medium text-gray-500 text-sm border-none rounded-md py-1 transition duration-300 focus:outline-none focus:border-slate-400 hover:border-slate-300 score" />
+                        </form>
                     </div>
 
-                    <!-- Temperature -->
-                    <div class="flex items-center gap-1 font-bold" title="define a temperatura do modelo">
-                        <span class="material-symbols-outlined text-[24px] text-primary">device_thermostat</span>
-                        <span class="text-[10px] text-on-surface-variant/80 font-bold pr-1">Temperatura:</span>
-                        <input type="number" value="0.5" min="0.1" max="2.0" step="0.1" name="input_temperature"
-                            class="w-9 bg-transparent font-medium text-gray-500 text-sm border-none rounded-md py-1 transition duration-300 focus:outline-none focus:border-slate-400 hover:border-slate-300 temperature" />
-                    </div>
+                    <!-- Info Area -->
+                    <div class="relative flex justify-center mt-2">
+                        <!-- Model -->
+                        <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold cursor-pointer pr-5">
+                            <span class="material-symbols-outlined text-[24px] text-primary">graph_8</span>
+                            <span class="uppercase model"></span>
+                        </p>
 
-                    <!-- Tootip -->
-                    <span class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 transition-opacity duration-300 p-4 bg-white shadow-lg rounded-lg w-100 -z-1 border border-gray-200 model_tooltip">
-                    </span>
+                        <!-- Clear -->
+                        <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1 font-bold cursor-pointer pr-5"
+                            onclick="messages_clear();"
+                            title="Limpar a conversa">
+                            <span class="material-symbols-outlined text-[20px] text-primary">contract_delete</span>
+                            <span class="token">NOVO CHAT</span>
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
         </section>
     </main>
-
-    <!-- Floating Background Decorative Elements -->
-    <div class="fixed top-16 left-5">
-        <!-- File -->
-        <div class="flex items-center justify-end mt-2 mb-1" title="Permite filtrar por uma categoria para geração do contexto">
-            <span class="text-[12px] text-gray-400 pr-1">Categoria:</span>
-            <select class="bg-transparent border-none focus:outline-none focus:ring-0 transition duration-300 ease placeholder:text-slate-400 cursor-pointer text-slate-700 text-sm p-0 categories" name="select_categories" onchange="resize_select()">
-            </select>
-        </div>
-    </div>
 </body>
 </html>

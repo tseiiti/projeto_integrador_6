@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Luminal Workspace | AI Assistant</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#4F46E5",
+            "primary-dim": "#4338CA",
+            "primary-container": "#E0E7FF",
+            "on-primary": "#FFFFFF",
+            "on-primary-container": "#1E1B4B",
+            "secondary": "#6366F1",
+            "secondary-container": "#EEF2FF",
+            "on-secondary-container": "#312E81",
+            "surface": "#F9FAFB",
+            "surface-dim": "#F3F4F6",
+            "surface-bright": "#FFFFFF",
+            "surface-container-lowest": "#FFFFFF",
+            "surface-container-low": "#F9FAFB",
+            "surface-container": "#F3F4F6",
+            "surface-container-high": "#E5E7EB",
+            "surface-container-highest": "#D1D5DB",
+            "on-surface": "#111827",
+            "on-surface-variant": "#4B5563",
+            "outline": "#9CA3AF",
+            "outline-variant": "#E5E7EB",
+            "background": "#F9FAFB",
+            "on-background": "#111827",
+          },
+          fontFamily: {
+            "headline": ["Manrope", "sans-serif"],
+            "body": ["Inter", "sans-serif"],
+            "label": ["Inter", "sans-serif"]
+          },
+          borderRadius: { "DEFAULT": "0.5rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+        },
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    body {
+      background-color: #F9FAFB;
+      color: #111827;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #D1D5DB;
+      border-radius: 10px;
+    }
+
+    .glow-accent {
+      background: radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.03) 0%, transparent 70%);
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+
+<body class="font-body overflow-hidden">
+  <!-- SideNavBar Shell -->
+  <aside
+    class="h-screen w-64 fixed left-0 top-0 bg-white dark:bg-white backdrop-blur-xl font-['Manrope'] antialiased tracking-wide flex flex-col py-6 px-4 shadow-[1px_0_12px_rgba(0,0,0,0.05)] z-50">
+    <div class="mb-8 px-2 flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+        <span class="material-symbols-outlined text-white text-sm"
+          style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+      </div>
+      <div>
+        <h1
+          class="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-none">
+          Luminal Workspace</h1>
+        <p class="text-[10px] text-on-surface-variant uppercase tracking-[0.2em] mt-1 font-bold">AI Assistant</p>
+      </div>
+    </div>
+    <button
+      class="mb-6 flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dim transition-all duration-300 group shadow-lg shadow-primary/20">
+      <span class="material-symbols-outlined group-hover:rotate-90 transition-transform">add_circle</span>
+      <span>New Chat</span>
+    </button>
+    <nav class="flex-1 space-y-6 overflow-y-auto custom-scrollbar pr-1">
+      <div class="space-y-1">
+        <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest px-4 mb-2">Today</p>
+        <a class="flex items-center gap-3 px-4 py-2.5 bg-primary-container text-on-primary-container rounded-lg font-semibold transition-all"
+          href="#">
+          <span class="material-symbols-outlined text-primary">chat_bubble</span>
+          <span class="truncate text-sm">Revenue Analysis 2024</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-all"
+          href="#">
+          <span class="material-symbols-outlined">chat_bubble</span>
+          <span class="truncate text-sm">React Component Logic</span>
+        </a>
+      </div>
+      <div class="space-y-1">
+        <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest px-4 mb-2">Yesterday</p>
+        <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-all"
+          href="#">
+          <span class="material-symbols-outlined">history</span>
+          <span class="truncate text-sm">Style System Architecture</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-all"
+          href="#">
+          <span class="material-symbols-outlined">bookmark</span>
+          <span class="truncate text-sm">Saved Prompts Archive</span>
+        </a>
+      </div>
+    </nav>
+    <div class="mt-auto pt-6 border-t border-outline-variant space-y-1">
+      <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-all"
+        href="#">
+        <span class="material-symbols-outlined">settings</span>
+        <span class="text-sm">Settings</span>
+      </a>
+      <a class="flex items-center gap-3 px-4 py-2.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg transition-all"
+        href="#">
+        <span class="material-symbols-outlined">help</span>
+        <span class="text-sm">Help</span>
+      </a>
+      <div class="mt-4 p-4 rounded-xl bg-primary-container/30 border border-primary/10">
+        <p class="text-xs font-bold text-primary mb-2">Pro Plan</p>
+        <p class="text-[10px] text-on-surface-variant mb-3 font-medium">Unlimited high-speed tokens and Claude 3.5
+          access.</p>
+        <button
+          class="w-full py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary-dim transition-all shadow-sm">Upgrade
+          to Pro</button>
+      </div>
+    </div>
+  </aside>
+  <!-- TopNavBar Shell -->
+  <header
+    class="fixed top-0 right-0 left-64 h-16 z-40 bg-white/80 dark:bg-white/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-8 w-auto">
+    <div class="flex items-center gap-8 flex-1 min-w-0">
+      <h2 class="text-lg font-black tracking-tighter text-on-surface shrink-0">Luminal AI</h2>
+      <!-- Scrollable Model List -->
+      <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative py-1">
+        <div class="flex items-center gap-6 whitespace-nowrap font-['Inter'] text-xs font-semibold px-2">
+          <a class="text-primary border-b-2 border-primary pb-1 shrink-0" href="#">GPT-4o</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Claude 3.5</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Gemini Pro</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Llama 3</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Mistral
+            Large</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">o1-preview</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">GPT-4 Turbo</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Claude 3
+            Opus</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Gemini Ultra</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">DALL-E 3</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Midjourney
+            v6</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Stable Diffusion
+            3</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Whisper v3</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Sora</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Grok-1</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Command R+</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Qwen 2</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">DeepSeek-V2</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Phi-3</a>
+          <a class="text-on-surface-variant hover:text-on-surface transition-opacity shrink-0" href="#">Claude 3
+            Haiku</a>
+        </div>
+      </nav>
+    </div>
+    <div class="flex items-center gap-4 shrink-0 ml-4">
+      <div class="relative group hidden lg:block">
+        <span
+          class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-sm">search</span>
+        <input
+          class="bg-surface-container-low border border-outline-variant rounded-full py-1.5 pl-10 pr-4 text-xs w-48 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
+          placeholder="Search workspace..." type="text" />
+      </div>
+      <button class="p-2 text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors">
+        <span class="material-symbols-outlined">notifications</span>
+      </button>
+      <div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+        <img alt="User Profile" class="w-full h-full object-cover"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7ixWQhYnDBHKlRTwqo1dyCQKZfgCmnk45h6nl1PCbVbs6doP0ocFMtIMD1MV4fzBP96H_gAt0ps6p0-oGG5HhgTfhuCV1F07myVjKo3nU7-B2tHYLstgpZFu0Czx6XqQ96y4eQy2-fUc8Frrpl2KvmLS8TAOMWa9DlOQum7gF5noBw1IVA7vtpqz-Xs9WCHY9nTU3K4frDB_1S34Gxi0X40WWYXkeB7AIxpnTQG4QVQcAsEICuaKwvqlR_qhxKqMfCPyj9sATaNE" />
+      </div>
+    </div>
+  </header>
+  <!-- Main Content Canvas -->
+  <main class="ml-64 mt-16 h-[calc(100vh-64px)] relative flex flex-col glow-accent">
+    <!-- Message Stream Area -->
+    <div class="flex-1 overflow-y-auto custom-scrollbar px-8 lg:px-24 py-12 space-y-10">
+      <!-- User Message -->
+      <div class="flex flex-col items-end group">
+        <div class="max-w-[80%] flex items-start gap-4 flex-row-reverse">
+          <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-primary text-xs"
+              style="font-variation-settings: 'FILL' 1;">person</span>
+          </div>
+          <div class="relative">
+            <div class="border-l-4 border-primary pl-4 py-1">
+              <p class="text-on-surface leading-relaxed text-sm font-medium">Can you help me write a Python script that
+                fetches data from a GraphQL API and then visualizes the results using a clean dashboard layout?</p>
+            </div>
+            <span
+              class="text-[10px] text-on-surface-variant mt-2 block opacity-0 group-hover:opacity-100 transition-opacity font-bold">14:02
+              PM</span>
+          </div>
+        </div>
+      </div>
+      <!-- AI Message -->
+      <div class="flex flex-col items-start group">
+        <div class="max-w-[85%] flex items-start gap-4">
+          <div
+            class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-1 shadow-md shadow-primary/10">
+            <span class="material-symbols-outlined text-white text-xs"
+              style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+          </div>
+          <div
+            class="bg-white rounded-lg rounded-tl-none p-5 space-y-4 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-outline-variant/50">
+            <div class="prose prose-sm max-w-none">
+              <p class="text-on-surface">Certainly. To accomplish this, we'll use <code
+                  class="text-primary bg-primary-container/50 px-1.5 py-0.5 rounded font-bold">requests</code> for the
+                API call and <code
+                  class="text-primary bg-primary-container/50 px-1.5 py-0.5 rounded font-bold">Streamlit</code> for the
+                dashboard visualization. This combination is highly efficient for rapid prototyping.</p>
+            </div>
+            <!-- Code Block Component -->
+            <div class="bg-gray-900 rounded-xl overflow-hidden shadow-lg">
+              <div class="flex justify-between items-center bg-gray-800/50 px-4 py-2 border-b border-gray-700">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">python</span>
+                <button class="flex items-center gap-1.5 text-[10px] text-gray-400 hover:text-white transition-colors">
+                  <span class="material-symbols-outlined text-sm">content_copy</span>
+                  <span>Copy Code</span>
+                </button>
+              </div>
+              <pre class="p-4 overflow-x-auto text-[13px] leading-relaxed text-blue-200 font-mono"><code>import requests
+import streamlit as st
+import pandas as pd
+
+def fetch_data(query):
+    url = "https://api.example.com/graphql"
+    headers = {"Authorization": "Bearer YOUR_TOKEN"}
+    response = requests.post(url, json={'query': query}, headers=headers)
+    return response.json()
+
+# Define your GraphQL query
+query = """
+{
+  revenue_data(year: 2024) {
+    month
+    amount
+    category
+  }
+}
+"""
+
+# Streamlit Dashboard Layout
+st.title("Luminal Analytics Dashboard")
+data = fetch_data(query)
+df = pd.DataFrame(data['data']['revenue_data'])
+st.line_chart(df.set_index('month'))</code></pre>
+            </div>
+            <div class="prose prose-sm max-w-none">
+              <p class="text-on-surface">I've added the Streamlit framework here as it provides the cleanest UI for data
+                representation with minimal boilerplate. Would you like me to add more complex filtering or perhaps a
+                dark mode toggle to the dashboard code?</p>
+            </div>
+            <div class="flex items-center gap-3 pt-2">
+              <button
+                class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-on-surface-variant hover:text-primary">
+                <span class="material-symbols-outlined text-sm">thumb_up</span>
+              </button>
+              <button
+                class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-on-surface-variant hover:text-primary">
+                <span class="material-symbols-outlined text-sm">thumb_down</span>
+              </button>
+              <button
+                class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-on-surface-variant hover:text-primary">
+                <span class="material-symbols-outlined text-sm">refresh</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- AI Thinking State -->
+      <div class="flex items-start gap-4">
+        <div
+          class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-1 opacity-50">
+          <span class="material-symbols-outlined text-white text-xs"
+            style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+        </div>
+        <div
+          class="bg-primary-container text-on-primary-container rounded-full px-4 py-2 flex items-center gap-2.5 animate-pulse shadow-sm border border-primary/10">
+          <div class="flex gap-1">
+            <div class="w-1.5 h-1.5 bg-primary rounded-full"></div>
+            <div class="w-1.5 h-1.5 bg-primary rounded-full opacity-60"></div>
+            <div class="w-1.5 h-1.5 bg-primary rounded-full opacity-30"></div>
+          </div>
+          <span class="text-xs font-bold">Luminal is thinking...</span>
+        </div>
+      </div>
+    </div>
+    <!-- Input Shell Area -->
+    <div class="px-8 lg:px-24 pb-8 pt-4 bg-gradient-to-t from-background via-background to-transparent">
+      <div class="max-w-4xl mx-auto relative group">
+        <div
+          class="bg-white rounded-2xl p-2 shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-outline-variant focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/5 transition-all duration-500">
+          <div class="flex items-end gap-2 px-2 py-1">
+            <button
+              class="p-2.5 text-on-surface-variant hover:text-primary transition-colors rounded-xl hover:bg-surface-container">
+              <span class="material-symbols-outlined">add</span>
+            </button>
+            <textarea
+              class="flex-1 bg-transparent border-none focus:ring-0 text-sm py-3 px-2 resize-none max-h-48 custom-scrollbar placeholder:text-outline text-on-surface font-medium"
+              placeholder="Type your message or use '/' for commands..." rows="1"></textarea>
+            <div class="flex items-center gap-1 mb-1">
+              <button
+                class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-xl hover:bg-surface-container">
+                <span class="material-symbols-outlined">sentiment_satisfied</span>
+              </button>
+              <button
+                class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-xl hover:bg-surface-container">
+                <span class="material-symbols-outlined">attach_file</span>
+              </button>
+              <button
+                class="ml-2 w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/20 hover:bg-primary-dim hover:scale-105 active:scale-95 transition-all">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 flex justify-center gap-6">
+          <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold">
+            <span class="material-symbols-outlined text-[14px] text-primary">bolt</span>
+            GPT-4O ACTIVE
+          </p>
+          <p class="text-[10px] text-on-surface-variant/80 flex items-center gap-1.5 font-bold">
+            <span class="material-symbols-outlined text-[14px] text-primary">history_edu</span>
+            3,421 TOKENS REMAINING
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- Floating Background Decorative Elements -->
+  <div
+    class="fixed top-[-10%] left-[-5%] w-[40%] h-[40%] bg-primary/3 rounded-full blur-[120px] pointer-events-none -z-10">
+  </div>
+  <div
+    class="fixed bottom-[-10%] right-[-5%] w-[40%] h-[40%] bg-secondary/3 rounded-full blur-[120px] pointer-events-none -z-10">
+  </div>
+</body>
+
+</html>

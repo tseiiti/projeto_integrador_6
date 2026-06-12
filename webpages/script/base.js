@@ -148,6 +148,10 @@ const BASE = ['192.168.', 'localhos'].includes(window.location.hostname.substrin
 
 const KEYS = {
   CURRENT_MODEL:  'current_model',
+  SCORE:          'score',
+  TEMPERATURE:    'temperature',
+  QUANTITY:       'quantity',
+  THINKING:       'thinking',
   MESSAGES:       'messages',
   TOKENS:         'tokens',
   API_CHAT_URL:   `${BASE}:11434/api/chat`,
@@ -158,7 +162,7 @@ const KEYS = {
   CATEGORIES_URL: `${BASE}:8000/categories`,
   DEFAULT_MESSAGE: {
     role: 'system',
-    content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o Sistema EGA Soluções Industriais, e diga também que a seleção da categoria pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. Apesar da base ser o contexto, na resposta NÃO MENCIONE O CONTEXTO. A resposta deve ser sempre em português, conciso, coeso e coerênte, mas bem elaborado e completo, em poucos parágrafos fluidos. Sem qualquer formatação, a menos que esteja explícito outro formato na pergunta.'
+    content: 'O usuário deve enviar o contexto, caso o contexto não seja informado, não responda. Diga que a pergunta deve ser sobre o Sistema EGA Soluções Industriais. Responda a pergunta com base no contexto e no histórico de mensagens. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser SEMPRE EM PORTUGUÊS, conciso, coeso e coerênte, mas bem elaborado e completo, em poucos parágrafos fluidos. Sem qualquer formatação, a menos que esteja explícito outro formato na pergunta.'
   },
 }
 

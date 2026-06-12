@@ -22,7 +22,7 @@ const toggle_status = async (model) => {
     if (!response.ok) throw new Error('Failed to post data');
     return response.json();
   })
-  .then(data => setTimeout(() => { window.location.href = '/config.html'; }, 1000))
+  .then(data => setTimeout(() => { window.location.href = '/manage.html'; }, 1000))
   .catch(error => ce(error));
 }
 

@@ -6,7 +6,23 @@ const capabilities = {
   thinking: 'network_intel_node',
 }
 
+var timerId;
+const handle_save = () => {
+  clearTimeout(timerId);
+
+  let toast = qs('#success-toast');
+  toast.classList.remove('translate-y-20', 'opacity-0');
+  toast.classList.add('translate-y-0', 'opacity-100');
+  
+  timerId = setTimeout(() => {
+    toast.classList.add('translate-y-20', 'opacity-0');
+    toast.classList.remove('translate-y-0', 'opacity-100');
+  }, 3000);
+}
+
 const select_model = (cur_mod) => {
+  if (get(KEYS.CURRENT_MODEL) == cur_mod && qs('.models').innerHTML != "") return;
+
   set(KEYS.CURRENT_MODEL, cur_mod);
 
   let html = '';
@@ -50,8 +66,8 @@ const select_model = (cur_mod) => {
               <span class="material-symbols-outlined text-[14px] text-gray-600">data_table</span>
               <span class="text-gray-500">${(model.size / 1024 ** 2).toFixed(2)}MB</span>
             </div>
-            <button class="p-xs rounded-full border border-outline text-gray-500 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center" title="Selecionar modelo" onclick="select_model('${model.model}')">
-              <span class="material-symbols-outlined text-[20px]">radio_button_unchecked</span>
+            <button class="p-xs rounded-full border border-outline text-gray-500 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center" title="Selecionar modelo" onclick="select_model('${model.model}'); handle_save();">
+              <span class="material-symbols-outlined text-${cur_aux} text-[20px]">radio_button_unchecked</span>
             </button>
           </div>
         </div>
@@ -79,6 +95,25 @@ const load = async () => {
     KEYS.CURRENT_MODEL,
     MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
   select_model(cur_mod);
+  
+
+  qs(`#${KEYS.QUANTITY}`).value = get(KEYS.QUANTITY, 8);
+  qs(`#${KEYS.THINKING}`).checked = get(KEYS.THINKING, false);
+  qs(`#${KEYS.SCORE}-range`).value = get(KEYS.SCORE, 75);
+  qs(`#${KEYS.TEMPERATURE}-range`).value = get(KEYS.TEMPERATURE, 0.5);
+  qs(`#${KEYS.SCORE}-value`).textContent = get(KEYS.SCORE, 75);
+  qs(`#${KEYS.TEMPERATURE}-value`).textContent = get(KEYS.TEMPERATURE, 0.5);
+
+
+  [ KEYS.TEMPERATURE, KEYS.SCORE ].forEach(t => {
+    let r = qs(`#${t}-range`);
+    let v = qs(`#${t}-value`);
+    r.addEventListener('input', (e) => { 
+      v.textContent = e.target.value;
+      set(t, e.target.value);
+      handle_save();
+    });
+  });
 }
 
 
