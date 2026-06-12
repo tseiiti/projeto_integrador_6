@@ -1,30 +1,3 @@
-
-/******************************************************************************
- * Funções básicas
- ******************************************************************************/
-const ONLOG = true;
-const ONALERT = false;
-const cl = arg => { if (ONLOG) console.log(arg); };
-const ce = error => { console.error(error); if (ONALERT) alert(error); }
-const qs = arg => document.querySelector(arg);
-const qsa = arg => document.querySelectorAll(arg);
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-
-// mostra alerta (toast)
-const show_toast = (title, text, time = 3000) => {
-  qs('#toast span').innerHTML = title;
-  qs('#toast p').innerHTML = text;
-
-  const toast = qs('#toast');
-  toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
-  toast.classList.add('opacity-80', 'translate-y-0');
-  setTimeout(() => {
-    toast.classList.remove('opacity-80', 'translate-y-0');
-    toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
-  }, time);
-}
-
 const toggle_status = async (model) => {
   let url;
   let payload;
@@ -40,7 +13,6 @@ const toggle_status = async (model) => {
     show_toast('Status:', `Ativando o modelo ${model}`, 5000);
   }
 
-
   await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -50,7 +22,7 @@ const toggle_status = async (model) => {
     if (!response.ok) throw new Error('Failed to post data');
     return response.json();
   })
-  .then(data => setTimeout(() => { window.location.href = '/config.html'; }, 1000))
+  .then(data => setTimeout(() => { window.location.href = '/manage.html'; }, 1000))
   .catch(error => ce(error));
 }
 
@@ -99,27 +71,20 @@ const get_table_body = async () => {
   qs('.models').innerHTML = html;
 }
 
-/******************************************************************************
- * Variáveis globais
- ******************************************************************************/
-const BASE = ['192.168.', 'localhos'].includes(window.location.hostname.substring(0, 8)) ?
-  `${window.location.protocol}//${window.location.hostname}` :
-  'https://tseiiti.duckdns.org';
 
-const KEYS = {
-  API_CHAT_URL:  `${BASE}:11434/api/chat`,
-  API_TAGS_URL:  `${BASE}:11434/api/tags`,
-  API_PS_URL:    `${BASE}:11434/api/ps`,
-  API_GEN_URL:   `${BASE}:11434/api/generate`,
-}
-
-var MODELS = [];
-var PS     = [];
 
 /******************************************************************************
  * Processo principal
  ******************************************************************************/
 
+var PS         = [];
+
 document.addEventListener('DOMContentLoaded', () => {
-  get_table_body();
+  let count = 0;
+  setInterval(() => {
+    if (count % 10 == 0) {
+      get_table_body();
+    }
+    count++;
+  }, 1000);
 });

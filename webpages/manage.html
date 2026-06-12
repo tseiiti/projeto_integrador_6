@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Gerenciar-AI Chat</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="/script/tailwind.js"></script>
+    <link href="/style/inter_manrope.css" rel="stylesheet">
+    <link href="/style/material_symbols_outlined.css" rel="stylesheet">
+    <script src="/script/base.js"></script>
+    <script src="/script/manage.js"></script>
+</head>
+<body class="font-body overflow-hidden">
+    <!-- TopNavBar Shell -->
+    <header class="fixed top-0 right-0 left-0 h-16 z-40 bg-white/80 dark:bg-white/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-8 w-auto">
+        <div class="flex items-center gap-8 flex-1 min-w-0">
+            <h2 class="text-lg font-black tracking-tighter text-on-secondary-container shrink-0">
+                Chat IA
+            </h2>
+            <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative py-1 custom-scrollbar">
+                <div class="flex items-center gap-6 whitespace-nowrap font-['Inter'] text-xs font-semibold px-2">
+                    <p class="text-on-surface-variant">
+                        Gerenciar
+                    </p>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Canvas -->
+    <main class="ml-0 mt-16 h-[calc(100dvh-64px)] flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-8 lg:px-24 space-y-8">
+        <div class="flex flex-col gap-1 rounded-xl bg-gray-950/5 p-1 inset-ring inset-ring-gray-950/5 dark:bg-white/10 dark:inset-ring-white/10 max-w-2xl mx-auto overflow-x-auto">
+            <div class="not-prose overflow-auto rounded-lg bg-white outline outline-white/5 dark:bg-gray-950/50">
+                <div class="my-8 overflow-hidden">
+                    <table class="w-full table-auto border-collapse text-sm">
+                        <thead>
+                            <tr>
+                                <th class="border-b border-gray-200 p-4 pt-0 pb-3 pl-8 text-left font-medium text-gray-400 dark:border-gray-600 dark:text-gray-200">
+                                    Model
+                                </th>
+                                <th class="border-b border-gray-200 p-4 pt-0 pb-3 text-left font-medium text-gray-400 dark:border-gray-600 dark:text-gray-200">
+                                    Size
+                                </th>
+                                <th class="border-b border-gray-200 p-4 pt-0 pb-3 text-left font-medium text-gray-400 dark:border-gray-600 dark:text-gray-200">
+                                    Parameter
+                                </th>
+                                <th class="border-b border-gray-200 p-4 pt-0 pb-3 text-left font-medium text-gray-400 dark:border-gray-600 dark:text-gray-200">
+                                    Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white dark:bg-gray-800 models">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,92 +1,14 @@
 
 /******************************************************************************
- * Funções básicas
+ * Funções acopladas ao html
  ******************************************************************************/
-const ONLOG = false;
-const ONALERT = false;
-const cl = arg => { if (ONLOG) console.log(arg); };
-const ce = error => { console.error(error); if (ONALERT) alert(error); }
-const qs = arg => document.querySelector(arg);
-const qsa = arg => document.querySelectorAll(arg);
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // evento enter
-const handle_enter = ev => {
-  if (ev.key === 'Enter' && !ev.shiftKey) {
-    ev.preventDefault();
-    ev.target.form.requestSubmit();
+const handle_enter = e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    e.target.form.requestSubmit();
   }
-}
-
-// funções de armazenamento
-const get = (key, defaultValue) => {
-  const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : defaultValue;
-};
-
-const set = (key, value) => {
-  localStorage.setItem(key, JSON.stringify(value));
-};
-
-class StorageArray {
-  constructor(key, init = []) {
-    this.key = key;
-    this.init = init;
-  }
-
-  lst() {
-    return get(this.key, this.init);
-  }
-
-  add(e, meta = true) {
-    let es = this.lst();
-    if (meta) {
-      let times = e.times;
-      e = {
-        ...e,
-        id: Math.random().toString(36).substring(2),
-        times: {
-          ...times,
-          created_at: (new Date()).toLocaleString(),
-        }
-      };
-    }
-    es.push(e);
-    set(this.key, es);
-    return e;
-  }
-
-  get(id) {
-    return this.lst().find(e => e.id === id);
-  }
-
-  upd(id, e) {
-    let es = this.lst();
-    let i = es.findIndex(e => e.id === id);
-    if (i !== -1) {
-      es[i] = {...es[i], ...e};
-      set(this.key, es);
-    }
-    return this.lst()[i];
-  }
-
-  clr() {
-    set(this.key, this.init);
-  }
-}
-
-// mostra alerta (toast)
-const show_toast = (title, text) => {
-  qs('#toast span').innerHTML = title;
-  qs('#toast p').innerHTML = text;
-
-  const toast = qs('#toast');
-  toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
-  toast.classList.add('opacity-80', 'translate-y-0');
-  setTimeout(() => {
-    toast.classList.remove('opacity-80', 'translate-y-0');
-    toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
-  }, 3000);
 }
 
 const resize_select = () => {
@@ -105,103 +27,16 @@ const resize_select = () => {
   document.body.removeChild(tempDiv);
 }
 
-// copia texto para área de transferência
-const copy_text = (text) => {
-  const textArea = document.createElement("textarea");
-  textArea.value = text;
-  document.body.appendChild(textArea);
-  textArea.select();
-  try {
-    document.execCommand('copy');
-    if (text.length > 50) text = `${text.substring(0, 47).trim()}...`
-    show_toast('Copiado:', `Texto "${text}" copiado!`);
-  } catch (err) {
-    ce(error);
-  }
-  document.body.removeChild(textArea);
-};
-
-const fmt = (text) => {
-  // trata latex
-  text = text.replace(/\$+(.*?)\$+/g, (match, value) => {
-    return '<i>' + value.replace(/\\text\{(.*?)\}/g, '$1').replace(/\\times/g, '*').replace(/\s\\%/g, '%') + '</i>';
-  });
-  const converter = new showdown.Converter({optionKey: 'value'});
-  return converter.makeHtml(text);
-}
-
-/******************************************************************************
- * Funções acopladas ao html
- ******************************************************************************/
-
-// seleção, lista e detalhes informativos de models de ia
-const select_model = (cur_mod) => {
-  const get_p = (label, text, tclass = 'text-gray-900') => {
-    return `
-      <p class="p-1">
-        <span class="text-gray-500">${label}:</span><br>
-        <span class="${tclass}">${text}</span>
-      </p>`;
-  }
-
-  set(KEYS.CURRENT_MODEL, cur_mod);
-
-  let cm = MODELS.find(e => e.model == cur_mod);
-  let html = `
-    <h4 class="font-semibold mb-2 text-[12px] text-gray-800 uppercase">${cm.name}</h4>
-    <div class="text-[10px]">
-      ${get_p('tokens enviados', '0', 'text-green-600 up_tokens')}
-      ${get_p('tokens recebidos', '0', 'text-green-600 dw_tokens')}
-      ${get_p('family', cm.details.family)}
-      ${get_p('modified_at', (new Date(cm.modified_at)).toLocaleString())}
-      ${get_p('size', (cm.size / 1024 ** 2).toFixed(2) + 'MB')}
-      ${get_p('parameter_size', cm.details.parameter_size)}
-      ${get_p('quantization_level', cm.details.quantization_level)}
-      <!-- ${get_p('digest', cm.digest, 'text-gray-600')} -->
-      ${get_p('format', cm.details.format, 'text-gray-600')}
-      ${get_p('parent_model', cm.details.parent_model, 'text-gray-600')}
-      <p class="p-1 text-gray-400 italic">
-        - "NOVO CHAT" permite limpar a conversa<br>
-        <span class="ml-2">e todo histórico será excluído.</span>
-      </p>
-      <p class="p-1 text-gray-400 italic">
-        - "SCORE" define o valor de precisão do contexto<br>
-        <span class="ml-2">entre 1 a 100, sendo os valores mais altos</span><br>
-        <span class="ml-2">serão os mais precisos, porém</span><br>
-        <span class="ml-2">difíceis de corresponder a questão.</span>
-      </p>
-    </div>
-  `;
-  qs('.model_tooltip').innerHTML = html;
-  qs('.model').innerHTML = `${cm.name}`;
-
-  html = '';
-  for (let model of MODELS) {
-    let aux;
-    if (model.model == cur_mod) aux = 'text-primary border-b-2 border-primary pb-1';
-    else aux = 'text-on-surface-variant hover:text-on-surface transition-opacity';
-
-    html += `
-      <a class="${aux} shrink-0"
-        href="javascript: select_model('${model.model}')">
-        ${model.name}
-      </a>`;
-  }
-  qs('.models').innerHTML = html;
-  qs('.prompt').focus();
-}
-
 // insere mensagem do usuário
 const insert_user_message = (msg) => {
-  let html = fmt(msg.content);
-  cl(html)
+  let html = markdown_to_html(msg.content);
   html = `
     <!-- User Message -->
     <div class="flex flex-col items-end group" id="msg_usr_${msg.id}">
       <div class="max-w-[80%] flex items-start gap-4 flex-row-reverse">
         <div
           class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
-          <span class="material-symbols-outlined text-primary text-xs"
+          <span class="material-symbols-outlined text-primary text-sm"
             style="font-variation-settings: 'FILL' 1;">person</span>
         </div>
         <div class="relative">
@@ -213,7 +48,7 @@ const insert_user_message = (msg) => {
             ${msg.times.created_at}
           </span>
         </div>
-        <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background opacity-0 group-hover:opacity-100 "
+        <button class="cursor-pointer p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background opacity-0 group-hover:opacity-100 "
           onclick="copy_msg_usr_id('${msg.id}')">
           <span class="material-symbols-outlined text-[24px]">content_copy</span>
         </button>
@@ -230,14 +65,13 @@ const insert_ia_message = (msg) => {
   let ltx = ctxs.at(-1);
   let context = ctx ? ` | contextos: ${ctxs.length}, max: ${Math.round(180 - ctx.score * 100)}, min: ${Math.round(180 - ltx.score * 100)}` : '';
   
-  let html = fmt(msg.content);
-  cl(html)
+  let html = markdown_to_html(msg.content);
   html = `
     <!-- AI Message -->
     <div class="flex flex-col items-start group" id="msg_ia_${msg.id}">
       <div class="max-w-[95%] sm:max-w-[85%] sm:flex sm:items-start gap-2 space-y-2">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-1 shadow-md shadow-primary/10">
-          <span class="material-symbols-outlined text-white text-xs"
+          <span class="material-symbols-outlined text-white text-sm"
             style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
         </div>
         <div class="bg-white rounded-lg rounded-tl-none p-5 space-y-4 shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-outline-variant/50">
@@ -245,13 +79,13 @@ const insert_ia_message = (msg) => {
             <div class="text-on-surface content [&>*]:pb-2 [&>ul]:list-disc [&_ul]:pl-5 [&>ul]:[&_ul]:list-['⮞'] [&_ol]:list-decimal [&_ol]:pl-5">${html}</div>
           </div>
           <div class="flex items-center gap-3">
-            <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background">
+            <button class="cursor-pointer p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background">
               <span class="material-symbols-outlined text-[24px] like" style="font-variation-settings: 'FILL' ${msg.like == 1 ? 1 : 0};" onclick="messages_like(this, '${msg.id}', 1);">thumb_up</span>
             </button>
-            <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background">
+            <button class="cursor-pointer p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background">
               <span class="material-symbols-outlined text-[24px] like" style="font-variation-settings: 'FILL' ${msg.like == -1 ? 1 : 0};" onclick="messages_like(this, '${msg.id}', -1);">thumb_down</span>
             </button>
-            <button class="p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background"
+            <button class="cursor-pointer p-1.5 hover:bg-surface-container rounded-md transition-colors text-outline hover:text-on-background"
               onclick="copy_msg_ia_id('${msg.id}')">
               <span class="material-symbols-outlined text-[24px]">content_copy</span>
             </button>
@@ -277,7 +111,7 @@ const ia_thinking_state = (cur_mod) => {
   let html = `
     <div class="flex items-start gap-4 ia_thinking_state">
       <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0 mt-1 opacity-50">
-        <span class="material-symbols-outlined text-white text-xs"
+        <span class="material-symbols-outlined text-white text-sm"
           style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
       </div>
       <div class="bg-primary-container text-on-primary-container rounded-full px-4 py-2 flex items-center gap-2.5 animate-pulse shadow-sm border border-primary/10">
@@ -294,16 +128,6 @@ const ia_thinking_state = (cur_mod) => {
   qs('.ia_thinking_state').scrollIntoView({
     behavior: 'smooth',
   });
-}
-
-// limpar conversa
-const messages_clear = () => {
-  MESSAGES.clr();
-  qs('.messages').innerHTML = '';
-  set(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
-  qs('.up_tokens').innerHTML = '0 TOKENS ENVIADO';
-  qs('.dw_tokens').innerHTML = '0 TOKENS RECEBIDOS';
-  qs('.prompt').focus();
 }
 
 // marca mensagem ia com like
@@ -362,15 +186,15 @@ const get_content = (msg, json) => {
       });
       qs(`#msg_ia_${msg.id} span.tokens`).innerHTML = `tokens enviados: ${json.prompt_eval_count} | tokens recebidos: ${json.eval_count}`;
 
-      let tk = get(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
-      set(KEYS.TOKENS, {
-        ...tk,
-        up_tokens: tk.up_tokens + json.prompt_eval_count,
-        dw_tokens: tk.dw_tokens + json.eval_count,
-      });
-      qs('.up_tokens').innerHTML = `${tk.up_tokens + json.prompt_eval_count} TOKENS ENVIADO`;
-      qs('.dw_tokens').innerHTML = `${tk.dw_tokens + json.eval_count} TOKENS RECEBIDOS`;
-      pcont.innerHTML = fmt(BUFFER);
+      let tks = get(KEYS.TOKENS, {});
+      let tk = tks[get(KEYS.C_MODEL)] || { up_tokens: 0, dw_tokens: 0 };
+      tks[get(KEYS.C_MODEL)] = {
+        up_tokens: (tk.up_tokens || 0) + json.prompt_eval_count,
+        dw_tokens: (tk.dw_tokens || 0) + json.eval_count,
+      }
+      set(KEYS.TOKENS, tks);
+
+      pcont.innerHTML = markdown_to_html(BUFFER);
     } else {
       BUFFER += json.message.content
       pcont.innerHTML = BUFFER;
@@ -392,11 +216,10 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
     Contexto: ${'\n' + contexts.map(e => { return '      - "' + e.content + '";'; }).join('\n')}
   `;
   msgs.push({ role: 'user', content: content });
-  console.log(content);
   cl(msgs);
 
   // ícone de espera do assistente
-  let cur_mod = get(KEYS.CURRENT_MODEL);
+  let cur_mod = get(KEYS.C_MODEL);
   ia_thinking_state(cur_mod);
   let think_at = (new Date()).toLocaleString();
 
@@ -416,11 +239,10 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
       })
     });
 
-    cl(KEYS.API_CHAT_URL);
     const reader = response.body?.getReader();
     if (!reader) return;
 
-    msg = MESSAGES.add({
+    msg = MESSAGES.ins({
       role: 'assistant',
       content: '',
       model: cur_mod,
@@ -437,7 +259,6 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
       },
     });
     insert_ia_message(msg);
-    // await sleep(10);
     
     const td = new TextDecoder('utf-8');
     BUFFER = '';
@@ -462,6 +283,7 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
 
 // pega contexto embedding da pergunta
 const get_context = async (prompt, cate, score) => {
+  cl(prompt);
   try {
     const response = await fetch(KEYS.CONTEXT_URL, {
       method: 'POST',
@@ -474,7 +296,6 @@ const get_context = async (prompt, cate, score) => {
         cate: cate
       })
     });
-    cl(KEYS.CONTEXT_URL);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -495,8 +316,8 @@ const send_query = async () => {
 
   let context_at = (new Date()).toLocaleString();
   let cate = CATEGORIES[qs('.categories').value];
-  let score = (180 - Number(qs('.score').value)) / 100;
-  let temperature = Number(qs('.temperature').value);
+  let score = (180 - Number(get(KEYS.SCORE))) / 100;
+  let temperature = Number(get(KEYS.TEMPERATURE));
 
   show_toast('Envio:', 'Mensagem sendo enviada...');
   ppt.readOnly = true;
@@ -511,77 +332,24 @@ const send_query = async () => {
   });
 
   // adiciona o conteúdo da questão do usuário
-  let msg = MESSAGES.add({ role: 'user', content: prompt });
+  let msg = MESSAGES.ins({ role: 'user', content: prompt });
   insert_user_message(msg);
   ppt.value = '';
 
   // define o contexto da questão
   let aux = MESSAGES.lst()
     .filter(m => m.role == 'assistant' && m.contexts.length > 0)
-    .slice(-3)
+    .slice(-2)
     .map(m => { return m.prompt }).join('\n') + '\n' + prompt;
-  // cl(aux);
   let contexts = await get_context(aux, cate, score);
 
   // chamada da api do assistente
-  call_api_chat(msgs, cate, score, temperature, contexts, prompt, context_at);
+  await call_api_chat(msgs, cate, score, temperature, contexts, prompt, context_at);
+  return false;
 }
 
 // alguns processos iniciais
-const init = () => {
-  let cur_mod = get(
-    KEYS.CURRENT_MODEL,
-    MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
-  select_model(cur_mod);
-
-  qs('.messages-end').scrollIntoView({
-    behavior: 'smooth',
-  });
-
-  let tk = get(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
-  qs('.up_tokens').innerHTML = `${tk.up_tokens} TOKENS ENVIADO`;
-  qs('.dw_tokens').innerHTML = `${tk.dw_tokens} TOKENS RECEBIDOS`;
-}
-
-
-/******************************************************************************
- * Variáveis globais
- ******************************************************************************/
-const BASE = ['192.168.', 'localhos'].includes(window.location.hostname.substring(0, 8)) ?
-  `${window.location.protocol}//${window.location.hostname}` :
-  'https://tseiiti.duckdns.org';
-
-const KEYS = {
-  MODELS:        'models',
-  CURRENT_MODEL: 'current_model',
-  MESSAGES:      'messages',
-  TOKENS:        'tokens',
-  API_CHAT_URL:  `${BASE}:11434/api/chat`,
-  API_TAGS_URL:  `${BASE}:11434/api/tags`,
-  API_PS_URL:    `${BASE}:11434/api/ps`,
-  CONTEXT_URL:   `${BASE}:8000/context`,
-  CATEGORIES_URL: `${BASE}:8000/categories`,
-  DEFAULT_MESSAGE: {
-    role: 'system',
-    content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema EGA, e diga também que a seleção da categoria pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português, bem elaborada e completa, entre um a quatro parágrafos fluidos, a menos que esteja explícito outro formato na pergunta.\n'
-  },
-}
-
-    // content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema EGA, e diga também que a seleção da categoria pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português com clareza, em parágrafos fluidos. Não use qualquer tipo de formatação. A resposta deve ser em poucos parágrafos, bem elaborado e completo, a menos que esteja explícito outro formato na pergunta. E não use LaTex!\n'
-// Não acrescente nada que não seja a resposta. Não diga que foi com base no contexto fornecido. 
-
-
-var MESSAGES   = new StorageArray(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
-var MODELS     = [];
-var CATEGORIES = [];
-var BUFFER     = '';
-
-
-/******************************************************************************
- * Processo principal
- ******************************************************************************/
-
-document.addEventListener('DOMContentLoaded', () => {
+const load = async () => {
   // evento submit
   qs('#form_chat_api').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -599,10 +367,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // carrega categorias
-  fetch(KEYS.CATEGORIES_URL)
+  await fetch(KEYS.CATEGORIES_URL)
   .then(response => { return response.json(); })
   .then(json => {
-    cl(KEYS.CATEGORIES_URL);
     CATEGORIES = ['Todos'].concat(json); 
     let html = '';
     for (let i in CATEGORIES) {
@@ -614,15 +381,35 @@ document.addEventListener('DOMContentLoaded', () => {
   .catch(error => ce(error));
 
   // carrega lista de modelos
-  fetch(KEYS.API_TAGS_URL)
+  await fetch(KEYS.API_TAGS_URL)
   .then(response => { return response.json(); })
   .then(json => {
-    cl(KEYS.API_TAGS_URL);
-    MODELS = json.models.filter(m => !m.model.includes('embed')).sort(
+    MODELS = json.models.filter(m => !m.capabilities.includes('embedding')).sort(
       (a, b) => a.name.localeCompare(b.name)
     );
-
-    init();
   })
   .catch(error => ce(error));
+
+  let cur_mod = get(
+    KEYS.C_MODEL,
+    MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
+  set(KEYS.C_MODEL, cur_mod);
+  qsa('.model').forEach(e => { e.innerHTML = cur_mod });
+
+  qs('.messages-end').scrollIntoView({
+    behavior: 'smooth',
+  });
+}
+
+
+
+/******************************************************************************
+ * Processo principal
+ ******************************************************************************/
+
+var BUFFER     = '';
+var CATEGORIES = [];
+
+document.addEventListener('DOMContentLoaded', () => {
+  load();
 });

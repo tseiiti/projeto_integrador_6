@@ -43,7 +43,7 @@ qual a diferença entre o cálculo OEE e o TEEP?
   #     - 80:80
   #     - 81:81
   #     - 8000:8000
-  #     - 11434:11434
+  #     - 11434:11434m
   #   networks:
   #     - internal_network
   #     - internet_access
@@ -54,6 +54,156 @@ qual a diferença entre o cálculo OEE e o TEEP?
 #volumes:
   # nginx:
 
+
+===============================================================================
+
+------------------------------------------------------------------------------------------------------------------------ 
+./docs/EventManager/Event Manager - Gerenciador de Eventos.pdf  -  22:32:16
+
+1.  Que tipo de sistema ou aplicação está sendo descrito?
+2.  Quais são os diferentes papéis ou perfis de usuário, e como eles se relacionam aos registros nas diferentes Áreas/Categorias (como Apontamentos, Eventos, etc.)?
+3.  Se um usuário com perfil "Básico" acessar o módulo de Relatórios, quais tipos de restrições ele pode encontrar dependendo dos filtros que aplicar?
+4.  Como é feito o gerenciamento das permissões de acesso? Existe uma transição clara entre os cadastros iniciais (Áreas, Apontamentos, etc.) e a configuração do acesso permitido por grupo/usuário?
+5.  Se for necessário realizar um disparo massivo de um único tipo de evento (ex: Evento de Interrupção), mas desejarmos que ele seja registrado com a nomenclatura padrão de apontamento de outra área, o que o sistema exige em termos cadastral ou operacional?
+6.  Quebrando o relatório de MTBF, como eu faço para editar ou finalizar os dados do relatório se algum filtro estiver incorreto?
+7.  Selecionei um conjunto de dados ao gerar diferentes relatórios (Histórico de Manutenção e Gráficos de Down Time), quais são as limitações aplicáveis aos filtros que preciso obrigatoriamente aplicar cada vez?
+
+------------------------------------------------------------------------------------------------------------------------ 
+./docs/MTBF/MTBF - Conceitos e Regras de Calculos.pdf  -  22:35:56
+
+1.  Se a quantidade de registros for igual, como o fator "Utilização" é representado em cada um dos dois métodos?
+2.  Qual é a principal diferença nos cálculos do MTBF quando comparamos o Método de Utilização Ideal com o Método de Utilização?
+
+------------------------------------------------------------------------------------------------------------------------ 
+./docs/MTBF/MTBF - Tempo Médio entre Falhas.pdf  -  22:36:19
+
+1.  Se o valor do Time Apropriado entre Falhas (MTBF) de um equipamento estiver sendo satisfeito, com maior índice demonstrando maior confiabilidade, como podemos utilizar os dados de diferentes tipos de falhas ou as informações das últimas paradas para potencializar a melhoria contínua além dapenas focar no tempo?
+2.  Ao analisar o sistema em relatórios (Página 12), quais ações diretas podem ser tomadas se percebermos que um determinado reparo está consumindo excessivamente os recursos do Time de Reparo, mesmo com o MTBF sendo satisfatório para as máquinas selecionadas?
+
+------------------------------------------------------------------------------------------------------------------------ 
+./docs/OEE/Aplicação de Cáclulos O.E.E.pdf  -  22:38:17
+
+1.  Quais são os principais fatores que influenciam diretamente o Tempo de Produção (HP) e como cada um deles contribui para o valor final do Índice de Produtividade ou Performance (IP)?
+2.  Considerando o cálculo da Variação de Ritmo (HVR), qual é a importância prática de manter os registros de produção (QPP e Qlenme) rigorosamente atualizados, uma vez que eles são a base para esta apuração e seu desvio representa um ganho ou perda no rendimento do processo.
+
+------------------------------------------------------------------------------------------------------------------------ 
+./docs/OEE/Exibindo Indicador TEEP no PCPMaster.pdf  -  22:40:15
+
+1.  Quais são os principais pontos de divergência entre a definição de TEEP (necessidade de atenção à capacidade) e a efetividade medida pelo OEE quando ambos são analisados separadamente?
+2.  Se o cenário apresentado for um processo com gargalo conhecido, como indicar na planilha que apresenta resultados excelentes para o TEEP, mas simultaneamente alertas de recursos subutilizados no tempo planejado, qual seria o impacto ideal dessa situação na conclusão do relatório final e as ações corretivas imediatas?
+
+------------------------------------------------------------------------------------------------------------------------ 
+./docs/PCM/PCM - Planejamento e Controle de Manutenção.pdf  -  22:41:13
+
+1.  Referenciando a estrutura do sistema (por exemplo, quais cadastros são gerenciados na área trabalhado por um determinado tipo de usuário), descreva detalhadamente o procedimento passo a passo que um administrador deve seguir para garantir que os usuários pertencentes ao grupo "Operadores - Área da Injeção" possuam as permissões corretas, incluindo competências corretivas e preventivas, mas não tenham acesso à área sensível apenas cadastrada como "A áreas desconhecidas".
+2.  Se um equipamento está apresentando falhas recorrentes nos registros de serviços distintos (forçando a criação de eventos sob o prefixo "Emergência\_Injecao"), quais configurações básicas devem ser verificadas e potencialmente ajustadas, além de criar novos Eventos (mencionar os três possíveis), para garantir que a padronização dos apontamentos iniciais está sendo seguida corretamente? 
+3.  Como diferentes níveis de acesso (Administrador vs Básico) impactam a capacidade de realizar tarefas sensíveis?
+4.  Se um usuário com perfil "Básico" estiver executando atividades que geram logs, quais informações essenciais garante que estão sendo registradas e monitoradas de acordo com os requisitos do Administrador?
+5.  Explique o processo completo para a criação de uma revisão de molde, desde a identificação da necessidade até o salvamento final, mencionando os controles aplicados.
+6.  Quais informações precisam ser estritamente controladas por meio do sistema de revisão (ex: vida útil do molde vs. condições operacionais) para garantir que sempre se está trabalhando com um padrão aprovado em campo?
+7.  Descreva o procedimento passo a passo, incluindo os pontos de checagem obrigatórios em cada etapa, para registrar corretamente todas as informações de uma atividade pertencente ao Histórico de Manutenção.
+8.  Se for necessário verificar se um apontamento inicial foi realizado incorretamente ou incompleto, quais seriam os alertas visuais ou as regras de negócio que o sistema deveria ter antes de permitir a conclusão do processo (ex: antes de pressionar Sim no final)?
+9.  Ao gerar relatórios de MTBF, entre outras métricas, é necessário definir um padrão operacional correto para o campo "período" e como essa definição deve ser aplicada ao critério do indicador.
+10. Se a análise inicial indicar que um determinado tipo de falha está dominando os dados (possivelmente causando um desvio em tempo gráfico), qual é o método descrito para documentar esse achado ou aproximação temporária?
+11. Que informações essenciais devem ser garantidas ou verificadas antes que múltiplos eventos corretivos possam ocorrer simultaneamente em um equipamento específico, considerando o campo "Critério" na tela de Gerenciamento de Atendimento Corretivo?
+12. Se um usuário estiver executando uma solicitação e precisar interromper o atendimento devido a uma situação secundária (por exemplo, necessidade de outra equipe), qual é o procedimento exato que ele deve seguir, e como essa interrupção será registrada no sistema até ser resolvida?
+13. Se diferentes áreas possuem necessidades distintas para o preenchimento de cadastros iniciais (ex: competência ou emergência), quais são os implicações técnicas ou limitações impostas pelo campo "Prioridade" ao tentar representar essa necessidade na informação bruta do evento, e como isso é gerenciado?
+14. O que deve ser rigorosamente checado no cadastro de usuários pelos administradores para garantir que o acesso negue a realização de procedimentos de maior criticidade (como encerrar atendimentos) sem supervisão ou registro adequado da transição de estado?
+15. Qual é o gargalo principal se for necessário retornar ao ponto inicial de um ciclo de atendimento, mas os dados iniciais do evento não foram completamente registrados antes de alguém começar a registrar sobre eles (Ex: campos obrigatórios versus possibilidade de falha na tela Inicial).
+16. A capacidade do sistema em gerenciar diferentes estados (Aberto -> Em Atendimento Corretivo -> Interrompido -> Reavaliado) levanta dependências fortes no cadastramento inicial correto ou o sistema lida com a complexidade inerente à operação?
+17. Que tipos de informações são gerenciadas no campo "Descrição" ao cadastrar eventos?
+18. Como o utilizador acessa a funcionalidade para alterar um campo que foi modificado automaticamente durante o registro ou exibição, como a sequência numérica (Seq.)?
+
+------------------------------------------------------------------------------------------------------------------------ 
+./docs/PCPMaster/PCPMaster - Modulo I - Cadastro.pdf  -  22:49:52
+
+1.  Quais são as regras para utilizar os diferentes códigos de parada e em quais situações devemos usar cada um deles?
+2.  Como podemos garantir que o tempo registrado corretamente ao voltar a usarmos o sistema, especialmente em relação à Justificativa do Motivo Indeterminado?
+3.  Existe um procedimento padrão no caso de uma rejeição ser registrada com um motivo diferente do que o campo sugere inicialmente?
+4.  Como lidamos com o cenário onde diferentes motivos para uma mesma piora precisam ser registrados e posteriormente agrupados ou exceções são geradas?
+5.  Se precisarmos representar múltiplos cenários simultaneamente (por exemplo, quando há limitações internas de acesso vs. funcionalidade esperada), qual área do sistema precisamos revisar prioritariamente?
+6.  Considerando as regras de utilização de códigos para rejeições em quantidade/peso, se o usuário precisar lançar um lote que utilizou os códigos 997 e 998, quais tipos de informações sobre a geração dessa rejeição estariam disponíveis no sistema simultaneamente?
+7.  Se uma máquina específica, ao realizar um ciclo de produção, apresentasse ocorrências que poderiam ser diferentes daquelas esperadas devido a um ajuste entre o processo produtivo padrão e as limitações do molde, quais mecanismos entrariam em jogo para registrar ou controlar essa discrepância?
+8.  Se você conseguir relacionar o custo de diferentes tipos de serviços (exemplo: Serviço A e Serviço B) a si mesmos dentro da mesma aba (seja ela a do detalhe principal ou uma das referenciadas), qual seria a informação crucial que precisaria ser única para distinguir cada um claramente?
+9.  Ao considerar as informações de identificação de usuários, produtos, moldes e fornecedores mencionados em vários módulos (como o rastreamento), mas compará-las com os dados do "Cadastro de Produtos" específicos de uma operação/molde, qual trecho é o mais vulnerável a erros de digitação se não for estritamente controlado?
+10. Que tipo de máquina ou célula devo cadastrar em quais os campos específicos para tal?
+11. Quais são os procedimentos gerais que devem ser seguidos ao utilizar as informações das páginas anteriores para configurar um cenário específico de produção, como o uso de diferentes máquinas e células?
+
+------------------------------------------------------------------------------------------------------------------------ 
+./docs/PCPMaster/PCPMaster - Modulo II - Programação de Ordens.pdf  -  22:59:52
+
+1.  Como se faz para criar uma nova sequência para uma ordem de produção existente sem precisar repetir todo o processo de criação da operação inicial?
+2.  Quais são os procedimentos necessários para forçar a inclusão de mais itens ou simplesmente iniciar um novo ciclo de trabalho na programação de ordens, seguindo as limitações de bloqueio/sequência do sistema?
+3.  Informe qual é a principal diferença entre a inclusão de um novo produto em uma sequência existente e a criação de uma nova sequência com vários produtos diferentes?
+4.  Quais são os procedimentos específicos para adicionar itens ou criar sequências, comparando os requisitos de informação do cliente/produto nos exemplos 0021 (incluir) e 0018 (Incluir novas sequências)?
+
+------------------------------------------------------------------------------------------------------------------------ 
+./docs/PCPMaster/PCPMaster - Modulo III - Online & Histórico.pdf  -  23:03:15
+
+1.  Como acessar informações detalhadas sobre as diferentes abas de visualização On-Line (como [Listas], [Geral], etc.) quais são os principais campos de dados monitorados simultaneamente?
+2.  Selecionei um conjunto de dados específico em uma das guias, mas percebi que o padrão da informação pode variar. Existe alguma limitação ou recomendação sobre a melhor prática para garantir que todas as variáveis críticas estão sendo adicionadas aos dados visualizados por cada campo ao criar listas personalizadas?
+3.  Como posso eu aproveitar os dados históricos para analisar tendências de produção e paradas em um determinado período?
+4.  Selecionei uma máquina específica com problemas recorrentes, existe alguma maneira de isolar e monitorar apenas os tipos de eventos associados a ela no registro do Histórico?
+
+------------------------------------------------------------------------------------------------------------------------ 
+./docs/PCPMaster/PCPMaster - Modulo IV - Relatórios.pdf  -  23:05:50
+
+1.  Ao trabalhar com os diferentes relatórios avançados do sistema, como é o ideal realizar uma revisão comparativa entre um relatório detalhado de "Paradas" e a causa raiz das não conformidades identificadas em tempo há declínio?
+2.  Se precisarmos documentar a melhoria contínua na aplicação dos registros de campo ao incluir ou remover colunas (campos) repetidamente, qual é o procedimento recomendado antes que cada modificação seja aplicada para a estrutura do relatório?
+3.  Considerando os diferentes níveis de detalhe e especialização dos relatórios existentes (ex: um visão geral consolidada versus as análises por produto), como podemos garantir que a hierarquia de subníveis está sendo utilizada de forma otimizada sem comprometer a capacidade de "busca rápida" ou aplicá-los em larga escala?
+4.  Se for necessário treinarmos um novo usuário para o uso da função principal do Gerador de Relatórios, mas este usuário ainda não domina a parte prática de criar os gráficos e aplicar personalizações avançadas (como mudar fontes ou inserir marcas d'água), qual seria o foco inicial recomendado no treinamento: familiarização com as diferentes capacidades dos relacionamentos "arrastar-soltar" ou um aprendizado mais guiado pelas limitações do sistema?
+5.  Quando estamos utilizando a funcionalidade de relatórios, como é balanceada a possibilidade de aplicarmos filtros rigorosos em uma tela individual (ex: todos os registros de Desempenho), e ao mesmo tempo permanecermos abertos à opção de acompanhá-los no contexto geral de um ciclo de auditoria ou uso contínuo?
+6.  Qual o ponto ideal para reiniciar ou refinar um relatório que atingiu seu nível máximo de detalhamento permitido pelas ferramentas atuais (como os Relatórios de Operadores, onde diferentes conquistas foram registradas), antes de sugerirmos a criação de um novo modelo com novos campos não mapeados?
+7.  Como podemos criar um relatório de movimentação Geral - Produção com os dados reais e previstos, seguindo todos os passos até o registro final do processo?
+8.  Quais são as limitações ou cuidados especiais a serem considerados ao aplicar filtros de grupo em massa simultaneamente, como na gestão de vários tipos de relatórios (Produção, Rejeição, etc.)?
+9.  Como os tipos de exibição de um relatório são diferentes, por que não estamos visualizando todos os motivos de rejeição ao mesmo tempo?
+10. Quais são as implicações práticos da capacidade de comparar registros com taxas laranjas e pretas dentro do contexto dos relatórios de Análise de Produção ou O.E.E.?
+
+------------------------------------------------------------------------------------------------------------------------ 
+./docs/ShiftCalendar/Gerenciador de Turnos - ShiftCalendar.pdf  -  23:13:23
+
+1.  Como proceder se, ao editar os turnos, apenas alguns dias forem alterados em uma seção seguindo a um padrão que é diferente dos seus colegas?
+2.  Se eu precisar aplicar uma configuração de turnos específica para um grupo de máquinas, como posso garantir que essa configuração seja aplicada corretamente e não haja alterações inesperadas noutras áreas ou datas?
+3.  Que cuidados devo ter ao avançar e retroceder nos horários durante a edição de turno, considerando a permissão de início em dia anterior?
+
+------------------------------------------------------------------------------------------------------------------------ 
+./docs/StopNotifier/Stop Notifier - Notificador de Paradas (Tutorial & Regras).pdf  -  23:14:16
+
+1.  Qual a diferença prática entre os métodos de análise "Não totalizado" e "Totalizado por turno" quando aplicados ao registro de um evento de parada contínuo?
+2.  Se aplicarmos o método "Duração" em cada unidade de tempo (um encontro de eventos), como é garantido que apenas um alerta seja enviado a cada disparidade, mesmo se o critério for atingido momentaneamente e outra condição não levada em conta.
+
+
+>>> print("fim:", datetime.now().strftime("%H:%M:%S"))
+fim: 23:14:57
+
+mencionados
+segundo as informações fornecidas
+apresentados
+Com base nos cálculos e procedimentos detalhados nas Páginas 1 a 3
+conforme as fórmulas apresentadas
+Com base no texto fornecido
+Com base nas informações fornecidas em cada página
+como o que foi detalhado no Logs de Usuário
+no sistema 
+Com base na descrição
+1.  Qual o impacto do plano de manutenção na capacidade de produção da máquina?
+2.  Como identificar a variação média de produtos produzidos ao longo do mês e como ela se relaciona com o total esperado?
+3.  Para que tipo de jornada é o turno Extra programado das 23h00min às 5h00min? Qual a importância do turno extra na produção da máquina?
+4.  Se o total de produtos produzidos durante os três turnos (Segunda à Sábado) for superior ao total esperado, qual o impacto sobre o período de produção e as paradas previstas?
+5.  Considerando os dados históricos e as rotas do sistema, como a escala de tempo está sendo implementada em cada turno para otimizar a produtividade?
+------------------------------------------------------------------------------------------------------------------------ 
+¿Qué devo hacer para reclutar si solo tengo el contexto de lo siguiente?
+**Desarrollo:** Un perfil que puede gestionar la complejidad y los diferentes roles dentro de un sistema informacional.
+**Experiencia con documentación técnica escrita:** El usuario ha lido sobre procesos empresariales documentados (página: 36) al punto de considerar activaciones a favor de la profesión.
+**Documentación en Informática/Informática:**
+*   Experiencia en el uso del Ms Office Suite
+*   Uso intermedio de herramientas de bases de datos y manejo de información categorizada bajo diferentes categorías.
+**Herramientas y otros:**
+*   Conocido en herramientas como: [ejemplo] (El usuario podría mencionar otras herramientas que conoce). El dueño siempre está abierto a aprender nuevas metodologías de trabajo sobre el negocio mientras se le proporcionan las bases teóricas necesarias.
+¿Cuál es el área que deberíamos potenciar
+------------------------------------------------------------------------------------------------------------------------ 
+¿Qué hay en común entre la modificación de un registro de Pasarela y la adición de registros de rechazo al informe?
+¿Hay alguna limitación o que se debe tener en cuenta al intentar modificarregistros de parada con reinicio manual si estos contienen ciclos de producción?
 
 ===============================================================================
 
@@ -74,3 +224,14 @@ O ChromaDB é um banco de dados vetorial open-source projetado especificamente p
 O FastAPI é um framework web moderno, de alto desempenho e assíncrono para Python, projetado para criar APIs (RESTful/GraphQL) de forma rápida, simples e com validação automática de dados. Baseado no Starlette (backend) e Pydantic (dados), é considerado um dos frameworks Python mais rápidos, comparável a NodeJS e Go.
 
 O Uvicorn é um servidor web ASGI (Asynchronous Server Gateway Interface) de altíssima performance para Python, ideal para frameworks assíncronos modernos como FastAPI e Django. Ele é projetado para lidar com conexões HTTP/1.1 e WebSockets, utilizando bibliotecas rápidas como uvloop e httptools para gerenciar requisições assíncronas.
+
+
+
+
+// content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema PCP Master, e diga também que a seleção do arquivo pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português de forma clara e objetiva, e sem formatação. A resposta deve ser em um único parágrafo bem elaborado e completo, a menos que esteja explícito outro formato na pergunta. E NA RESPOSTA, NÃO DIGA QUE FOI COM BASE NO CONTEXTO.'
+
+// content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema EGA, e diga também que a seleção da categoria pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português, bem elaborada e completa, entre um a quatro parágrafos fluidos, a menos que esteja explícito outro formato na pergunta.\n'
+
+// content: 'Responda a pergunta com base no contexto e no histórico de mensagens. Caso o contexto não seja informado, diga que a pergunta deve ser sobre o sistema EGA, e diga também que a seleção da categoria pode afetar na geração do contexto. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser sempre em português com clareza, em parágrafos fluidos. Não use qualquer tipo de formatação. A resposta deve ser em poucos parágrafos, bem elaborado e completo, a menos que esteja explícito outro formato na pergunta. E não use LaTex!\n'
+
+// Não acrescente nada que não seja a resposta. Não diga que foi com base no contexto fornecido. 
