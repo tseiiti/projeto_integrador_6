@@ -130,14 +130,6 @@ const ia_thinking_state = (cur_mod) => {
   });
 }
 
-// limpar conversa
-const messages_clear = () => {
-  MESSAGES.clr();
-  qs('.messages').innerHTML = '';
-  set(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
-  qs('.prompt').focus();
-}
-
 // marca mensagem ia com like
 const messages_like = (element, id, value) => {
   let msg = MESSAGES.get(id);
@@ -194,12 +186,14 @@ const get_content = (msg, json) => {
       });
       qs(`#msg_ia_${msg.id} span.tokens`).innerHTML = `tokens enviados: ${json.prompt_eval_count} | tokens recebidos: ${json.eval_count}`;
 
-      let tk = get(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
-      set(KEYS.TOKENS, {
-        ...tk,
-        up_tokens: tk.up_tokens + json.prompt_eval_count,
-        dw_tokens: tk.dw_tokens + json.eval_count,
-      });
+      let tks = get(KEYS.TOKENS, {});
+      let tk = tks[get(KEYS.C_MODEL)] || { up_tokens: 0, dw_tokens: 0 };
+      tks[get(KEYS.C_MODEL)] = {
+        up_tokens: (tk.up_tokens || 0) + json.prompt_eval_count,
+        dw_tokens: (tk.dw_tokens || 0) + json.eval_count,
+      }
+      set(KEYS.TOKENS, tks);
+
       pcont.innerHTML = markdown_to_html(BUFFER);
     } else {
       BUFFER += json.message.content
@@ -225,7 +219,7 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
   cl(msgs);
 
   // ícone de espera do assistente
-  let cur_mod = get(KEYS.CURRENT_MODEL);
+  let cur_mod = get(KEYS.C_MODEL);
   ia_thinking_state(cur_mod);
   let think_at = (new Date()).toLocaleString();
 
@@ -248,7 +242,7 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
     const reader = response.body?.getReader();
     if (!reader) return;
 
-    msg = MESSAGES.add({
+    msg = MESSAGES.ins({
       role: 'assistant',
       content: '',
       model: cur_mod,
@@ -338,7 +332,7 @@ const send_query = async () => {
   });
 
   // adiciona o conteúdo da questão do usuário
-  let msg = MESSAGES.add({ role: 'user', content: prompt });
+  let msg = MESSAGES.ins({ role: 'user', content: prompt });
   insert_user_message(msg);
   ppt.value = '';
 
@@ -397,16 +391,14 @@ const load = async () => {
   .catch(error => ce(error));
 
   let cur_mod = get(
-    KEYS.CURRENT_MODEL,
+    KEYS.C_MODEL,
     MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
-  // qs('.model').innerHTML = cur_mod;
+  set(KEYS.C_MODEL, cur_mod);
   qsa('.model').forEach(e => { e.innerHTML = cur_mod });
 
   qs('.messages-end').scrollIntoView({
     behavior: 'smooth',
   });
-
-  let tk = get(KEYS.TOKENS, { up_tokens: 0, dw_tokens: 0 });
 }
 
 
@@ -414,6 +406,9 @@ const load = async () => {
 /******************************************************************************
  * Processo principal
  ******************************************************************************/
+
+var BUFFER     = '';
+var CATEGORIES = [];
 
 document.addEventListener('DOMContentLoaded', () => {
   load();

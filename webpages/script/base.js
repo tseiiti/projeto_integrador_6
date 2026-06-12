@@ -32,19 +32,28 @@ class StorageArray {
     return get(this.key, this.init);
   }
 
-  add(e, meta = true) {
+  add(e, id) {
     let es = this.lst();
-    if (meta) {
-      let times = e.times;
-      e = {
-        ...e,
-        id: Math.random().toString(36).substring(2),
-        times: {
-          ...times,
-          created_at: (new Date()).toLocaleString(),
-        }
-      };
+    let i = es.findIndex(e => e.id === id);
+    if (i !== -1) {
+      e = this.upd(id, e);
+    } else {
+      e = this.ins(e);
     }
+    return e;
+  }
+
+  ins(e) {
+    let es = this.lst();
+    let times = e.times;
+    e = {
+      ...e,
+      id: Math.random().toString(36).substring(2),
+      times: {
+        ...times,
+        created_at: (new Date()).toLocaleString(),
+      }
+    };
     es.push(e);
     set(this.key, es);
     return e;
@@ -62,6 +71,14 @@ class StorageArray {
       set(this.key, es);
     }
     return this.lst()[i];
+  }
+
+  del(id) {
+    let es = this.lst();
+    let e = es.find(e => e.id == id);
+    es = es.filter(e => e.id != id);
+    set(this.key, es);
+    return e;
   }
 
   clr() {
@@ -137,6 +154,46 @@ const base_load = async () => {
   document.body.insertAdjacentHTML("beforeend", html);
 }
 
+// trocar ou criar conversa
+const backup_chat = () => {
+  let chat = {
+    messages: localStorage.messages,
+    c_model: localStorage.c_model,
+    tokens: localStorage.tokens,
+    quantity: localStorage.quantity,
+    score: localStorage.score,
+    temperature: localStorage.temperature,
+    thinking: localStorage.thinking,
+  }
+
+  if (chat.messages && chat.messages.length > 1) {
+    chat = BACKUP.add(chat, get(KEYS.C_CHAT));
+    set(KEYS.C_CHAT, chat.id);
+  }
+}
+
+const clear_chat = () => {
+  localStorage.removeItem(KEYS.MESSAGES);
+  localStorage.removeItem(KEYS.C_MODEL);
+  localStorage.removeItem(KEYS.TOKENS);
+  localStorage.removeItem(KEYS.QUANTITY);
+  localStorage.removeItem(KEYS.SCORE);
+  localStorage.removeItem(KEYS.TEMPERATURE);
+  localStorage.removeItem(KEYS.THINKING);
+}
+
+const restore_chat = (chat) => {
+  if (chat) {
+    localStorage.messages = chat.messages;
+    localStorage.c_model = chat.c_model;
+    localStorage.tokens = chat.tokens;
+    localStorage.quantity = chat.quantity;
+    localStorage.score = chat.score;
+    localStorage.temperature = chat.temperature;
+    localStorage.thinking = chat.thinking;
+  }
+}
+
 
 
 /******************************************************************************
@@ -147,13 +204,15 @@ const BASE = ['192.168.', 'localhos'].includes(window.location.hostname.substrin
   'https://tseiiti.duckdns.org';
 
 const KEYS = {
-  CURRENT_MODEL:  'current_model',
-  SCORE:          'score',
-  TEMPERATURE:    'temperature',
-  QUANTITY:       'quantity',
-  THINKING:       'thinking',
+  BACKUP:         'backup',
+  C_CHAT:         'c_chat',
   MESSAGES:       'messages',
+  C_MODEL:        'c_model',
   TOKENS:         'tokens',
+  SCORE:          'score',
+  QUANTITY:       'quantity',
+  TEMPERATURE:    'temperature',
+  THINKING:       'thinking',
   API_CHAT_URL:   `${BASE}:11434/api/chat`,
   API_TAGS_URL:   `${BASE}:11434/api/tags`,
   API_PS_URL:     `${BASE}:11434/api/ps`,
@@ -162,16 +221,22 @@ const KEYS = {
   CATEGORIES_URL: `${BASE}:8000/categories`,
   DEFAULT_MESSAGE: {
     role: 'system',
-    content: 'O usuário deve enviar o contexto, caso o contexto não seja informado, não responda. Diga que a pergunta deve ser sobre o Sistema EGA Soluções Industriais. Responda a pergunta com base no contexto e no histórico de mensagens. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser SEMPRE EM PORTUGUÊS, conciso, coeso e coerênte, mas bem elaborado e completo, em poucos parágrafos fluidos. Sem qualquer formatação, a menos que esteja explícito outro formato na pergunta.'
+    content: 'O usuário deve enviar o contexto, caso o contexto não seja informado, não responda. Diga que a pergunta deve ser sobre o Sistema EGA Soluções Industriais. Responda a pergunta com base no contexto e no histórico de mensagens. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser SEMPRE EM PORTUGUÊS, bem elaborado, completo, em poucos parágrafos fluidos. Sem qualquer formatação, a menos que esteja explícito outro formato na pergunta.'
   },
 }
 
+var BACKUP     = new StorageArray(KEYS.BACKUP, []);
 var MESSAGES   = new StorageArray(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
 var MODELS     = [];
-var CATEGORIES = [];
-var PS         = [];
-var BUFFER     = '';
 
+  
+// configurações do storage ou padrão
+set(KEYS.QUANTITY, get(KEYS.QUANTITY, 8));
+set(KEYS.THINKING, get(KEYS.THINKING, false));
+set(KEYS.SCORE, get(KEYS.SCORE, 75));
+set(KEYS.TEMPERATURE, get(KEYS.TEMPERATURE, 0.5));
+set(KEYS.SCORE, get(KEYS.SCORE, 75));
+set(KEYS.TEMPERATURE, get(KEYS.TEMPERATURE, 0.5));
 
 
 /******************************************************************************

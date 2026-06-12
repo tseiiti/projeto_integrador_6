@@ -1,4 +1,7 @@
 
+/******************************************************************************
+*  Modelos
+ ******************************************************************************/
 const capabilities = {
   vision: 'eye_tracking',
   completion: 'text_snippet',
@@ -21,9 +24,9 @@ const handle_save = () => {
 }
 
 const select_model = (cur_mod) => {
-  if (get(KEYS.CURRENT_MODEL) == cur_mod && qs('.models').innerHTML != "") return;
+  if (get(KEYS.C_MODEL) == cur_mod && qs('.models').innerHTML != "") return;
 
-  set(KEYS.CURRENT_MODEL, cur_mod);
+  set(KEYS.C_MODEL, cur_mod);
 
   let html = '';
   for (let model of MODELS) {
@@ -74,10 +77,76 @@ const select_model = (cur_mod) => {
       </div>
     `;
   }
-
   qs('.models').innerHTML = html;
 }
 
+
+
+
+/******************************************************************************
+*  Histórico de conversas
+ ******************************************************************************/
+const historic = () => {
+  let id = get(KEYS.C_CHAT);
+  let html = '';
+  for (let chat of BACKUP.lst().sort((a, b) => (new Date(b.times.created_at)) - (new Date(a.times.created_at)))) {
+    html += `
+      <div class="p-md rounded-xl cursor-pointer ${chat.id == id ? 'bg-primary/5 border border-primary/10' : 'hover:bg-surface-container-highest transition-colors'}" onclick="sel_chat('${chat.id}');">
+          <div class="flex items-center gap-sm mb-xs">
+              <span class="material-symbols-outlined text-${chat.id == id ? 'primary' : 'outline'} text-[18px]">chat_bubble</span>
+              <p class="font-label-md text-text-main truncate">${chat.id}: ${JSON.parse(chat.messages).at(-1).content}</p>
+              <span class="material-symbols-outlined text-red-400" onclick="alert('${chat.id}');">delete</span>
+          </div>
+          <p class="text-[11px] text-text-muted">${chat.times.created_at}</p>
+      </div>
+    `;
+  };
+  qs('.history').innerHTML = html;
+}
+
+const new_chat = () => {
+  backup_chat();
+  clear_chat();
+  localStorage.removeItem(KEYS.C_CHAT);
+  window.location.href = '/';
+}
+
+const sel_chat = (id) => {
+  if (chat = BACKUP.get(id)) {
+    backup_chat();
+    clear_chat();
+    localStorage.removeItem(KEYS.C_CHAT);
+    restore_chat(chat);
+    set(KEYS.C_CHAT, chat.id);
+    window.location.href = '/';
+  }
+}
+
+const save_chat = () => {
+  backup_chat();
+  window.location.reload();
+}
+
+const clean_chat = () => {
+  clear_chat();
+  window.location.reload();
+}
+
+const delete_chat = (id) => {
+  BACKUP.del(id);
+  window.location.reload();
+}
+
+const get_chat = (id) => {
+  BACKUP.del(id);
+  window.location.reload();
+}
+
+
+
+/******************************************************************************
+ * Processo principal
+ ******************************************************************************/
 const load = async () => {
   // carrega lista de modelos
   await fetch(KEYS.API_TAGS_URL)
@@ -92,18 +161,18 @@ const load = async () => {
   qs('.disp').innerHTML = MODELS.length + (MODELS.length > 1 ? ' modelos disponíveis' : ' modelo disponível');
 
   let cur_mod = get(
-    KEYS.CURRENT_MODEL,
+    KEYS.C_MODEL,
     MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
   select_model(cur_mod);
+  historic();
   
-
-  qs(`#${KEYS.QUANTITY}`).value = get(KEYS.QUANTITY, 8);
-  qs(`#${KEYS.THINKING}`).checked = get(KEYS.THINKING, false);
-  qs(`#${KEYS.SCORE}-range`).value = get(KEYS.SCORE, 75);
-  qs(`#${KEYS.TEMPERATURE}-range`).value = get(KEYS.TEMPERATURE, 0.5);
-  qs(`#${KEYS.SCORE}-value`).textContent = get(KEYS.SCORE, 75);
-  qs(`#${KEYS.TEMPERATURE}-value`).textContent = get(KEYS.TEMPERATURE, 0.5);
-
+  // carrega valores do storage
+  qs(`#${KEYS.QUANTITY}`).value = get(KEYS.QUANTITY);
+  qs(`#${KEYS.THINKING}`).checked = get(KEYS.THINKING);
+  qs(`#${KEYS.SCORE}-range`).value = get(KEYS.SCORE);
+  qs(`#${KEYS.TEMPERATURE}-range`).value = get(KEYS.TEMPERATURE);
+  qs(`#${KEYS.SCORE}-value`).textContent = get(KEYS.SCORE);
+  qs(`#${KEYS.TEMPERATURE}-value`).textContent = get(KEYS.TEMPERATURE);
 
   [ KEYS.TEMPERATURE, KEYS.SCORE ].forEach(t => {
     let r = qs(`#${t}-range`);
@@ -115,12 +184,6 @@ const load = async () => {
     });
   });
 }
-
-
-
-/******************************************************************************
- * Processo principal
- ******************************************************************************/
 
 document.addEventListener('DOMContentLoaded', () => {
   load();

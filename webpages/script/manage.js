@@ -77,6 +77,8 @@ const get_table_body = async () => {
  * Processo principal
  ******************************************************************************/
 
+var PS         = [];
+
 document.addEventListener('DOMContentLoaded', () => {
   let count = 0;
   setInterval(() => {
