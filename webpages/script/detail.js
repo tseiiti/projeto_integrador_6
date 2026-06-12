@@ -9,13 +9,13 @@ const load = (id) => {
   msg.contexts.forEach(ct => {
     html += `
       <tr>
-        <th scope="row" class="border-b border-gray-100 p-4 text-gray-500">
+        <th scope="row" class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
           ${ct.score.toFixed(5)}
         </th>
-        <td class="border-b border-gray-100 p-4 text-gray-500 text-center">
+        <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500 text-center">
           ${Math.round(-ct.score * 100) + 180}
         </td>
-        <td class="border-b border-gray-100 p-4 text-gray-500 text-justify group relative inline-block">
+        <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500 text-justify group relative inline-block">
           ${ct.content}
           <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-sm rounded p-3 pt-2 border border-slate-300 whitespace-nowrap shadow-lg">
             categoria: ${ct.category}<br>
@@ -24,7 +24,7 @@ const load = (id) => {
             <div class="absolute top-full left-1/2 -translate-x-1/2 border-6 border-transparent border-t-gray-400"></div>
           </div>
         </td>
-        <td class="border-b border-gray-100 p-4 text-gray-500 text-center">
+        <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500 text-center">
           ${ct.content.length}
         </td>
       </tr>
@@ -34,13 +34,13 @@ const load = (id) => {
   
   html = `
     <tr>
-      <td class="border-b border-gray-100 p-4 text-gray-500">
+      <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
         ${msg.up_tokens}
       </td>
-      <td class="border-b border-gray-100 p-4 text-gray-500">
+      <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
         ${msg.dw_tokens}
       </td>
-      <td class="border-b border-gray-100 p-4 text-gray-500">
+      <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
         ~${((msg.up_tokens + msg.dw_tokens) / (((new Date(msg.times.finish_at)) - (new Date(msg.times.context_at))) / 1000)).toFixed(2)} tokens / segundo
       </td>
     </tr>`;
@@ -48,22 +48,22 @@ const load = (id) => {
   
   html = `
     <tr>
-      <td class="border-b border-gray-100 p-4 text-gray-500">
+      <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
         ${msg.times.context_at}
       </td>
-      <td class="border-b border-gray-100 p-4 text-gray-500">
+      <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
         ~${((new Date(msg.times.think_at)) - (new Date(msg.times.context_at))) / 1000} segundos
       </td>
-      <td class="border-b border-gray-100 p-4 text-gray-500">
+      <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
         ~${((new Date(msg.times.created_at)) - (new Date(msg.times.think_at))) / 1000} segundos
       </td>
-      <td class="border-b border-gray-100 p-4 text-gray-500">
+      <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
         ~${((new Date(msg.times.finish_at)) - (new Date(msg.times.created_at))) / 1000} segundos
       </td>
-      <td class="border-b border-gray-100 p-4 text-gray-500">
+      <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
         ${msg.times.finish_at}
       </td>
-      <td class="border-b border-gray-100 p-4 text-gray-500">
+      <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
         ~${((new Date(msg.times.finish_at)) - (new Date(msg.times.context_at))) / 1000} segundos
       </td>
     </tr>`;

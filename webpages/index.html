@@ -88,10 +88,10 @@
 <body class="font-body overflow-hidden">
     <!-- TopNavBar Shell -->
     <header class="fixed top-0 right-0 left-0 h-16 z-40 bg-white/80 dark:bg-white/80 backdrop-blur-md border-b border-outline-variant flex items-center">
-        <div class="flex justify-between items-center px-4 sm:px-8 lg:px-24 w-full max-w-[1200px] mx-auto relative">
-            <div class="flex items-center gap-8 flex-1 min-w-0 px-2">
+        <div class="flex justify-between items-center px-4 sm:px-8 lg:px-16 w-full max-w-[1376px] mx-auto relative">
+            <div class="flex items-center gap-8 flex-1 min-w-0">
                 <a href="/">
-                    <h2 class="text-lg font-black tracking-tighter text-on-secondary-container shrink-0">
+                    <h2 class="text-lg font-black tracking-tighter text-primary shrink-0">
                         Chat IA
                     </h2>
                 </a>
@@ -103,14 +103,13 @@
                 </nav>
             </div>
             <a href="/config.html">
-                <div class="w-12 h-12 rounded-2xl bg-white px-2 flex items-center justify-center text-violet-600 shadow-sm border border-slate-100 shrink-0 ml-4">
+                <div class="w-12 h-12 rounded-2xl bg-white px-2 flex items-center justify-center text-outline shadow-sm border border-slate-100 shrink-0 ml-4">
                     <span class="material-symbols-outlined" style="font-size: 32px;">tune</span>
                 </div>
             </a>
 
             <!-- Floating Background Decorative Elements -->
-            <div class="absolute top-16 left-6 sm:left-10 lg:left-26">
-                <!-- File -->
+            <div class="absolute top-16 left-4 sm:left-8 lg:left-16">
                 <div class="flex items-center justify-end mt-2 mb-1" title="Permite filtrar por uma categoria para geração do contexto">
                     <span class="text-[12px] text-gray-400 pr-1">Categoria:</span>
                     <select class="bg-transparent border-none focus:outline-none focus:ring-0 transition duration-300 ease placeholder:text-slate-400 cursor-pointer text-slate-700 text-sm p-0 categories" name="select_categories" onchange="resize_select()">
@@ -122,10 +121,10 @@
 
     <!-- Main Content Canvas -->
     <main class="ml-0 mt-16 h-[calc(100dvh-64px)] relative flex flex-col glow-accent">
-        <section class="flex-grow overflow-y-auto custom-scrollbar bg-background p-md max-w-[1200px] mx-auto w-full h-full">
+        <section class="flex-grow overflow-y-auto custom-scrollbar bg-background p-md max-w-[1376px] mx-auto w-full h-full">
 
             <!-- Message Stream Area -->
-            <div class="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-8 lg:px-24 space-y-8 min-h-[calc(100dvh/2-164px)]">
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-0 sm:p-8 lg:px-16 space-y-8 min-h-[calc(100dvh/2-164px)]">
                 <div class="messages"></div>
                 <div class="messages-end"></div>
             </div>

@@ -97,7 +97,7 @@ const historic = () => {
               <p class="font-label-md text-text-main truncate">${chat.id}: ${JSON.parse(chat.messages).at(-1).content}</p>
               <span class="material-symbols-outlined text-red-400" onclick="alert('${chat.id}');">delete</span>
           </div>
-          <p class="text-[11px] text-text-muted">${chat.times.created_at}</p>
+          <p class="text-[12px]">${chat.times.created_at}</p>
       </div>
     `;
   };

@@ -89,10 +89,10 @@
 <body class="font-body overflow-hidden">
     <!-- TopNavBar Shell -->
     <header class="fixed top-0 right-0 left-0 h-16 z-40 bg-white/80 dark:bg-white/80 backdrop-blur-md border-b border-outline-variant flex items-center">
-        <div class="flex justify-between items-center px-md w-full max-w-[1200px] mx-auto relative">
+        <div class="flex justify-between items-center px-4 sm:px-8 lg:px-16 w-full max-w-[1376px] mx-auto relative">
             <div class="flex items-center gap-8 flex-1 min-w-0">
                 <a href="/">
-                    <h2 class="text-lg font-black tracking-tighter text-on-secondary-container shrink-0">
+                    <h2 class="text-lg font-black tracking-tighter text-primary shrink-0">
                         Chat IA
                     </h2>
                 </a>
@@ -108,7 +108,8 @@
     </header>
 
     <main class="ml-0 mt-16 h-[calc(100dvh-64px)] relative flex flex-col glow-accent">
-        <section class="flex-grow overflow-y-auto bg-background p-lg max-w-[1200px] mx-auto">
+        <section class="flex-grow overflow-y-auto custom-scrollbar bg-background p-md max-w-[1376px] mx-auto w-full h-full">
+            <div class="px-0 sm:px-4 lg:px-12">
             <div class="space-y-lg">
                 <!-- Section: AI Model Selection (Enhanced) -->
                 <div class="bg-white border border-outline-variant rounded-xl p-lg">
@@ -122,7 +123,10 @@
                     </div>
                     
                     <!-- Model Cards -->
-                    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-4 gap-md max-h-[400px] overflow-y-auto custom-scrollbar models"></div>
+                    <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative custom-scrollbar">
+                        <div class="flex items-center gap-6 whitespace-nowrap models mb-4"></div>
+                    </nav>
+                    <!-- <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-4 gap-md max-h-[400px] overflow-y-auto custom-scrollbar "></div> -->
                 </div>
 
                 <!-- Section: Configurações de Chat -->
@@ -229,22 +233,22 @@
 
                             <div class="flex-grow">
                                 <div class="flex items-center justify-end">
-                                    <button class="bg-transparent border border-red-300 hover:bg-red-400 text-red-400 hover:text-white rounded-lg py-0.5 pl-6 pr-8 mr-sm transition-all" onclick="save_chat();" title="Salvar conversa atual">
+                                    <button class="bg-transparent border border-red-300 hover:bg-red-400 text-red-400 hover:text-white rounded-lg py-0.5 pl-6 pr-8 mr-sm transition-all whitespace-nowrap" onclick="save_chat();" title="Salvar conversa atual">
                                         <span class="material-symbols-outlined">mop</span>Limpar
                                     </button>
                                     
-                                    <button class="bg-outline text-white rounded-lg py-1 pl-6 pr-8 mr-sm flex items-center justify-center hover:bg-on-surface/80 transition-all shadow-md" onclick="save_chat();" title="Salvar conversa atual">
+                                    <button class="bg-outline text-white rounded-lg py-1 pl-6 pr-8 mr-sm flex items-center justify-center hover:bg-on-surface/80 transition-all shadow-md whitespace-nowrap" onclick="save_chat();" title="Salvar conversa atual">
                                         <span class="material-symbols-outlined">keep</span>Salvar
                                     </button>
 
-                                    <button class="bg-primary text-white rounded-lg py-1 pl-6 pr-8 flex items-center justify-center hover:bg-primary-dim transition-all shadow-md" onclick="new_chat();" title="Salvar a atual e criar uma nova conversa">
+                                    <button class="bg-primary text-white rounded-lg py-1 pl-6 pr-8 flex items-center justify-center hover:bg-primary-dim gap-sm transition-all shadow-md whitespace-nowrap" onclick="new_chat();" title="Salvar a atual e criar uma nova conversa">
                                         <span class="material-symbols-outlined">add</span>Novo Chat
                                     </button>
                                 </div>
 
                                 <div class="flex-grow overflow-y-auto px-sm space-y-xs">
                                     <div class="px-md py-sm">
-                                        <h3 class="text-label-sm text-outline uppercase tracking-wider">Recentes</h3>
+                                        <h3 class="text-label-sm text-outline uppercase tracking-wider">Histórico</h3>
                                     </div>
                                     <div class="history">
                                     </div>
@@ -258,6 +262,7 @@
                 <a class="bg-transparent hover:bg-blue-500 mr-2 text-lg text-blue-700 font-semibold hover:text-white py-1 px-8 border border-blue-500 hover:border-transparent rounded" href="/">
                     Voltar
                 </a>
+            </div>
             </div>
         </section>
     </main>
