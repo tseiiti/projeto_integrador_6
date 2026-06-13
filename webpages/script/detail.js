@@ -71,7 +71,9 @@ const load = (id) => {
 
   qs('.prompt').innerHTML = msg.prompt;
   qs('.file').innerHTML = msg.file;
+  qs('.quantity').innerHTML = msg.quantity;
   qs('.score').innerHTML = Math.round(-msg.score * 100) + 180;
+  qs('.thinking').innerHTML = msg.thinking;
   qs('.temperature').innerHTML = msg.temperature;
 }
 
