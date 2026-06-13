@@ -208,7 +208,7 @@ const get_content = (msg, json) => {
 }
 
 // consome serviço de chat
-const call_api_chat = async (msgs, file, score, temperature, quantity, contexts, prompt, context_at) => {
+const call_api_chat = async (msgs, file, score, temperature, quantity, memory, influence, contexts, prompt, context_at) => {
   let msg;
   let content = `
     Pergunta: ${prompt}
@@ -254,6 +254,8 @@ const call_api_chat = async (msgs, file, score, temperature, quantity, contexts,
       temperature: temperature,
       thinking: thinking,
       quantity: quantity,
+      memory: memory, 
+      influence: influence, 
       contexts: contexts,
       prompt: prompt, 
       times: {
@@ -323,13 +325,15 @@ const send_query = async () => {
   let score = (180 - Number(get(KEYS.SCORE))) / 100;
   let temperature = Number(get(KEYS.TEMPERATURE));
   let quantity = Number(get(KEYS.QUANTITY));
+  let memory = Number(get(KEYS.MEMORY));
+  let influence = Number(get(KEYS.INFLUENCE));
 
   show_toast('Envio:', 'Mensagem sendo enviada...');
   ppt.readOnly = true;
 
   // cria lista inicial de mensagens
   let msgs = MESSAGES.lst().filter(m => m.role == 'system');
-  msgs = msgs.concat(MESSAGES.lst().filter(m => m.role != 'system').slice(-6));
+  msgs = msgs.concat(MESSAGES.lst().filter(m => m.role != 'system').slice(-memory));
   msgs = msgs.map((e) => {
     return {
       role: e.role, content: e.content.substring(0, 300)
@@ -344,12 +348,12 @@ const send_query = async () => {
   // define o contexto da questão
   let aux = MESSAGES.lst()
     .filter(m => m.role == 'assistant' && m.contexts.length > 0)
-    .slice(-2)
+    .slice(-influence)
     .map(m => { return m.prompt }).join('\n') + '\n' + prompt;
   let contexts = await get_context(aux, cate, score, quantity);
 
   // chamada da api do assistente
-  await call_api_chat(msgs, cate, score, temperature, quantity, contexts, prompt, context_at);
+  await call_api_chat(msgs, cate, score, temperature, quantity, memory, influence, contexts, prompt, context_at);
   return false;
 }
 

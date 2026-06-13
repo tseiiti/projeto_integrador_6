@@ -91,11 +91,18 @@ const historic = () => {
   let html = '';
   for (let chat of BACKUP.lst().sort((a, b) => (new Date(b.times.created_at)) - (new Date(a.times.created_at)))) {
     html += `
-      <div class="p-md rounded-xl cursor-pointer ${chat.id == id ? 'bg-primary/5 border border-primary/10' : 'hover:bg-surface-container-highest transition-colors'}" onclick="sel_chat('${chat.id}');">
-          <div class="flex items-center gap-sm mb-xs">
-              <span class="material-symbols-outlined text-${chat.id == id ? 'primary' : 'outline'} text-[18px]">chat_bubble</span>
-              <p class="font-label-md text-text-main truncate">${chat.id}: ${JSON.parse(chat.messages).at(-1).content}</p>
-              <span class="material-symbols-outlined text-red-400" onclick="alert('${chat.id}');">delete</span>
+      <div class="p-md rounded-xl cursor-pointer ${chat.id == id ? 'bg-primary/5 border border-primary/10' : 'hover:bg-surface-container-highest transition-colors'}">
+          <div class="flex items-center space-x-2 sm:space-x-4">
+            <div class="flex items-center gap-sm mb-xs truncate" onclick="sel_chat('${chat.id}');">
+                <span class="material-symbols-outlined text-${chat.id == id ? 'primary' : 'outline'} text-[18px]">chat_bubble</span>
+                <p class="font-label-md text-text-main truncate">${chat.id}: ${chat.title || JSON.parse(chat.messages).at(-1).content}</p>
+            </div>
+            <div class="inline-block ml-auto">
+                <span class="material-symbols-outlined text-green-400" onclick="title_chat('${chat.id}');" title="cria um título">label</span>
+            </div>
+            <div class="inline-block">
+                <span class="material-symbols-outlined text-red-400" onclick="delete_chat('${chat.id}');" title="excluir a conversa">delete</span>
+            </div>
           </div>
           <p class="text-[12px]">${chat.times.created_at}</p>
       </div>
@@ -106,7 +113,8 @@ const historic = () => {
 
 const new_chat = () => {
   backup_chat();
-  clear_chat();
+  // clear_chat();
+  localStorage.removeItem(KEYS.MESSAGES);
   localStorage.removeItem(KEYS.C_CHAT);
   window.location.href = '/';
 }
@@ -137,10 +145,44 @@ const delete_chat = (id) => {
   window.location.reload();
 }
 
-const get_chat = (id) => {
-  BACKUP.del(id);
+const title_chat = async (id) => {
+  let msg = JSON.parse(
+              BACKUP.lst()
+              .find(b => b.id == id)
+              .messages)
+            .slice(1)
+            .map(m => {return m.content})
+            .join(' ')
+            .replace(/\n/g, ' ');
+            
+  await fetch(KEYS.API_CHAT_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'ssfdre38/gemma4-nano:e2b',
+      think: false,
+      stream: false,
+      messages: [{
+        role: 'user',
+        content: `crie um título criativo para o conteúdo abaixo. em português. não inclua mais nada, somente o título.
+        """
+        ${msg}
+        """`
+      }]
+    })
+  })
+  .then(response => { return response.json(); })
+  .then(json => {
+    BACKUP.upd(id, { title: json.message.content })
+    console.log(json.message.content)
+  });
+
   window.location.reload();
 }
+
+
 
 
 
@@ -169,6 +211,9 @@ const load = async () => {
   // carrega valores do storage
   qs(`#${KEYS.QUANTITY}`).value = get(KEYS.QUANTITY);
   qs(`#${KEYS.THINKING}`).checked = get(KEYS.THINKING);
+  qs(`#${KEYS.INFLUENCE}`).value = get(KEYS.INFLUENCE);
+  qs(`#${KEYS.MEMORY}`).value = get(KEYS.MEMORY);
+
   qs(`#${KEYS.SCORE}-range`).value = get(KEYS.SCORE);
   qs(`#${KEYS.TEMPERATURE}-range`).value = get(KEYS.TEMPERATURE);
   qs(`#${KEYS.SCORE}-value`).textContent = get(KEYS.SCORE);

@@ -209,10 +209,12 @@ const KEYS = {
   MESSAGES:       'messages',
   C_MODEL:        'c_model',
   TOKENS:         'tokens',
-  SCORE:          'score',
   QUANTITY:       'quantity',
-  TEMPERATURE:    'temperature',
+  INFLUENCE:      'influence',
+  SCORE:          'score',
   THINKING:       'thinking',
+  MEMORY:         'memory',
+  TEMPERATURE:    'temperature',
   API_CHAT_URL:   `${BASE}:11434/api/chat`,
   API_TAGS_URL:   `${BASE}:11434/api/tags`,
   API_PS_URL:     `${BASE}:11434/api/ps`,
@@ -232,10 +234,10 @@ var MODELS     = [];
   
 // configurações do storage ou padrão
 set(KEYS.QUANTITY, get(KEYS.QUANTITY, 8));
+set(KEYS.INFLUENCE, get(KEYS.INFLUENCE, 2));
+set(KEYS.SCORE, get(KEYS.SCORE, 75));
 set(KEYS.THINKING, get(KEYS.THINKING, false));
-set(KEYS.SCORE, get(KEYS.SCORE, 75));
-set(KEYS.TEMPERATURE, get(KEYS.TEMPERATURE, 0.5));
-set(KEYS.SCORE, get(KEYS.SCORE, 75));
+set(KEYS.MEMORY, get(KEYS.MEMORY, 4));
 set(KEYS.TEMPERATURE, get(KEYS.TEMPERATURE, 0.5));
 
 
