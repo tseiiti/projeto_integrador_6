@@ -22,13 +22,14 @@ class QueryRequest(BaseModel):
   query: str
   score: float
   cate: str
+  k: int
 
 @app.post("/context")
 def post_context(request: QueryRequest):
   filter = {"cate": request.cate} if request.cate in categories else None
   result = vector_store.similarity_search_with_score(
     request.query, 
-    k=TOP_K, 
+    k=request.k, 
     filter=filter)
 
   context = []

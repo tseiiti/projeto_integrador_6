@@ -208,7 +208,7 @@ const get_content = (msg, json) => {
 }
 
 // consome serviço de chat
-const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, context_at) => {
+const call_api_chat = async (msgs, file, score, temperature, quantity, memory, influence, contexts, prompt, context_at) => {
   let msg;
   let content = `
     Pergunta: ${prompt}
@@ -222,6 +222,7 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
   let cur_mod = get(KEYS.C_MODEL);
   ia_thinking_state(cur_mod);
   let think_at = (new Date()).toLocaleString();
+  let thinking = get(KEYS.THINKING) && MODELS.find(m => m.model == cur_mod).capabilities.includes('thinking');
 
   try {
     const response = await fetch(KEYS.API_CHAT_URL, {
@@ -231,7 +232,7 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
       },
       body: JSON.stringify({
         model: cur_mod,
-        think: false,
+        think: thinking,
         messages: msgs,
         options: {
           temperature: temperature
@@ -251,6 +252,10 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
       file: file,
       score: score,
       temperature: temperature,
+      thinking: thinking,
+      quantity: quantity,
+      memory: memory, 
+      influence: influence, 
       contexts: contexts,
       prompt: prompt, 
       times: {
@@ -282,7 +287,7 @@ const call_api_chat = async (msgs, file, score, temperature, contexts, prompt, c
 }
 
 // pega contexto embedding da pergunta
-const get_context = async (prompt, cate, score) => {
+const get_context = async (prompt, cate, score, quantity) => {
   cl(prompt);
   try {
     const response = await fetch(KEYS.CONTEXT_URL, {
@@ -293,7 +298,8 @@ const get_context = async (prompt, cate, score) => {
       body: JSON.stringify({
         query: prompt,
         score: score,
-        cate: cate
+        cate: cate,
+        k: quantity
       })
     });
 
@@ -318,13 +324,16 @@ const send_query = async () => {
   let cate = CATEGORIES[qs('.categories').value];
   let score = (180 - Number(get(KEYS.SCORE))) / 100;
   let temperature = Number(get(KEYS.TEMPERATURE));
+  let quantity = Number(get(KEYS.QUANTITY));
+  let memory = Number(get(KEYS.MEMORY));
+  let influence = Number(get(KEYS.INFLUENCE));
 
   show_toast('Envio:', 'Mensagem sendo enviada...');
   ppt.readOnly = true;
 
   // cria lista inicial de mensagens
   let msgs = MESSAGES.lst().filter(m => m.role == 'system');
-  msgs = msgs.concat(MESSAGES.lst().filter(m => m.role != 'system').slice(-6));
+  msgs = msgs.concat(MESSAGES.lst().filter(m => m.role != 'system').slice(-memory));
   msgs = msgs.map((e) => {
     return {
       role: e.role, content: e.content.substring(0, 300)
@@ -339,12 +348,12 @@ const send_query = async () => {
   // define o contexto da questão
   let aux = MESSAGES.lst()
     .filter(m => m.role == 'assistant' && m.contexts.length > 0)
-    .slice(-2)
+    .slice(-influence)
     .map(m => { return m.prompt }).join('\n') + '\n' + prompt;
-  let contexts = await get_context(aux, cate, score);
+  let contexts = await get_context(aux, cate, score, quantity);
 
   // chamada da api do assistente
-  await call_api_chat(msgs, cate, score, temperature, contexts, prompt, context_at);
+  await call_api_chat(msgs, cate, score, temperature, quantity, memory, influence, contexts, prompt, context_at);
   return false;
 }
 

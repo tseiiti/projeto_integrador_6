@@ -110,159 +110,189 @@
     <main class="ml-0 mt-16 h-[calc(100dvh-64px)] relative flex flex-col glow-accent">
         <section class="flex-grow overflow-y-auto custom-scrollbar bg-background p-md max-w-[1376px] mx-auto w-full h-full">
             <div class="px-0 sm:px-4 lg:px-12">
-            <div class="space-y-lg">
-                <!-- Section: AI Model Selection (Enhanced) -->
-                <div class="bg-white border border-outline-variant rounded-xl p-lg">
-                    <div class="flex items-center justify-between mb-lg">
-                        <div class="flex items-center gap-sm">
-                            <span class="material-symbols-outlined text-primary"
-                                style="font-variation-settings: 'FILL' 1;">model_training</span>
-                            <h2 class="font-headline-md text-headline-md">Modelos</h2>
-                        </div>
-                        <span class="text-label-sm text-text-muted disp"></span>
-                    </div>
-                    
-                    <!-- Model Cards -->
-                    <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative custom-scrollbar">
-                        <div class="flex items-center gap-6 whitespace-nowrap models mb-4"></div>
-                    </nav>
-                    <!-- <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-4 gap-md max-h-[400px] overflow-y-auto custom-scrollbar "></div> -->
-                </div>
-
-                <!-- Section: Configurações de Chat -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
-                    <!-- Section: Contexto -->
-                    <div class="lg:col-span-6">
-                        <div class="bg-white border border-outline-variant rounded-xl p-lg h-full">
-                            <div class="flex items-center gap-sm mb-lg">
-                                <span class="material-symbols-outlined text-primary"
-                                    style="font-variation-settings: 'FILL' 1;">contextual_token</span>
-                                <h2 class="font-headline-md text-headline-md">Contexto</h2>
-                            </div>
-                            
-                            <div class="space-y-lg flex-grow">
-                                <!-- Context Max Counter -->
-                                <div class="flex items-center justify-between p-md bg-surface-container-low rounded-xl border border-outline/50 mt-md">
-                                    <div class="flex items-center gap-md">
-                                        <div class="p-sm bg-surface-container-highest rounded-lg text-text-muted">
-                                            <span class="material-symbols-outlined">17mp</span>
-                                        </div>
-                                        <div>
-                                            <p class="font-label-md text-label-md">Quantidade de Máxima</p>
-                                            <p class="text-label-sm text-gray-500">Quantidade máxima de buscas de contexto que corresponda a pergunta.</p>
-                                        </div>
-                                    </div>
-                                    <input type="number" id="quantity" min="1" max="10" value="8" onchange="set(KEYS.QUANTITY, this.value); handle_save();"
-                                        class="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
-                                </div>
-                                
-                                <!-- Min Score -->
-                                <div class="bg-surface-container-low p-md rounded-xl border border-outline/50 mt-md">
-                                    <div class="flex justify-between items-center">
-                                        <label class="font-label-md text-label-md">Score Mínimo</label>
-                                        <span class="bg-primary-fixed text-on-primary-fixed-variant px-sm py-xs rounded text-label-sm" id="score-value">75</span>
-                                    </div>
-                                    <input class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" id="score-range" max="100" min="1" step="1" type="range" value="75" />
-                                    <div class="flex justify-between text-[11px] text-gray-700">
-                                        <span class="">Mínimo (1)</span>
-                                        <span class="">Máximo (100)</span>
-                                    </div>
-                                    <p class="text-label-sm text-gray-500 mt-md">
-                                        Define o nível mínimo de relevância para que um fragmento de contexto seja utilizado na resposta.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Section: Raciocínio -->
-                    <div class="lg:col-span-6">
-                        <div class="bg-white border border-outline-variant rounded-xl p-lg h-full">
-                            <div class="flex items-center gap-sm mb-lg">
-                                <span class="material-symbols-outlined text-primary"
-                                    style="font-variation-settings: 'FILL' 1;">psychology</span>
-                                <h2 class="font-headline-md text-headline-md">Raciocínio</h2>
-                            </div>
-
-                            <div class="space-y-lg flex-grow">
-                                <!-- Modo Thinking Toggle -->
-                                <div class="flex items-center justify-between p-md bg-surface-container-low rounded-xl border border-outline/50 mt-md">
-                                    <div class="flex items-center gap-md">
-                                        <div class="p-sm bg-surface-container-highest rounded-lg text-text-muted">
-                                            <span class="material-symbols-outlined">threat_intelligence</span>
-                                        </div>
-                                        <div>
-                                            <p class="font-label-md text-label-md">Modo Thinking</p>
-                                            <p class="text-label-sm text-gray-500">Habilita o processo de raciocínio detalhado da IA. Tem um processamento mais demorado.</p>
-                                        </div>
-                                    </div>
-                                    <label class="relative inline-flex items-center cursor-pointer">
-                                        <input class="sr-only peer" id="thinking" type="checkbox" onchange="set(KEYS.THINKING, this.checked); handle_save();" />
-                                        <div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
-                                        </div>
-                                    </label>
-                                </div>
-
-                                <!-- Temperature Control -->
-                                <div class="bg-surface-container-low p-md rounded-xl border border-outline/50 mt-md">
-                                    <div class="flex justify-between items-center">
-                                        <label class="font-label-md text-label-md">Temperatura</label>
-                                        <span class="bg-primary-fixed text-on-primary-fixed-variant px-sm py-xs rounded text-label-sm" id="temperature-value">0.7</span>
-                                    </div>
-                                    <input class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" id="temperature-range" max="2" min="0" step="0.1" type="range" value="0.7" />
-                                    <div class="flex justify-between text-[11px] text-gray-700">
-                                        <span class="">Preciso (0.0)</span>
-                                        <span class="">Criativo (2.0)</span>
-                                    </div>
-                                    <p class="text-label-sm text-gray-500 mt-md">
-                                        Define a aleatoriedade das respostas. Valores baixos são mais determinísticos e os altos mais inventivos.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Section: Histórico -->
-                    <div class="lg:col-span-12">
-                        <div class="bg-white border border-outline-variant rounded-xl p-lg h-full">
+                <div class="space-y-lg">
+                    <!-- Section: AI Model Selection (Enhanced) -->
+                    <div class="bg-white border border-outline-variant rounded-xl p-lg">
+                        <div class="flex items-center justify-between mb-lg">
                             <div class="flex items-center gap-sm">
                                 <span class="material-symbols-outlined text-primary"
-                                    style="font-variation-settings: 'FILL' 1;">chat</span>
-                                <h2 class="font-headline-md text-headline-md">Conversas</h2>
+                                    style="font-variation-settings: 'FILL' 1;">model_training</span>
+                                <h2 class="font-headline-md text-headline-md">Modelos</h2>
                             </div>
+                            <span class="text-label-sm text-text-muted disp"></span>
+                        </div>
+                        
+                        <!-- Model Cards -->
+                        <nav class="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative custom-scrollbar">
+                            <div class="flex items-center gap-6 whitespace-nowrap models mb-4"></div>
+                        </nav>
+                        <!-- <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pb-4 gap-md max-h-[400px] overflow-y-auto custom-scrollbar "></div> -->
+                    </div>
 
-                            <div class="flex-grow">
-                                <div class="flex items-center justify-end">
-                                    <button class="bg-transparent border border-red-300 hover:bg-red-400 text-red-400 hover:text-white rounded-lg py-0.5 pl-6 pr-8 mr-sm transition-all whitespace-nowrap" onclick="save_chat();" title="Salvar conversa atual">
-                                        <span class="material-symbols-outlined">mop</span>Limpar
-                                    </button>
+                    <!-- Section: Configurações de Chat -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+                        <!-- Section: Contexto -->
+                        <div class="lg:col-span-6">
+                            <div class="bg-white border border-outline-variant rounded-xl p-lg h-full">
+                                <div class="flex items-center gap-sm mb-lg">
+                                    <span class="material-symbols-outlined text-primary"
+                                        style="font-variation-settings: 'FILL' 1;">contextual_token</span>
+                                    <h2 class="font-headline-md text-headline-md">Contexto</h2>
+                                </div>
+                                
+                                <div class="space-y-lg flex-grow">
+                                    <!-- Context Max Counter -->
+                                    <div class="flex items-center justify-between p-md bg-surface-container-low rounded-xl border border-outline/50 mt-md">
+                                        <div class="flex items-center gap-md">
+                                            <div class="p-sm bg-surface-container-highest rounded-lg text-text-muted">
+                                                <span class="material-symbols-outlined">17mp</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-label-md text-label-md">Quantidade de Máxima</p>
+                                                <p class="text-label-sm text-gray-500">Quantidade máxima de buscas de contexto que corresponda a pergunta.</p>
+                                            </div>
+                                        </div>
+                                        <input type="number" id="quantity" min="1" max="10" value="8" onchange="set(KEYS.QUANTITY, this.value); handle_save();"
+                                            class="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
+                                    </div>
+
+                                    <!-- Context Counter Influence -->
+                                    <div class="flex items-center justify-between p-md bg-surface-container-low rounded-xl border border-outline/50 mt-md">
+                                        <div class="flex items-center gap-md">
+                                            <div class="p-sm bg-surface-container-highest rounded-lg text-text-muted">
+                                                <span class="material-symbols-outlined">grain</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-label-md text-label-md">Quantidade de Relações</p>
+                                                <p class="text-label-sm text-gray-500">Quantidade de perguntas anteriores que influenciam no contexto atual.</p>
+                                            </div>
+                                        </div>
+                                        <input type="number" id="influence" min="0" max="10" value="2" onchange="set(KEYS.INFLUENCE, this.value); handle_save();"
+                                            class="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
+                                    </div>
                                     
-                                    <button class="bg-outline text-white rounded-lg py-1 pl-6 pr-8 mr-sm flex items-center justify-center hover:bg-on-surface/80 transition-all shadow-md whitespace-nowrap" onclick="save_chat();" title="Salvar conversa atual">
-                                        <span class="material-symbols-outlined">keep</span>Salvar
-                                    </button>
-
-                                    <button class="bg-primary text-white rounded-lg py-1 pl-6 pr-8 flex items-center justify-center hover:bg-primary-dim gap-sm transition-all shadow-md whitespace-nowrap" onclick="new_chat();" title="Salvar a atual e criar uma nova conversa">
-                                        <span class="material-symbols-outlined">add</span>Novo Chat
-                                    </button>
+                                    <!-- Min Score -->
+                                    <div class="bg-surface-container-low p-md rounded-xl border border-outline/50 mt-md">
+                                        <div class="flex justify-between items-center">
+                                            <label class="font-label-md text-label-md">Score Mínimo</label>
+                                            <span class="bg-primary-fixed text-on-primary-fixed-variant px-sm py-xs rounded text-label-sm" id="score-value">75</span>
+                                        </div>
+                                        <input class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" id="score-range" max="100" min="1" step="1" type="range" value="75" />
+                                        <div class="flex justify-between text-[11px] text-gray-700">
+                                            <span class="">Mínimo (1)</span>
+                                            <span class="">Máximo (100)</span>
+                                        </div>
+                                        <p class="text-label-sm text-gray-500 mt-md">
+                                            Define o nível mínimo de relevância para que um fragmento de contexto seja utilizado na resposta.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section: Raciocínio -->
+                        <div class="lg:col-span-6">
+                            <div class="bg-white border border-outline-variant rounded-xl p-lg h-full">
+                                <div class="flex items-center gap-sm mb-lg">
+                                    <span class="material-symbols-outlined text-primary"
+                                        style="font-variation-settings: 'FILL' 1;">psychology</span>
+                                    <h2 class="font-headline-md text-headline-md">Raciocínio</h2>
                                 </div>
 
-                                <div class="flex-grow overflow-y-auto px-sm space-y-xs">
-                                    <div class="px-md py-sm">
-                                        <h3 class="text-label-sm text-outline uppercase tracking-wider">Histórico</h3>
+                                <div class="space-y-lg flex-grow">
+                                    <!-- Modo Thinking Toggle -->
+                                    <div class="flex items-center justify-between p-md bg-surface-container-low rounded-xl border border-outline/50 mt-md">
+                                        <div class="flex items-center gap-md">
+                                            <div class="p-sm bg-surface-container-highest rounded-lg text-text-muted">
+                                                <span class="material-symbols-outlined">threat_intelligence</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-label-md text-label-md">Modo Thinking</p>
+                                                <p class="text-label-sm text-gray-500">Habilita o processo de raciocínio detalhado da IA. Tem um processamento mais demorado.</p>
+                                            </div>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input class="sr-only peer" id="thinking" type="checkbox" onchange="set(KEYS.THINKING, this.checked); handle_save();" />
+                                            <div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                            </div>
+                                        </label>
                                     </div>
-                                    <div class="history">
+
+                                    <!-- Max Chat History -->
+                                    <div class="flex items-center justify-between p-md bg-surface-container-low rounded-xl border border-outline/50 mt-md">
+                                        <div class="flex items-center gap-md">
+                                            <div class="p-sm bg-surface-container-highest rounded-lg text-text-muted">
+                                                <span class="material-symbols-outlined">book</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-label-md text-label-md">Lembranças</p>
+                                                <p class="text-label-sm text-gray-500">Quantidade de perguntas e respostas que enviadas como complemento.</p>
+                                            </div>
+                                        </div>
+                                        <input type="number" id="memory" min="0" max="10" value="4" onchange="set(KEYS.MEMORY, this.value); handle_save();"
+                                            class="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
+                                    </div>
+
+                                    <!-- Temperature Control -->
+                                    <div class="bg-surface-container-low p-md rounded-xl border border-outline/50 mt-md">
+                                        <div class="flex justify-between items-center">
+                                            <label class="font-label-md text-label-md">Temperatura</label>
+                                            <span class="bg-primary-fixed text-on-primary-fixed-variant px-sm py-xs rounded text-label-sm" id="temperature-value">0.7</span>
+                                        </div>
+                                        <input class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" id="temperature-range" max="2" min="0" step="0.1" type="range" value="0.7" />
+                                        <div class="flex justify-between text-[11px] text-gray-700">
+                                            <span class="">Preciso (0.0)</span>
+                                            <span class="">Criativo (2.0)</span>
+                                        </div>
+                                        <p class="text-label-sm text-gray-500 mt-md">
+                                            Define a aleatoriedade das respostas. Valores baixos são mais determinísticos e os altos mais inventivos.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section: Histórico -->
+                        <div class="lg:col-span-12">
+                            <div class="bg-white border border-outline-variant rounded-xl p-lg h-full">
+                                <div class="flex items-center gap-sm">
+                                    <span class="material-symbols-outlined text-primary"
+                                        style="font-variation-settings: 'FILL' 1;">chat</span>
+                                    <h2 class="font-headline-md text-headline-md">Conversas</h2>
+                                </div>
+
+                                <div class="flex-grow">
+                                    <div class="flex items-center justify-end space-x-2 sm:space-x-4">
+                                        <button class="inline-block bg-transparent border border-red-300 hover:bg-red-400 text-red-400 hover:text-white rounded-lg py-0.5 pl-2 pr-3 sm:pl-6 sm:pr-8 whitespace-nowrap" onclick="clean_chat();" title="Limpar conversa atual">
+                                            <span class="material-symbols-outlined">mop</span>Limpar
+                                        </button>
+                                        
+                                        <button class="inline-block bg-outline text-white rounded-lg py-1 pl-2 pr-3 sm:pl-6 sm:pr-8 flex items-center justify-center hover:bg-on-surface/60 shadow-md whitespace-nowrap" onclick="save_chat();" title="Salvar conversa atual">
+                                            <span class="material-symbols-outlined">keep</span>Salvar
+                                        </button>
+
+                                        <button class="inline-block bg-primary/80 text-white rounded-lg py-1 pl-2 pr-3 sm:pl-6 sm:pr-8 flex items-center justify-center hover:bg-primary-dim shadow-md whitespace-nowrap" onclick="new_chat();" title="Salvar a atual e criar uma nova conversa">
+                                            <span class="material-symbols-outlined">add</span>Novo Chat
+                                        </button>
+                                    </div>
+
+                                    <div class="flex-grow overflow-y-auto px-sm space-y-xs">
+                                        <div class="px-md py-sm">
+                                            <h3 class="text-label-sm text-outline uppercase tracking-wider">Histórico</h3>
+                                        </div>
+                                        <div class="history">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="flex items-center justify-end mt-5">
-                <a class="bg-transparent hover:bg-blue-500 mr-2 text-lg text-blue-700 font-semibold hover:text-white py-1 px-8 border border-blue-500 hover:border-transparent rounded" href="/">
-                    Voltar
-                </a>
-            </div>
+                <div class="flex items-center justify-end mt-5">
+                    <a class="bg-transparent hover:bg-blue-500 mr-2 text-lg text-blue-700 font-semibold hover:text-white py-1 px-8 border border-blue-500 hover:border-transparent rounded" href="/">
+                        Voltar
+                    </a>
+                </div>
             </div>
         </section>
     </main>

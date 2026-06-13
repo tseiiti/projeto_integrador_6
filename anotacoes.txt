@@ -55,6 +55,11 @@ qual a diferença entre o cálculo OEE e o TEEP?
   # nginx:
 
 
+ollama run ssfdre38/gemma4-nano:e2b --think=false
+/set parameter temperature 0.3
+
+/no_think
+
 ===============================================================================
 
 ------------------------------------------------------------------------------------------------------------------------ 
@@ -78,7 +83,7 @@ qual a diferença entre o cálculo OEE e o TEEP?
 ./docs/MTBF/MTBF - Tempo Médio entre Falhas.pdf  -  22:36:19
 
 1.  Se o valor do Time Apropriado entre Falhas (MTBF) de um equipamento estiver sendo satisfeito, com maior índice demonstrando maior confiabilidade, como podemos utilizar os dados de diferentes tipos de falhas ou as informações das últimas paradas para potencializar a melhoria contínua além dapenas focar no tempo?
-2.  Ao analisar o sistema em relatórios (Página 12), quais ações diretas podem ser tomadas se percebermos que um determinado reparo está consumindo excessivamente os recursos do Time de Reparo, mesmo com o MTBF sendo satisfatório para as máquinas selecionadas?
+2.  Ao analisar o sistema em relatórios, quais ações diretas podem ser tomadas se percebermos que um determinado reparo está consumindo excessivamente os recursos do Time de Reparo, mesmo com o MTBF sendo satisfatório para as máquinas selecionadas?
 
 ------------------------------------------------------------------------------------------------------------------------ 
 ./docs/OEE/Aplicação de Cáclulos O.E.E.pdf  -  22:38:17

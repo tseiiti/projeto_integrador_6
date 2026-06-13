@@ -122,101 +122,116 @@
     <main class="ml-0 mt-16 h-[calc(100dvh-64px)] relative flex flex-col glow-accent">
         <section class="flex-grow overflow-y-auto custom-scrollbar bg-background p-md max-w-[1376px] mx-auto w-full h-full">
             <div class="px-0 sm:px-4 lg:px-12">
+                <h3 class="text-2xl mb-0"></h3>
+                <p class="text-gray-500 mb-8 model"></p>
 
-            <h3 class="text-2xl mb-0"></h3>
-            <p class="text-gray-500 mb-8 model"></p>
+                <h4 class="mt-8 mb-2 font-bold text-gray-600">Mensagem</h4>
+                <p class="content text-justify"></p>
 
-            <h4 class="mt-8 mb-2 font-bold text-gray-600">Mensagem</h4>
-            <p class="content text-justify"></p>
+                <h4 class="mt-8 mb-2 font-bold text-gray-600">Contextos</h4>
+                <table class="w-full table-auto border-collapse text-sm contexts">
+                    <thead>
+                        <tr>
+                            <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
+                                Score
+                            </th>
+                            <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
+                                Calculado
+                            </th>
+                            <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
+                                Conteúdo
+                            </th>
+                            <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
+                                Tamanho
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white"></tbody>
+                </table>
 
-            <h4 class="mt-8 mb-2 font-bold text-gray-600">Contextos</h4>
-            <table class="w-full table-auto border-collapse text-sm contexts">
-                <thead>
-                    <tr>
-                        <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
-                            Score
-                        </th>
-                        <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
-                            Calculado
-                        </th>
-                        <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
-                            Conteúdo
-                        </th>
-                        <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
-                            Tamanho
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white"></tbody>
-            </table>
+                <h4 class="mt-8 mb-2 font-bold text-gray-600">Transferências (tokens)</h4>
+                <table class="w-full table-auto border-collapse text-sm tokens">
+                    <thead>
+                        <tr>
+                            <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
+                                Envidados
+                            </th>
+                            <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
+                                Recebidos
+                            </th>
+                            <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
+                                Taxa de Transferência
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white"></tbody>
+                </table>
 
-            <h4 class="mt-8 mb-2 font-bold text-gray-600">Transferências (tokens)</h4>
-            <table class="w-full table-auto border-collapse text-sm tokens">
-                <thead>
-                    <tr>
-                        <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
-                            Envidados
-                        </th>
-                        <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
-                            Recebidos
-                        </th>
-                        <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
-                            Taxa de Transferência
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white"></tbody>
-            </table>
-
-            <h4 class="mt-8 mb-2 font-bold text-gray-600">Tempos</h4>
-            <table class="w-full table-auto border-collapse text-sm times">
-                <thead>
-                    <tr>
-                        <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
-                            Início
-                        </th>
-                        <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
-                            Contexto
-                        </th>
-                        <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
-                            Pensamento
-                        </th>
-                        <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
-                            Exibição
-                        </th>
-                        <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
-                            Término
-                        </th>
-                        <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
-                            Total
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white"></tbody>
-            </table>
-            
-            <h4 class="mt-8 mb-2 font-bold text-gray-600">Filtros</h4>
-            <table class="">
-                <tbody class="bg-white">
-                    <tr class="border-b border-gray-100 text-gray-500">
-                        <td class="p-2 text-sm font-bold">Pergunta:</td>
-                        <td class="p-2 text-lg font-normal text-gray-800 italic pl-2 prompt"></td>
-                    </tr>
-                    <tr class="border-b border-gray-100 text-gray-500">
-                        <td class="p-2 text-sm font-bold">Categoria:</td>
-                        <td class="p-2 font-normal text-gray-800 italic pl-2 file"></td>
-                    </tr>
-                    <tr class="border-b border-gray-100 text-gray-500">
-                        <td class="p-2 text-sm font-bold">Score:</td>
-                        <td class="p-2 font-normal text-gray-800 italic pl-2 score"></td>
-                    </tr>
-                    <tr class="border-b border-gray-100 text-gray-500">
-                        <td class="p-2 text-sm font-bold">Temperatura:</td>
-                        <td class="p-2 font-normal text-gray-800 italic pl-2 temperature"></td>
-                    </tr>
-                </tbody>
-            </table>
-                    </div>
+                <h4 class="mt-8 mb-2 font-bold text-gray-600">Tempos</h4>
+                <table class="w-full table-auto border-collapse text-sm times">
+                    <thead>
+                        <tr>
+                            <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
+                                Início
+                            </th>
+                            <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
+                                Contexto
+                            </th>
+                            <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
+                                Pensamento
+                            </th>
+                            <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
+                                Exibição
+                            </th>
+                            <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
+                                Término
+                            </th>
+                            <th class="border-b border-gray-200 text-left p-1 sm:p-2 lg:p-4 text-gray-500">
+                                Total
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white"></tbody>
+                </table>
+                
+                <h4 class="mt-8 mb-2 font-bold text-gray-600">Filtros</h4>
+                <table class="">
+                    <tbody class="bg-white">
+                        <tr class="border-b border-gray-100 text-gray-500">
+                            <td class="p-2 text-sm font-bold">Pergunta:</td>
+                            <td class="p-2 text-lg font-normal text-gray-800 italic pl-2 prompt"></td>
+                        </tr>
+                        <tr class="border-b border-gray-100 text-gray-500">
+                            <td class="p-2 text-sm font-bold">Categoria:</td>
+                            <td class="p-2 font-normal text-gray-800 italic pl-2 file"></td>
+                        </tr>
+                        <tr class="border-b border-gray-100 text-gray-500">
+                            <td class="p-2 text-sm font-bold">Quantidade:</td>
+                            <td class="p-2 font-normal text-gray-800 italic pl-2 quantity"></td>
+                        </tr>
+                        <tr class="border-b border-gray-100 text-gray-500">
+                            <td class="p-2 text-sm font-bold">Relações:</td>
+                            <td class="p-2 font-normal text-gray-800 italic pl-2 influence"></td>
+                        </tr>
+                        <tr class="border-b border-gray-100 text-gray-500">
+                            <td class="p-2 text-sm font-bold">Score:</td>
+                            <td class="p-2 font-normal text-gray-800 italic pl-2 score"></td>
+                        </tr>
+                        <tr class="border-b border-gray-100 text-gray-500">
+                            <td class="p-2 text-sm font-bold">Thinking:</td>
+                            <td class="p-2 font-normal text-gray-800 italic pl-2 thinking "></td>
+                        </tr>
+                        <tr class="border-b border-gray-100 text-gray-500">
+                            <td class="p-2 text-sm font-bold">Lembranças:</td>
+                            <td class="p-2 font-normal text-gray-800 italic pl-2 memory"></td>
+                        </tr>
+                        <tr class="border-b border-gray-100 text-gray-500">
+                            <td class="p-2 text-sm font-bold">Temperatura:</td>
+                            <td class="p-2 font-normal text-gray-800 italic pl-2 temperature"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
 </body>

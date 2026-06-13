@@ -1,3 +1,7 @@
+const to_d = (t) => {
+  return new Date(t.replace(/(\d{2})\/(\d{2})\/(\d{4}),/, '$3-$2-$1'));
+}
+
 const load = (id) => {
   let msg = MESSAGES.get(id);
   
@@ -41,7 +45,7 @@ const load = (id) => {
         ${msg.dw_tokens}
       </td>
       <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
-        ~${((msg.up_tokens + msg.dw_tokens) / (((new Date(msg.times.finish_at)) - (new Date(msg.times.context_at))) / 1000)).toFixed(2)} tokens / segundo
+        ~${((msg.up_tokens + msg.dw_tokens) / ((to_d(msg.times.finish_at) - to_d(msg.times.context_at)) / 1000)).toFixed(2)} tokens / segundo
       </td>
     </tr>`;
   qs('.tokens tbody').innerHTML = html;
@@ -52,26 +56,30 @@ const load = (id) => {
         ${msg.times.context_at}
       </td>
       <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
-        ~${((new Date(msg.times.think_at)) - (new Date(msg.times.context_at))) / 1000} segundos
+        ~${(to_d(msg.times.think_at) - to_d(msg.times.context_at)) / 1000} segundos
       </td>
       <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
-        ~${((new Date(msg.times.created_at)) - (new Date(msg.times.think_at))) / 1000} segundos
+        ~${(to_d(msg.times.created_at) - to_d(msg.times.think_at)) / 1000} segundos
       </td>
       <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
-        ~${((new Date(msg.times.finish_at)) - (new Date(msg.times.created_at))) / 1000} segundos
+        ~${(to_d(msg.times.finish_at) - to_d(msg.times.created_at)) / 1000} segundos
       </td>
       <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
         ${msg.times.finish_at}
       </td>
       <td class="border-b border-gray-100 p-1 sm:p-2 lg:p-4 text-gray-500">
-        ~${((new Date(msg.times.finish_at)) - (new Date(msg.times.context_at))) / 1000} segundos
+        ~${(to_d(msg.times.finish_at) - to_d(msg.times.context_at)) / 1000} segundos
       </td>
     </tr>`;
   qs('.times tbody').innerHTML = html;
 
   qs('.prompt').innerHTML = msg.prompt;
   qs('.file').innerHTML = msg.file;
+  qs('.quantity').innerHTML = msg.quantity;
+  qs('.influence').innerHTML = msg.influence;
   qs('.score').innerHTML = Math.round(-msg.score * 100) + 180;
+  qs('.thinking').innerHTML = msg.thinking;
+  qs('.memory').innerHTML = msg.memory;
   qs('.temperature').innerHTML = msg.temperature;
 }
 
