@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #4F46E5;
+  --color-primary-dim: #4338CA;
+  --color-primary-container: #E0E7FF;
+  --color-on-primary: #FFFFFF;
+  --color-on-primary-container: #1E1B4B;
+  --color-secondary: #6366F1;
+  --color-secondary-container: #EEF2FF;
+  --color-on-secondary-container: #312E81;
+  --color-surface: #F9FAFB;
+  --color-surface-dim: #F3F4F6;
+  --color-surface-bright: #FFFFFF;
+  --color-surface-container-lowest: #FFFFFF;
+  --color-surface-container-low: #F9FAFB;
+  --color-surface-container: #F3F4F6;
+  --color-surface-container-high: #E5E7EB;
+  --color-surface-container-highest: #D1D5DB;
+  --color-on-surface: #111827;
+  --color-on-surface-variant: #4B5563;
+  --color-outline: #9CA3AF;
+  --color-outline-variant: #E5E7EB;
+  --color-background: #F9FAFB;
+  --color-on-background: #111827;
+  
+  --font-family-headline: Inter, sans-serif;
+  --font-family-body: Inter, sans-serif;
+  --font-family-label: Inter, sans-serif;
+}
+
+colors {
+  --color-x: #0062ff; /* blue */
+  --color-x: #00ffaa; /* emerald */
+  --color-x: #ffa200; /* amber */
+  --color-x: #ff002b; /* rose */
+  --color-x: #4c00ff; /* violet */
+  --color-x: #ff0080; /* pink */
+  --color-x: #00ffe1; /* teal */
+  --color-x: #6b6b6b; /* gray */
+
+  --color-blue: #3b82f6; /* blue-500 */
+  --color-emerald: #10b981; /* emerald-500 */
+  --color-amber: #f59e0b; /* amber-500 */
+  --color-rose: #f43f5e; /* rose-500 */
+  --color-violet: #8b5cf6; /* violet-550 */
+  --color-pink: #ec4899; /* pink-500 */
+  --color-teal: #14b8a6; /* teal-500 */
+  --color-gray: #6b7280; /* gray-500 */
+
+  --color-primary: #3525cd;
+  --color-primary-container: #4f46e5;
+  --color-primary-fixed: #e2dfff;
+  --color-primary-fixed-dim: #c3c0ff;
+  --color-on-primary: #8479e6;
+  --color-on-primary-container: #dad7ff;
+  --color-on-primary-fixed: #0f0069;
+  --color-on-primary-fixed-variant: #3323cc;
+  
+  --color-secondary: #706657;
+  --color-secondary-container: #f5ead9;
+  --color-secondary-fixed: #f7eedc;
+  --color-secondary-fixed-dim: #dbd0c0;
+  --color-on-secondary: #b4ac9c;
+  --color-on-secondary-container: #746c5c;
+  --color-on-secondary-fixed: #2b2314;
+  --color-on-secondary-fixed-variant: #584e40;
+
+  --color-tertiary: #1d7e00;
+  --color-tertiary-container: #00a400;
+  --color-tertiary-fixed: #dfffcc;
+  --color-tertiary-fixed-dim: #c5ff95;
+  --color-on-tertiary: #63c445;
+  --color-on-tertiary-container: #beffbe;
+  --color-on-tertiary-fixed: #113500;
+  --color-on-tertiary-fixed-variant: #007b00;
+
+  --color-surface: #f8fafa;
+  --color-surface-container: #edefef;
+  --color-surface-fixed: #d9dbdb;
+  --color-surface-fixed-dim: #bfcece;
+  --color-inverse-surface: #2e3232;
+  --color-inverse-on-surface: #f0f2f2;
+  --color-on-surface: #191d1d;
+  --color-on-surface-variant: #455555;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-error-fixed: #dbd9d9;
+  --color-error-fixed-dim: #cebfbf;
+  --color-on-error: #f80e0e;
+  --color-on-error-container: #a8323a;
+
+  --color-outline: #777587;
+  --color-outline-variant: #c7c4d8;
+  --color-text-main: #111827;
+  --color-text-muted: #4b5563;
+  --color-border-subtle: #e5e7eb;
+}
+
+old {
+  
+  --color-brand: #3b82f6;
+  --color-primary: #4F46E5;
+  --color-primary-dim: #4338CA;
+  --color-primary-container: #E0E7FF;
+  --color-on-primary: #FFFFFF;
+  --color-on-primary-container: #1E1B4B;
+  --color-secondary: #6366F1;
+  --color-secondary-container: #EEF2FF;
+  --color-on-secondary-container: #312E81;
+  --color-surface: #F9FAFB;
+  --color-surface-dim: #F3F4F6;
+  --color-surface-bright: #FFFFFF;
+  --color-surface-container-lowest: #FFFFFF;
+  --color-surface-container-low: #F9FAFB; 
+  --color-surface-container: #F3F4F6;
+  --color-surface-container-high: #E5E7EB;
+  --color-surface-container-highest: #D1D5DB;
+  --color-on-surface: #111827;
+  --color-on-surface-variant: #4B5563;
+  --color-outline: #9CA3AF;
+  --color-outline-variant: #E5E7EB;
+  --color-background: #F9FAFB;
+  --color-on-background: #111827;
+}
+
+:root {
+  --background: #f8fafc;        /* Slate 50 - Fundo limpo */
+  --surface: #ffffff;           /* Branco puro para cards */
+  --text-main: #0f172a;         /* Slate 900 - Texto principal */
+  --text-muted: #475569;        /* Slate 600 - Legendas e textos secundários */
+  --primary: #4f46e5;           /* Indigo 600 - Botões e links */
+  --accent: #06b6d4;            /* Cyan 500 - Destaques, badges e ícones */
+  --border: #e2e8f0;            /* Slate 200 - Divisores discretos */
+}
+.dark {
+  --background: #0b0f19;        /* Azul espacial profundo */
+  --surface: #131c2e;           /* Card escuro ligeiramente azulado */
+  --text-main: #f8fafc;         /* Slate 50 - Contraste máximo para leitura */
+  --text-muted: #94a3b8;        /* Slate 400 - Menos agressivo aos olhos */
+  --primary: #6366f1;           /* Indigo 500 - Neon suavizado para o escuro */
+  --accent: #22d3ee;            /* Cyan 400 - Brilho elétrico para CTAs */
+  --border: #1e293b;            /* Slate 800 - Linhas sutis */
+}
+
+:root {
+  --background: #f4f6f8;        /* Cinza neutro suave */
+  --surface: #ffffff;           /* Branco puro */
+  --text-main: #111827;         /* Gray 900 */
+  --text-muted: #4b5563;        /* Gray 600 */
+  --primary: #0f172a;           /* Slate 900 - Sofisticação escura nos botões */
+  --accent: #059669;            /* Emerald 600 - Tecnologia viva e dados corretos */
+  --border: #e5e7eb;            /* Gray 200 */
+}
+.dark {
+  --background: #090d16;        /* Quase preto, tom de "terminal profundo" */
+  --surface: #111827;           /* Gray 900 */
+  --text-main: #f9fafb;         /* Gray 50 */
+  --text-muted: #9ca3af;        /* Gray 400 */
+  --primary: #38bdf8;           /* Sky 400 - Azul tecnológico brilhante */
+  --accent: #34d399;            /* Emerald 400 - Verde menta digital */
+  --border: #1f2937;            /* Gray 800 */
+}
+
+:root {
+  --background: #fafafa;        /* Off-white limpo */
+  --surface: #ffffff;
+  --text-main: #171717;         /* Neutral 900 */
+  --text-muted: #525252;        /* Neutral 600 */
+  --primary: #262626;           /* Neutral 800 */
+  --accent: #ec4899;            /* Pink 500 (usado como início de gradientes) */
+  --accent-secondary: #8b5cf6;  /* Violet 500 (fim do gradiente da IA) */
+  --border: #e5e5e5;            /* Neutral 200 */
+}
+.dark {
+  --background: #121212;        /* Preto fosco e minimalista */
+  --surface: #1e1e1e;           /* Cinza escuro plano */
+  --text-main: #f5f5f5;         /* Neutral 100 */
+  --text-muted: #a3a3a3;        /* Neutral 400 */
+  --primary: #e5e5e5;           /* Neutral 200 */
+  --accent: #f472b6;            /* Pink 400 suavizado */
+  --accent-secondary: #a78bfa;  /* Violet 400 suavizado */
+  --border: #2c2c2c;            /* Divisores escuros e elegantes */
+}
+
+body {
+  background-color: #F9FAFB;
+  color: #111827;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
+/* Base styles for slide ranges to look polished and consistent with the original user design */
+input[type="range"] {
+  background-color: #E5E7EB;
+  border-radius: 9999px;
+  height: 6px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: #4F46E5;
+  cursor: pointer;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  transition: transform 0.1s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.glow-accent {
+  background: radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.03) 0%, transparent 70%);
+}

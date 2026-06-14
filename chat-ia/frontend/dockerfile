@@ -1,0 +1,10 @@
+FROM node
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+RUN echo "alias ll='ls -AFoqv --color --group-directories-first'" >> ~/.bashrc
+
+CMD ["npm", "run", "dev"]
