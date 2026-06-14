@@ -11,7 +11,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.tseiiti.projetointegrador6"
+        applicationId = "com.tseiiti.projetointegrador6local"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

@@ -1,6 +1,6 @@
 services:
   ollama:
-    image: ollama/ollama:rocm
+    image: ollama/ollama
     volumes:
       - ollama:/root/.ollama
     environment:
@@ -30,8 +30,6 @@ services:
     image: nginx
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/fullchain.pem:/etc/ssl/private/fullchain.pem:ro
-      - ./nginx/privkey.pem:/etc/ssl/private/privkey.pem:ro
       - ./webpages:/home
     ports:
       - 80:80
