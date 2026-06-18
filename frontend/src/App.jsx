@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
+import Header from './components/Header';
 import Chat from './components/Chat';
 import Settings from './components/Settings';
+
 
 const App = () => {
   const [active, setActive] = useState('chat');
@@ -32,9 +34,6 @@ const App = () => {
         setMobile={setMobile} />
 
       <div className="flex-1 flex flex-col h-full overflow-hidden relative">
-        <header className="h-16 shrink-0 bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 px-4 flex items-center justify-between transition-colors duration-300">
-oi
-        </header>
         {render()}
       </div>
     </div>

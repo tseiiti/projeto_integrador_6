@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const menuItems = [{
+const items = [{
   id: 'chat',
   label: 'Chat',
   icon: 'chat',
@@ -25,53 +25,80 @@ const menuItems = [{
 const Sidebar = ({active, setActive, sidebar, setSidebar, mobile, setMobile}) => {
   const [open, setOpen] = useState(true);
 
-  const itemContent = (
-    <ul className="space-y-2 font-medium">
-      {menuItems.map((item) => {
-        return (
-          <li key={item.id}>
-            <button className="flex items-center px-2 py-1 text-main/60 rounded-rounded hover:text-main" title={item.description} onClick={() => {setActive(item.id)}}>
-              <span className="material-symbols-outlined">{item.icon}</span>
-              <span className="ms-3">{item.label}</span>
-            </button>
-          </li>
-        );
-      })}
-    </ul>
-  );
-  
-  const sidebarContent = (isMobile = false) => {
+  const headerContent = (show) => {
     return (
-    <div className="flex flex-col h-full bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-zinc-800 transition-colors duration-300">
-
-      {/* Header */}
       <div className="px-4 flex items-center justify-between border-b border-gray-100 min-h-[64px]">
         <div className="flex items-center space-x-3 overflow-hidden">
           <div className="w-10 h-10 rounded-lg bg-white dark:bg-blue-500 flex items-center justify-center shadow-sm border border-gray-300">
             <img src="favicon.png" className="h-6 w-6" alt="Logo" />
           </div>
-          {!sidebar && (
-            <span className="font-display font-bold text-gray-900 whitespace-nowrap">
-              Chat IA
-            </span>
+          {show && (
+            <span className="font-display font-bold text-gray-900 whitespace-nowrap">Chat IA</span>
           )}
         </div>
-
-        {/* Collapse Button for desktop view */}
-        <button
-          onClick={() => setSidebar(!sidebar)}
+        
+        <button onClick={() => setSidebar(!sidebar)}
           className="hidden md:flex p-1.5 rounded-lg text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-zinc-800 transition cursor-pointer"
-          title={sidebar ? "Expandir menu" : "Recolher menu"}
-        >
-          {sidebar ? (
-            <span className="material-symbols-rounded select-none text-[18px]">keyboard_double_arrow_right</span>
-          ) : (
-            <span className="material-symbols-rounded select-none text-[18px]">keyboard_double_arrow_left</span>
-          )}
+          title={sidebar ? "Expandir menu" : "Recolher menu"}>
+          <span className="material-symbols-rounded select-none text-[18px]">
+            {sidebar ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left'}
+          </span>
         </button>
       </div>
+    );
+  }
 
-    </div>);
+  const itemContent = (item, show) => {
+    const isActive = active === item.id;
+
+    return (
+      <button key={item.id}
+        onClick={() => {
+          setActive(item.id);
+          setMobile(false);
+        }}
+        style={{ contentVisibility: 'auto' }}
+        className={`w-full group flex items-center space-x-3 px-3 py-2 rounded-xl transition-all relative cursor-pointer ${
+          isActive
+            ? 'text-blue-700 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-zinc-800'
+            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-zinc-800/50 hover:text-gray-900 dark:hover:text-white'
+        }`}
+        title={!show ? item.label : undefined}>
+
+        {isActive && (
+          <div className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-blue-600 dark:bg-blue-400 rounded-r-md"></div>
+        )}
+        
+        <span className={`material-symbols-rounded select-none text-[22px] flex-shrink-0 transition-transform group-hover:scale-105 ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-550'}`}>
+          {item.icon}
+        </span>
+        
+        {show && (
+          <div className="flex flex-col items-start text-left overflow-hidden">
+            <span className="text-sm leading-tight">{item.label}</span>
+            <span className="text-[10px] text-gray-400 dark:text-gray-500 font-normal leading-normal whitespace-nowrap truncate w-full group-hover:text-gray-600 dark:group-hover:text-gray-300">
+              {item.description}
+            </span>
+          </div>
+        )}
+      </button>
+    );
+  }
+  
+  const sidebarContent = (isMobile = false) => {
+    const show = isMobile || !sidebar;
+
+    return (
+      <div className="flex flex-col h-full bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-zinc-800 transition-colors duration-300">
+        {/* Header */}
+        {headerContent(show)}
+    
+        {/* Items */}
+        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+          {items.map((item) => itemContent(item, show))}
+        </nav>
+      </div>
+    );
   }
 
   return (
