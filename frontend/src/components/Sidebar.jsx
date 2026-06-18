@@ -6,7 +6,7 @@ const Sidebar = ({active, setActive, sidebar, setSidebar, mobile, setMobile}) =>
 
   const headerContent = (show) => {
     return (
-      <div className="px-4 flex items-center justify-between border-b border-gray-200 dark:border-zinc-700/60 min-h-[48px]">
+      <div className="px-2 flex items-center justify-between border-b border-gray-200 dark:border-zinc-700/60 min-h-[48px]">
         <div className="flex items-center space-x-3 overflow-hidden">
           <div className="w-9 h-9 rounded-lg bg-white dark:bg-gray-800 flex items-center justify-center shadow-sm border border-gray-300 dark:border-gray-600">
             <img src="favicon.png" className="h-6 w-6" alt="Logo" />
@@ -37,7 +37,7 @@ const Sidebar = ({active, setActive, sidebar, setSidebar, mobile, setMobile}) =>
           setMobile(false);
         }}
         style={{ contentVisibility: 'auto' }}
-        className={`w-full group flex items-center space-x-2 px-4 py-1 rounded-xl transition-all relative cursor-pointer ${
+        className={`w-full group flex items-center space-x-2 px-2 py-1 rounded-xl transition-all relative cursor-pointer ${
           isActive
             ? 'text-blue-700 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-zinc-800'
             : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-zinc-800/50 hover:text-gray-900 dark:hover:text-white'
@@ -83,11 +83,10 @@ const Sidebar = ({active, setActive, sidebar, setSidebar, mobile, setMobile}) =>
   return (<>
     {/* Desktop */}
     <aside id="sidebar-desktop"
-      className={`hidden md:block h-screen h-stretch shrink-0 transition-all duration-300 z-20 ${sidebar ? 'w-[68px]' : 'w-64'}`}>
+      className={`hidden md:block h-screen h-stretch shrink-0 transition-all duration-300 z-20 ${sidebar ? 'w-[52px]' : 'w-64'}`}>
       {sidebarContent(false)}
     </aside>
 
-    {/* Botão Mobile */}
     {mobile && (
       <div id="mobile-backdrop"
         onClick={() => setMobile(false)}
