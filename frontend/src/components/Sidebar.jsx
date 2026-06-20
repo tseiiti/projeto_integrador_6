@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MENU_ITEMS } from '../services/metadata';
+import { MENU_ITEMS } from '../services/data';
 
 const Sidebar = ({active, setActive, sidebar, setSidebar, mobile, setMobile}) => {
   const [open, setOpen] = useState(true);

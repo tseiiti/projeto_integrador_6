@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MENU_ITEMS } from '../services/metadata';
+import { MENU_ITEMS } from '../services/data';
 
 const Header = ({active, theme, setTheme, mobile, setMobile}) => {
   return (<>

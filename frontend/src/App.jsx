@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import Chat from './components/Chat';
-import Settings from './components/Settings';
+import Chat from './pages/Chat';
+import Settings from './pages/Settings';
 
 
 const App = () => {
