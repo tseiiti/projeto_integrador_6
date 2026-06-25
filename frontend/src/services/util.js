@@ -1,0 +1,110 @@
+import showdown from 'showdown';
+
+/******************************************************************************
+ * Definições e Funções básicas
+ ******************************************************************************/
+const ONLOG = false;
+const ONALERT = false;
+const cl = arg => { if (ONLOG) console.log(arg); };
+const ce = error => { console.error(error); if (ONALERT) alert(error); }
+const qs = arg => document.querySelector(arg);
+const qsa = arg => document.querySelectorAll(arg);
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// funções de armazenamento
+const get = (key, defaultValue) => {
+  const data = localStorage.getItem(key);
+  return data ? JSON.parse(data) : defaultValue;
+};
+
+const set = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
+class StorageArray {
+  constructor(key, init = []) {
+    this.key = key;
+    this.init = init;
+  }
+
+  lst() {
+    return get(this.key, this.init);
+  }
+
+  add(e, id) {
+    let es = this.lst();
+    let i = es.findIndex(e => e.id === id);
+    if (i !== -1) {
+      e = this.upd(id, e);
+    } else {
+      e = this.ins(e);
+    }
+    return e;
+  }
+
+  ins(e) {
+    let es = this.lst();
+    let times = e.times;
+    e = {
+      ...e,
+      id: Math.random().toString(36).substring(2),
+      times: {
+        ...times,
+        created_at: (new Date()).toLocaleString(),
+      }
+    };
+    es.push(e);
+    set(this.key, es);
+    return e;
+  }
+
+  get(id) {
+    return this.lst().find(e => e.id === id);
+  }
+
+  upd(id, e) {
+    let es = this.lst();
+    let i = es.findIndex(e => e.id === id);
+    if (i !== -1) {
+      es[i] = {...es[i], ...e};
+      set(this.key, es);
+    }
+    return this.lst()[i];
+  }
+
+  del(id) {
+    let es = this.lst();
+    let e = es.find(e => e.id == id);
+    es = es.filter(e => e.id != id);
+    set(this.key, es);
+    return e;
+  }
+
+  clr() {
+    set(this.key, this.init);
+  }
+}
+
+export const copy = async (text) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    alert('Texto copiado!');
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const markdown = (text) => {
+  // trata latex
+  text = text.replace(/\$+(.*?)\$+/g,  (match, value) => {
+    let html = value
+      .replace(/\\frac\{(.*?)\}\{(.*?)\}/g, '($1)/($2)')
+      .replace(/\\text\{(.*?)\}/g, '$1')
+      .replace(/\\times/g, '*')
+      .replace(/\s\\%/g, '%');
+    return '<i>' + html + '</i>';
+  });
+
+  const converter = new showdown.Converter({optionKey: 'value'});
+  return converter.makeHtml(text);
+}

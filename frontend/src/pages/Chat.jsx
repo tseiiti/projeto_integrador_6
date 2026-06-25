@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-// import {MESSAGES} from '../services/data';
+import { useState, useEffect, useRef } from 'react';
+import {MESSAGES} from '../services/data';
+import MessageUser from '../components/MessageUser';
 import MessageAssistant from '../components/MessageAssistant';
 
 const Chat = () => {
@@ -38,30 +39,35 @@ const Chat = () => {
 
   const [messages, setMessages] = useState(() => {
     const saved = localStorage.getItem('app_chat_history');
-      if (saved) {
-        return JSON.parse(saved);
-      }
-      return [
-        {
-          id: 'welcome',
-          role: 'assistant',
-          content: `Olá! Eu sou o seu **Assistente de IA**. \n\nPosso ajudar você a analisar gargalos, sugerir métodos de organização e criar planos de ação eficientes baseados nos seus prazos e prioridades. Como posso ajudar hoje?`,
-          timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-        }
-      ];
-    });
+    if (saved) {
+      return JSON.parse(saved);
+    }
+    return MESSAGES;
+  });
+
+  const endRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('app_chat_history', JSON.stringify(messages));
+  }, [messages]);
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, loading]);
 
   return (<>
     <section className="flex-grow overflow-y-auto custom-scrollbar p-md max-w-[1376px] mx-auto w-full h-full">
       {/* Message Stream Area */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-0 sm:p-8 lg:px-16 space-y-8 min-h-[calc(100dvh/2-64px)]">
-        {messages.map((message) => (
-          message.role == 'user' ? (
-            'a'
-          ) : (
-            <MessageAssistant key={message.id} message={message} />
-          )
-        ))}
+        {messages.map((message) => {
+          if (message.role == 'user')
+            return <MessageUser key={message.id} message={message} />;
+          if (message.role == 'assistant')
+            return <MessageAssistant key={message.id} message={message} />;
+        })}
+
+        <div ref={endRef} />
       </div>
     
       {/* Shell Area */}

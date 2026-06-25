@@ -28,83 +28,121 @@ export const MESSAGES = [
   },
   {
     "role": "user",
-    "content": "Ao gerar relatórios de MTBF, entre outras métricas, é necessário definir um padrão operacional correto para o campo \"período\" e como essa definição deve ser aplicada ao critério do indicador.\n",
-    "id": "qje8el9hmis",
+    "content": "oi",
+    "id": "e96q4mt1v0q",
     "times": {
-      "created_at": "17/06/2026, 09:48:35"
+      "created_at": "12/06/2026, 20:21:04"
     }
   },
   {
     "role": "assistant",
-    "content": "O contexto fornecido descreve a funcionalidade do Sistema EGA Soluções Industriais, focando em relatórios e análises relacionadas ao Tempo Médio Entre Falha (MTBF). O sistema permite a personalização da exibição de dados, incluindo filtros para selecionar datas, áreas, equipamentos e eventos relevantes. Ele também oferece opções de agrupamento e seleção de itens.  A informação é relevante para o entendimento do processo de geração de relatórios de MTBF.\n",
+    "content": "Olá! Como posso ajudar?\n",
     "model": "gemma3:1b",
-    "up_tokens": 891,
-    "dw_tokens": 96,
+    "up_tokens": 102,
+    "dw_tokens": 8,
     "file": "Todos",
     "score": 1.05,
     "temperature": 0.5,
-    "thinking": false,
-    "quantity": 8,
-    "memory": 4,
-    "influence": 2,
     "contexts": [
       {
-        "content": "Página : 16 Relatório → MTBF Vá em [ Relatórios ], e escolha a opção [ MTBF ], como é exibido na figura abaixo. Na parte superior se abrirá a tela onde o usuário irá realizar a parametrização do relatório. [1-Período ] →selecione Diário; Entre Datas; Mensal, ou selecione a data desejada no calendário. [2-Filtros ] →é possível fazer filtros por ( Áreas ; Equipamentos; Eventos; Ativar ou desativar a exibição MTBF/MTTA/MTTR/MTTF ) e ainda exibir ou não, Considerar Previsto. [3-Opções do Gráfico ]",
-        "score": 0.7087560892105103,
+        "content": ".. 017",
+        "score": 1.003105640411377,
+        "category": "PCPMaster",
+        "file": "PCPMaster - Modulo III - Online & Histórico.pdf",
+        "page": 2
+      }
+    ],
+    "prompt": "oi",
+    "times": {
+      "context_at": "12/06/2026, 20:21:04",
+      "think_at": "12/06/2026, 20:21:39",
+      "created_at": "12/06/2026, 20:22:15",
+      "finish_at": "12/06/2026, 20:22:16"
+    },
+    "id": "jkmahewwuu"
+  },
+  {
+    "role": "user",
+    "content": "Se o valor do Time Apropriado entre Falhas (MTBF) de um equipamento estiver sendo satisfeito, com maior índice demonstrando maior confiabilidade, como podemos utilizar os dados de diferentes tipos de falhas ou as informações das últimas paradas para potencializar a melhoria contínua além dapenas focar no tempo?\n",
+    "id": "lyivq3l7r3s",
+    "times": {
+      "created_at": "12/06/2026, 20:23:29"
+    }
+  },
+  {
+    "role": "assistant",
+    "content": "O usuário quer identificar como usar os dados do Time Apropriado entre Falha (MTBF) para melhorar a manutenção dos equipamentos, mesmo que o valor do MTBF esteja satisfeito e demonstrando maior confiabilidade.\n\n**Resposta:**\n\nPara otimizar a manutenção de equipamentos com base nos dados do MTBF, você pode considerar as seguintes estratégias:\n\n1.  **Análise Histórica das Falhas:** Utilize os dados históricos das falhadas para identificar padrões e causas raízes mais profundas.\n2.  **Dados de Todas as Falhas (MTTA, MTTR, MTTF):** Combine os dados de diferentes tipos de falha (MTTA, MTTR, MTTF) para obter uma visão completa do ciclo de vida do equipamento.\n3.  **Redução de Variáveis:** Em vez de focar apenas no tempo de falha, utilize informações sobre o período de disponibilidade e paradas programadas como indicadores chave da confiabilidade do equipamento. Isso pode ajudar a identificar pontos críticos que precisam de atenção especial.\n4. **Análise de Tempo de Reparo (MTTR):** O MTTR é um indicador importante para otimizar processos de manutenção, pois ele mede o tempo gasto em cada intervenção e ajuda a reduzir custos com reparos.\n5.  **Foco no Intervalo de Disponibilidade (TD - TP):** Ao analisar as informações do MTBF, você pode identificar quando o equipamento está em ponto de operação ou falha, possibilitando a implementação de estratégias de manutenção preventiva.\n\nEm resumo, utilize os dados do MTBF como ponto de partida para uma análise mais abrangente e direcionada à otimização da manutenção dos equipamentos.",
+    "model": "gemma3:1b",
+    "up_tokens": 892,
+    "dw_tokens": 350,
+    "file": "Todos",
+    "score": 1.05,
+    "temperature": 0.5,
+    "contexts": [
+      {
+        "content": "exibidas as informações estatísticas do MTBF; MTTA; MTTR; MTTF. Relatório MTBF Mean Time Between Failures É o período médio entre falhas. O MTBF é um indicador da confiabilidade de um produto ou um sistema reparável. Ele mede o índice de falhas aleatórias excluindo falhas sistemáticas. Caso seja necessário mais detalhe do cálculo , por favor, consultar o manual específico do MTBF.",
+        "score": 0.7314956784248352,
         "category": "EventManager",
         "file": "Event Manager - Gerenciador de Eventos.pdf",
         "page": 17
       },
       {
+        "content": "[ Datas ] é possível também selecionar de modo aleatório as datas desejadas do período desejado. Em [ Áreas ] e [Equipamentos ], [Moldes ] e [Eventos ], pode -se [Marcar ], [Desmarcar ] todos os itens ou selecionar apenas os itens desejados. MTBF MTBF - Mean Time Between Failures É o período médio entre falhas. O MTBF é um indicador da confiabilidade de um produto ou um sistema reparável. Ele mede o índice de falhas aleatórias excluindo falhas sistemáticas. Caso seja necessário mais detalhe do",
+        "score": 0.7621653079986572,
+        "category": "PCM",
+        "file": "PCM - Planejamento e Controle de Manutenção.pdf",
+        "page": 19
+      },
+      {
+        "content": "Página : 1 O EGA_ MTBF On-Line é um aplicativo desenvolvido pela EGA engenharia , o qual permite demonstrar o período médio entre as falhas , cujo valor atribuído a um determinado dispositivo ou aparelho irá descrever a sua confiabilidade. Este valor atribuído indica quando poderá ocorrer uma falha no aparelho em questão. Quanto maior for este índice, maior será a confiabilidade no equipamento e, consequentemente, a manutenção será avaliada em questões de eficiência. Este manual tem por",
+        "score": 0.7851125001907349,
+        "category": "MTBF",
+        "file": "MTBF - Tempo Médio entre Falhas.pdf",
+        "page": 2
+      },
+      {
         "content": "Aqui é exibido o índice de Disponibilidade do período selecionado , onde o tempo produtivo + parada não programadas é divido pelo total do tempo disponível + paradas programadas (Disponibilidade). Aqui é exibida a quantidade de paradas efetivas que ocorreram dentro do período selecionado. (Número de Paradas). Na fig ura acima é exibida a informação do MTBF. MTTA→Tempo Médio atendimento (MTTA): É o tempo médio de atendimento. MTTR→Tempo Médio Para Reparo (MTTR): É o tempo médio gasto durante uma",
-        "score": 0.8393189311027527,
+        "score": 0.8122299313545227,
         "category": "MTBF",
         "file": "MTBF - Tempo Médio entre Falhas.pdf",
         "page": 11
       },
       {
-        "content": "exibidas as informações estatísticas do MTBF; MTTA; MTTR; MTTF. Relatório MTBF Mean Time Between Failures É o período médio entre falhas. O MTBF é um indicador da confiabilidade de um produto ou um sistema reparável. Ele mede o índice de falhas aleatórias excluindo falhas sistemáticas. Caso seja necessário mais detalhe do cálculo , por favor, consultar o manual específico do MTBF.",
-        "score": 0.8431281447410583,
-        "category": "EventManager",
-        "file": "Event Manager - Gerenciador de Eventos.pdf",
-        "page": 17
+        "content": "→Tempo médio de atendimento MTTF →Tempo médio para falha MTTR →Tempo médio de reparo CÁLCULOS MTBF = (TD – TP) / QR MTTA = (TP – TR) / QR MTTF = TD / QR MTTR = TR / QR",
+        "score": 0.833899199962616,
+        "category": "MTBF",
+        "file": "MTBF - Conceitos e Regras de Calculos.pdf",
+        "page": 3
       },
       {
-        "content": "], é possível definir como será exibido o eixo X e limitar a quantidade de itens no gráfico. Após parametrizado o período, agrupamento e demais filtros, pressione o botão [ Gerar Relatório ]. Na aba [ Visualização ] é exibido o gráfico estatístic o do MTBF; MTTA; MTTR; MTTF MTBF .",
-        "score": 0.8534651398658752,
-        "category": "PCM",
-        "file": "PCM - Planejamento e Controle de Manutenção.pdf",
-        "page": 20
-      },
-      {
-        "content": "Página: 18 Relato rios – MTBF Na tela principal, vá em [ Relatórios ], e selecione a opção [MTBF ]. Logo se abrirá a tela com as opções de [ Filtros ], [Agrupamento ], e opção para carregar modelos de relatório salvo pelo usuário. Em [ Período ], é possível selecionar Diário; Entre Datas; Mensal, ou selecione a data desejada no calendário. Se a opção escolhida for [ Entre Datas ], através do botão [ Datas ] é possível também selecionar de modo aleatório as datas desejadas do período desejado.",
-        "score": 0.8727321624755859,
-        "category": "PCM",
-        "file": "PCM - Planejamento e Controle de Manutenção.pdf",
-        "page": 19
-      },
-      {
-        "content": "Página : 11 →Analisando resultados em tela Sistema MTBF -Tempo Médio Entre Falhas\nNa Fig ura a cima é exibida a informação das Ultimas Paradas referente ao Período e as Maquinas selecionadas.",
-        "score": 0.8842529654502869,
+        "content": "tempo médio de atendimento. MTTR→Tempo Médio Para Reparo (MTTR): É o tempo médio gasto durante uma intervenção no processo MTTF→Tempo Médio Entre Falhas (MTBF): É a média de tempo entre uma parada e outra Na Fig ura a cima é exibida a informação da Evolução do MTBF da máquina e período selecionado. Conforme parâmetros pré -selecionados é traçada a Meta em horas referente a evolução, note que ao arrastar o mouse é exibido a informação MTBF/HRS.",
+        "score": 0.8443037271499634,
         "category": "MTBF",
         "file": "MTBF - Tempo Médio entre Falhas.pdf",
-        "page": 12
+        "page": 11
       },
       {
-        "content": "[ Datas ] é possível também selecionar de modo aleatório as datas desejadas do período desejado. Em [ Áreas ] e [Equipamentos ], [Moldes ] e [Eventos ], pode -se [Marcar ], [Desmarcar ] todos os itens ou selecionar apenas os itens desejados. MTBF MTBF - Mean Time Between Failures É o período médio entre falhas. O MTBF é um indicador da confiabilidade de um produto ou um sistema reparável. Ele mede o índice de falhas aleatórias excluindo falhas sistemáticas. Caso seja necessário mais detalhe do",
-        "score": 0.8900966048240662,
+        "content": "o índice de falhas aleatórias excluindo falhas sistemáticas. Caso seja necessário mais detalhe do cálculo, por favor, solicite a EGA o manual específico do MTBF.",
+        "score": 0.8475570678710938,
         "category": "PCM",
         "file": "PCM - Planejamento e Controle de Manutenção.pdf",
         "page": 19
+      },
+      {
+        "content": "exibidos. Veja o exemplo abaixo. Veja abaixo o resultado do novo filtro que agora é por tempo de Reparo. Sistema MTBF -Tempo Médio Entre Falhas",
+        "score": 0.8771857023239136,
+        "category": "MTBF",
+        "file": "MTBF - Tempo Médio entre Falhas.pdf",
+        "page": 13
       }
     ],
-    "prompt": "Ao gerar relatórios de MTBF, entre outras métricas, é necessário definir um padrão operacional correto para o campo \"período\" e como essa definição deve ser aplicada ao critério do indicador.\n",
+    "prompt": "Se o valor do Time Apropriado entre Falhas (MTBF) de um equipamento estiver sendo satisfeito, com maior índice demonstrando maior confiabilidade, como podemos utilizar os dados de diferentes tipos de falhas ou as informações das últimas paradas para potencializar a melhoria contínua além dapenas focar no tempo?\n",
     "times": {
-      "context_at": "17/06/2026, 09:48:35",
-      "think_at": "17/06/2026, 09:48:37",
-      "created_at": "17/06/2026, 09:48:58",
-      "finish_at": "17/06/2026, 09:49:07"
+      "context_at": "12/06/2026, 20:23:29",
+      "think_at": "12/06/2026, 20:23:30",
+      "created_at": "12/06/2026, 20:23:50",
+      "finish_at": "12/06/2026, 20:24:32"
     },
-    "id": "k3ky26zfgfq"
+    "id": "iz0e5szy4wr"
   }
 ];
