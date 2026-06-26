@@ -1,4 +1,4 @@
-import {copy, markdown} from '../services/util';
+import { copy_text, markdown } from '../services/util';
 
 const MessageAssistant = ({message}) => {
   const like = (message, value) => {
@@ -32,7 +32,7 @@ const MessageAssistant = ({message}) => {
               <span className="material-symbols-outlined like" style={{fontVariationSettings: (message?.like == -1 ? "'FILL' 1" : '')}}>thumb_down</span>
             </button>
             <button className="cursor-pointer px-1 pt-1.5 hover:bg-gray-200 rounded-md hover:text-gray-800"
-              onClick={() => copy(message?.content)}>
+              onClick={() => copy_text(message?.content)}>
               <span className="material-symbols-outlined">content_copy</span>
             </button>
             <p className="text-[10px] text-zinc-500 mb-1">{message?.times?.created_at}</p>

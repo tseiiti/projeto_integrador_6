@@ -85,12 +85,32 @@ class StorageArray {
   }
 }
 
-export const copy = async (text) => {
+var time_id;
+export const show_toast = (title = '', text = '', time = 3) => {
+  clearTimeout(time_id);
+
+  if (title.length == 0 || text.length == 0) return;
+  const toast = qs('#toast');
+  if (!toast) return;
+
+  toast.querySelector('h1').innerHTML = title;
+  toast.querySelector('p').innerHTML = text;
+  toast.classList.remove('opacity-0');
+  toast.classList.add('opacity-100');
+  
+  time_id = setTimeout(() => {
+    toast.classList.remove('opacity-100');
+    toast.classList.add('opacity-0');
+  }, time * 1000);
+}
+
+export const copy_text = async (text) => {
   try {
     await navigator.clipboard.writeText(text);
-    alert('Texto copiado!');
-  } catch (err) {
-    console.error(err);
+    if (text.length > 50) text = `${text.substring(0, 47).trim()}...`
+    show_toast('Copiado:', `Texto "${text}" copiado!`);
+  } catch (error) {
+    ce(error);
   }
 };
 

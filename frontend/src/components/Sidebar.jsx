@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { MENU_ITEMS } from '../services/data';
 
-const Sidebar = ({active, setActive, sidebar, setSidebar, mobile, setMobile}) => {
+const Sidebar = ({active, setActive, desktop, setDesktop, mobile, setMobile}) => {
   const [open, setOpen] = useState(true);
 
-  const headerContent = (show) => {
+  // cabeçalho do menu
+  const header = (show) => {
     return (
       <div className="px-2 flex items-center justify-between border-b border-gray-200 dark:border-zinc-700/60 min-h-[48px]">
         <div className="flex items-center space-x-3 overflow-hidden">
@@ -16,18 +17,19 @@ const Sidebar = ({active, setActive, sidebar, setSidebar, mobile, setMobile}) =>
           )}
         </div>
         
-        <button onClick={() => setSidebar(!sidebar)}
+        <button onClick={() => setDesktop(!desktop)}
           className="hidden md:flex p-1.5 rounded-lg text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-zinc-800 transition cursor-pointer"
-          title={sidebar ? "Expandir menu" : "Recolher menu"}>
+          title={desktop ? "Expandir menu" : "Recolher menu"}>
           <span className="material-symbols-rounded select-none text-[18px]">
-            {sidebar ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left'}
+            {desktop ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left'}
           </span>
         </button>
       </div>
     );
   }
 
-  const itemContent = (item, show) => {
+  // cada item do menu
+  const content = (item, show) => {
     const isActive = active === item.id;
 
     return (
@@ -64,17 +66,18 @@ const Sidebar = ({active, setActive, sidebar, setSidebar, mobile, setMobile}) =>
     );
   }
   
-  const sidebarContent = (isMobile = false) => {
-    const show = isMobile || !sidebar;
+  // auxiliar itens do menu
+  const sidebar = (isMobile = false) => {
+    const show = isMobile || !desktop;
 
     return (
       <div className="flex flex-col h-full bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-zinc-800 transition-colors duration-300">
         {/* Header */}
-        {headerContent(show)}
+        {header(show)}
     
         {/* Items */}
         <nav className="flex-1 mt-1 p-1 space-y-1 overflow-y-auto">
-          {MENU_ITEMS.map((item) => itemContent(item, show))}
+          {MENU_ITEMS.map((item) => content(item, show))}
         </nav>
       </div>
     );
@@ -83,8 +86,8 @@ const Sidebar = ({active, setActive, sidebar, setSidebar, mobile, setMobile}) =>
   return (<>
     {/* Desktop */}
     <aside id="sidebar-desktop"
-      className={`hidden md:block h-screen h-stretch shrink-0 transition-all duration-300 z-20 ${sidebar ? 'w-[52px]' : 'w-64'}`}>
-      {sidebarContent(false)}
+      className={`hidden md:block h-screen h-stretch shrink-0 transition-all duration-300 z-20 ${desktop ? 'w-[52px]' : 'w-64'}`}>
+      {sidebar(false)}
     </aside>
 
     {mobile && (
@@ -97,7 +100,7 @@ const Sidebar = ({active, setActive, sidebar, setSidebar, mobile, setMobile}) =>
     {/* Mobile */}
     <aside id="sidebar-mobile"
       className={`md:hidden fixed top-0 bottom-0 left-0 w-64 z-40 transition-transform duration-300 transform ${mobile ? 'translate-x-0' : '-translate-x-full'}`}>
-      {sidebarContent(true)}
+      {sidebar(true)}
     </aside>
   </>);
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Toast from './components/Toast';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Chat from './pages/Chat';
@@ -6,9 +7,10 @@ import Settings from './pages/Settings';
 
 
 const App = () => {
-  const [active, setActive] = useState('chat');
-  const [sidebar, setSidebar] = useState(false);
-  const [mobile, setMobile] = useState(false);
+  const [active, setActive] = useState('chat');   // controla tela atual
+  const [desktop, setDesktop] = useState(true);   // se menu desktop está aberto
+  const [mobile, setMobile] = useState(false);    // se menu mobile está aberto
+  
   const [theme, setTheme] = useState(() => {
     const saved = localStorage.getItem('theme');
     if (saved) return saved;
@@ -28,6 +30,7 @@ const App = () => {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  // reinderiza tela atual
   const render = () => { 
     switch (active) {
       case 'chat':
@@ -38,16 +41,16 @@ const App = () => {
         );
       default:
         return <Chat />;
-      }
+    }
   }
 
-  return (<>
+  return (
     <div id="main" className="flex h-screen w-screen overflow-hidden bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
       <Sidebar
         active={active}
         setActive={setActive}
-        sidebar={sidebar}
-        setSidebar={setSidebar}
+        desktop={desktop}
+        setDesktop={setDesktop}
         mobile={mobile}
         setMobile={setMobile} />
 
@@ -58,10 +61,12 @@ const App = () => {
           setTheme={setTheme}
           mobile={mobile}
           setMobile={setMobile} />
+
         {render()}
+        <Toast />
       </div>
     </div>
-  </>);
+  );
 }
 
 export default App;

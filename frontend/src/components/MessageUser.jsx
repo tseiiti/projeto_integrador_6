@@ -1,4 +1,4 @@
-import {copy} from '../services/util';
+import { copy_text } from '../services/util';
 
 const MessageUser = ({message}) => {
   return (
@@ -17,12 +17,12 @@ const MessageUser = ({message}) => {
           </span>
         </div>
         <button className="cursor-pointer p-1.5 hover:bg-gray-100 rounded-md transition-colors text-gray-400 hover:text-gray-800 opacity-0 group-hover:opacity-100"
-          onClick={() => copy(message?.content)}>
+          onClick={() => copy_text(message?.content)}>
           <span className="material-symbols-outlined text-[24px]">content_copy</span>
         </button>
       </div>
     </div>
-  )
-};
+  );
+}
 
 export default MessageUser;
