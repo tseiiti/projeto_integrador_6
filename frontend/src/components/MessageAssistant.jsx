@@ -1,4 +1,4 @@
-import { copy_text, markdown } from '../services/util';
+import { copyText, markdown } from '../services/util';
 
 const MessageAssistant = ({message}) => {
   const like = (message, value) => {
@@ -14,7 +14,7 @@ const MessageAssistant = ({message}) => {
   }
 
   return (
-    <div className="flex flex-col items-start group" id={message?.id}>
+    <div className="flex flex-col items-start group mb-6" id={message?.id}>
       <div className="max-w-[95%] sm:max-w-[85%] sm:flex sm:items-start gap-2 space-y-2">
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-blue-400 flex items-center justify-center flex-shrink-0 mt-1 shadow-md shadow-gray-300">
           <span className="material-symbols-outlined text-white text-sm"
@@ -32,7 +32,7 @@ const MessageAssistant = ({message}) => {
               <span className="material-symbols-outlined like" style={{fontVariationSettings: (message?.like == -1 ? "'FILL' 1" : '')}}>thumb_down</span>
             </button>
             <button className="cursor-pointer px-1 pt-1.5 hover:bg-gray-200 rounded-md hover:text-gray-800"
-              onClick={() => copy_text(message?.content)}>
+              onClick={() => copyText(message?.content)}>
               <span className="material-symbols-outlined">content_copy</span>
             </button>
             <p className="text-[10px] text-zinc-500 mb-1">{message?.times?.created_at}</p>

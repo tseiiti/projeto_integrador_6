@@ -86,7 +86,7 @@ class StorageArray {
 }
 
 var time_id;
-export const show_toast = (title = '', text = '', time = 3) => {
+const showToast = (title = '', text = '', time = 3) => {
   clearTimeout(time_id);
 
   if (title.length == 0 || text.length == 0) return;
@@ -104,17 +104,30 @@ export const show_toast = (title = '', text = '', time = 3) => {
   }, time * 1000);
 }
 
-export const copy_text = async (text) => {
+const copyText = async (text) => {
   try {
     await navigator.clipboard.writeText(text);
     if (text.length > 50) text = `${text.substring(0, 47).trim()}...`
-    show_toast('Copiado:', `Texto "${text}" copiado!`);
+    showToast('Copiado!', `Texto: "${text}"`);
   } catch (error) {
     ce(error);
   }
 };
 
-export const markdown = (text) => {
+const pasteText = async (arg) => {
+  const e = qs(arg);
+  try {
+    let text = await navigator.clipboard.readText();
+    e.value = text;
+    if (text.length > 50) text = `${text.substring(0, 47).trim()}...`
+    showToast('Colado!', `Texto: "${text}"`, 2);
+    e.focus();
+  } catch (error) {
+    ce(error);
+  }
+};
+
+const markdown = (text) => {
   // trata latex
   text = text.replace(/\$+(.*?)\$+/g,  (match, value) => {
     let html = value
@@ -128,3 +141,5 @@ export const markdown = (text) => {
   const converter = new showdown.Converter({optionKey: 'value'});
   return converter.makeHtml(text);
 }
+
+export { cl, ce, qs, qsa, sleep, get, set, showToast, copyText, pasteText, markdown }
