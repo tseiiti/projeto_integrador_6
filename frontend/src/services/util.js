@@ -1,9 +1,10 @@
 import showdown from 'showdown';
+import { KEYS } from './data';
 
 /******************************************************************************
  * Definições e Funções básicas
  ******************************************************************************/
-const ONLOG = false;
+const ONLOG = true;
 const ONALERT = false;
 const cl = arg => { if (ONLOG) console.log(arg); };
 const ce = error => { console.error(error); if (ONALERT) alert(error); }
@@ -85,7 +86,6 @@ class StorageArray {
   }
 }
 
-var time_id;
 const showToast = (title = '', text = '', time = 3) => {
   clearTimeout(time_id);
 
@@ -142,4 +142,19 @@ const markdown = (text) => {
   return converter.makeHtml(text);
 }
 
-export { cl, ce, qs, qsa, sleep, get, set, showToast, copyText, pasteText, markdown }
+var time_id;
+
+export {
+  KEYS,
+  cl, 
+  ce, 
+  qs, 
+  qsa, 
+  sleep, 
+  get, 
+  set, 
+  showToast, 
+  copyText, 
+  pasteText, 
+  markdown,
+}

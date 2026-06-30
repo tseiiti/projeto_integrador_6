@@ -22,7 +22,7 @@ const MessageAssistant = ({message}) => {
         </div>
         <div className="bg-white rounded-xl rounded-tl-none p-4 space-y-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-gray-200">
           <div className="prose prose-sm max-w-none text-justify">
-            <div className="text-zinc-800 content [&>*]:pb-2 [&>ul]:list-disc [&_ul]:pl-5 [&>ul]:[&_ul]:list-['⮞'] [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: markdown(message.content) }}/>
+            <div className="text-zinc-800 content [&>*]:pb-2 [&>ul]:list-disc [&_ul]:pl-5 [&>ul]:[&_ul]:list-['⮞'] [&_ol]:list-decimal [&_ol]:pl-5 assistant-content" dangerouslySetInnerHTML={{ __html: markdown(message.content) }}/>
           </div>
           <div className="flex items-center gap-3 text-gray-400 transition-colors">
             <button className="cursor-pointer px-1 pt-1.5 hover:bg-gray-200 rounded-md hover:text-gray-800">

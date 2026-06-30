@@ -1,27 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
-import { MESSAGES } from '../services/data';
-import { qs, showToast, pasteText } from '../services/util';
+import { KEYS } from '../services/data';
+import { set, get, qs, showToast, pasteText } from '../services/util';
+import { sendQuery } from '../services/chat';
 import MessageUser from '../components/MessageUser';
 import MessageAssistant from '../components/MessageAssistant';
+import MessageLast from '../components/MessageAssistant';
 
 const Chat = () => {
   const [messages, setMessages] = useState(() => {
-    const saved = localStorage.getItem('app_chat_history');
-    if (saved) {
-      return JSON.parse(saved);
-    }
-    return MESSAGES;
+    return get(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
   });
 
   const endRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
   const handleSend = () => {
-    showToast('teste', qs('#textarea-prompt').value);
-
-    // if (formData.content.trim().length == 0) return;
-    // send_query(props, formData);
-    // setFormData({role: 'user', content: ''});
+    sendQuery('#textarea-prompt', messages, setMessages, setLoading);
   };
 
   const handleEnter = (e) => {
@@ -32,7 +26,7 @@ const Chat = () => {
   }
 
   useEffect(() => {
-    localStorage.setItem('app_chat_history', JSON.stringify(messages));
+    set(KEYS.MESSAGES, messages);
   }, [messages]);
 
   useEffect(() => {
@@ -57,7 +51,7 @@ const Chat = () => {
       {/* Shell Area */}
       <div className="sm:px-12 lg:px-24 py-4 mb-4">
         <div className="max-w-4xl mx-auto">
-          <div className="rounded-2xl p-1 border border-gray-300 focus-within:border-blue-500 transition-all duration-500 shadow-[0_8px_30px_rgba(0,0,0,0.1)] focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
+          <div className="bg-white rounded-2xl p-1 border border-gray-300 focus-within:border-blue-500 transition-all duration-500 shadow-[0_8px_30px_rgba(0,0,0,0.1)] focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
             <div className="flex items-center gap-2 px-1.5 py-1">
               <span className="material-symbols-outlined text-gray-400 ml-1 cursor-pointer hover:scale-105 active:scale-95 transition-all" style={{fontSize: '32px'}} onClick={() => {pasteText('#textarea-prompt')}}>article</span>
               <textarea id="textarea-prompt" name="textarea-prompt"
