@@ -10,10 +10,10 @@ const MessageUser = ({message}) => {
         </div>
         <div className="relative">
           <div className="border-l-4 border-blue-600 pl-4 py-1 text-justify">
-            <div className="text-zinc-800 text-sm font-medium">{message.content}</div>
+            <div className="text-zinc-800 dark:text-zinc-400 text-sm font-medium">{message.content}</div>
           </div>
           <span className="text-[10px] text-zinc-500 mt-1 block opacity-0 group-hover:opacity-100 transition-opacity font-bold">
-            {message.times.created_at}
+            {(new Date(message?.times?.created_at)).toLocaleString()}
           </span>
         </div>
         <button className="cursor-pointer p-1.5 hover:bg-gray-100 rounded-md transition-colors text-gray-400 hover:text-gray-800 opacity-0 group-hover:opacity-100"

@@ -130,7 +130,7 @@ const sendQuery = async (arg, messages, setMessages, setLoading) => {
   textarea.readOnly = true;
   textarea.value = '';
   setLoading(true);
-  showToast('Envio:', 'Mensagem sendo enviada...');
+  showToast('Envio:', 'Mensagem sendo enviada...', 5);
 
   let msgs = messages;
   msgs = msgs

@@ -96,10 +96,10 @@ const showToast = (title = '', text = '', time = 3) => {
   toast.querySelector('h1').innerHTML = title;
   toast.querySelector('p').innerHTML = text;
   toast.classList.remove('opacity-0');
-  toast.classList.add('opacity-100');
+  toast.classList.add('opacity-80');
   
   time_id = setTimeout(() => {
-    toast.classList.remove('opacity-100');
+    toast.classList.remove('opacity-80');
     toast.classList.add('opacity-0');
   }, time * 1000);
 }
