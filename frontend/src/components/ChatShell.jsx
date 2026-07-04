@@ -1,7 +1,7 @@
 import { pasteText } from '../services/util';
 import { sendQuery } from '../services/chat';
 
-const MessageShell = ({messages, setMessages, setLoading}) => {
+const ChatShell = ({messages, setMessages, setLoading}) => {
 
   const handleSend = () => {
     sendQuery('#textarea-prompt', messages, setMessages, setLoading);
@@ -17,7 +17,7 @@ const MessageShell = ({messages, setMessages, setLoading}) => {
   return (
     <div className="px-4 sm:px-12 lg:px-24 py-4 mb-4">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-2xl p-1 border border-gray-300 dark:border-zinc-800/80 dark:bg-zinc-900/40 focus-within:border-blue-500 transition-all duration-500 shadow-[0_8px_30px_rgba(0,0,0,0.1)] focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
+        <div className="bg-white rounded-2xl p-1 border border-gray-300 dark:border-zinc-700 dark:bg-zinc-900 focus-within:border-blue-500 transition-all duration-500 shadow-[0_8px_30px_rgba(0,0,0,0.1)] focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
           <div className="flex items-center gap-2 px-1.5 py-1">
             <span className="material-symbols-outlined text-gray-400 ml-1 cursor-pointer hover:scale-105 active:scale-95 transition-all" style={{fontSize: '32px'}} onClick={() => {pasteText('#textarea-prompt')}}>article</span>
             <textarea id="textarea-prompt" name="textarea-prompt"
@@ -38,4 +38,4 @@ const MessageShell = ({messages, setMessages, setLoading}) => {
   );
 }
 
-export default MessageShell;
+export default ChatShell;

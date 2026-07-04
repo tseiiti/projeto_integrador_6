@@ -1,4 +1,4 @@
-const MessageThinking = ({model}) => {
+const ChatThinking = ({model}) => {
   return (
     <div className="flex items-start gap-4">
       <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-blue-400 flex items-center justify-center flex-shrink-0 mt-1 opacity-50">
@@ -20,4 +20,4 @@ const MessageThinking = ({model}) => {
   )
 };
 
-export default MessageThinking;
+export default ChatThinking;

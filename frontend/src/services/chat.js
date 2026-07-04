@@ -9,14 +9,25 @@ const getContent = (id, str, setMessages) => {
   const con = qs(`#${id} .assistant-content`);
   const json = JSON.parse(str);
   if (json.done) {
-    setMessages(
-      prev => prev.map(item => item.id === id ? {
-        ...item,
-        content: buffer,
-        up_tokens: item.up_tokens + json.prompt_eval_count,
-        dw_tokens: item.dw_tokens + json.eval_count,
-      } : item)
-    );
+    setMessages(prev => {
+      const items = [...prev];
+      const i = items.length - 1;
+      if (i >= 0) {
+        items[i] = { ...items[i],
+          content: buffer,
+          up_tokens: items[i].up_tokens + json.prompt_eval_count,
+          dw_tokens: items[i].dw_tokens + json.eval_count, };
+      }
+      return items;
+    });
+    // setMessages(
+    //   prev => prev.map(item => item.id === id ? {
+    //     ...item,
+    //     content: buffer,
+    //     up_tokens: item.up_tokens + json.prompt_eval_count,
+    //     dw_tokens: item.dw_tokens + json.eval_count,
+    //   } : item)
+    // );
   } else {
     buffer += json.message.content;
     con.innerHTML = buffer;
@@ -49,7 +60,7 @@ const callChatApi = async (msgs, file, score, temperature, quantity, memory,
     if (!reader) return;
 
     // adiciona o conteúdo do assistente
-    let id = 'ass-' + Date.now().toString();
+    const id = 'ass-' + Date.now().toString();
     setMessages(prev => [
       ...prev, {
       id: id,
@@ -132,15 +143,14 @@ const sendQuery = async (arg, messages, setMessages, setLoading) => {
   setLoading(true);
   showToast('Envio:', 'Mensagem sendo enviada...', 5);
 
-  let msgs = messages;
-  msgs = msgs
+  const msgs = messages
     .slice(0)
-    .concat(msgs.slice(1).slice(-memory))
-    .map((m) => {
-    return {
-      role: m.role, content: m.content.substring(0, 300)
-    }
-  });
+    .concat(messages.slice(1).slice(-memory))
+    .map(m => {
+      return {
+        role: m.role, content: m.content.substring(0, 300)
+      }
+    });
 
   // adiciona o conteúdo da questão do usuário
   setMessages(prev => [

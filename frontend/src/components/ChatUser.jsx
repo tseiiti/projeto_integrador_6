@@ -1,6 +1,6 @@
 import { copyText } from '../services/util';
 
-const MessageUser = ({message}) => {
+const ChatUser = ({message}) => {
   return (
     <div className="flex flex-col items-end group">
       <div className="max-w-[80%] flex items-start gap-4 flex-row-reverse">
@@ -25,4 +25,4 @@ const MessageUser = ({message}) => {
   );
 }
 
-export default MessageUser;
+export default ChatUser;

@@ -1,6 +1,6 @@
 import { copyText, markdown } from '../services/util';
 
-const MessageAssistant = ({message}) => {
+const ChatAssistant = ({message}) => {
   const like = (message, value) => {
     if (value == message?.like) value = 0;
     // stgMsg.upd(message.id, {...message, like: value});
@@ -8,8 +8,8 @@ const MessageAssistant = ({message}) => {
   }
 
   const getContext = (ctxs) => {
-    let ctx = ctxs[0];
-    let ltx = ctxs.at(-1);
+    const ctx = ctxs[0];
+    const ltx = ctxs.at(-1);
     return ctx ? ` | contextos: ${ctxs.length}, max: ${Math.round(180 - ctx.score * 100)}, min: ${Math.round(180 - ltx.score * 100)}` : '';
   }
 
@@ -48,4 +48,4 @@ const MessageAssistant = ({message}) => {
   )
 };
 
-export default MessageAssistant;
+export default ChatAssistant;
