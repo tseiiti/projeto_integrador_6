@@ -5,7 +5,6 @@ import Header from './components/Header';
 import Chat from './pages/Chat';
 import Settings from './pages/Settings';
 
-
 const App = () => {
   const [active, setActive] = useState('chat');   // controla tela atual
   const [desktop, setDesktop] = useState(true);   // se menu desktop está aberto
@@ -54,7 +53,7 @@ const App = () => {
         mobile={mobile}
         setMobile={setMobile} />
 
-      <div className="flex-1 flex flex-col h-full overflow-hidden relative">
+      <div className="flex-1 flex flex-col h-full overflow-hidden">
         <Header
           active={active}
           theme={theme}

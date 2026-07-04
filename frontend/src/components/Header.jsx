@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { MENU_ITEMS } from '../services/data';
 
 const Header = ({active, theme, setTheme, mobile, setMobile}) => {
-  return (<>
+  return (
     <header className="h-12 shrink-0 bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-700/60 px-4 flex items-center justify-between transition-colors duration-300">
     
       {/* Breadcrumb */}
@@ -34,7 +34,7 @@ const Header = ({active, theme, setTheme, mobile, setMobile}) => {
         </button>
       </div>
     </header>
-  </>);
+  );
 }
 
 export default Header;

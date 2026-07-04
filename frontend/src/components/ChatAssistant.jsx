@@ -1,11 +1,6 @@
 import { copyText, markdown } from '../services/util';
 
-const ChatAssistant = ({message}) => {
-  const like = (message, value) => {
-    if (value == message?.like) value = 0;
-    // stgMsg.upd(message.id, {...message, like: value});
-    fetchMessages();
-  }
+const ChatAssistant = ({message, setDetail, setLike}) => {
 
   const getContext = (ctxs) => {
     const ctx = ctxs[0];
@@ -25,18 +20,18 @@ const ChatAssistant = ({message}) => {
             <div className="text-zinc-800 dark:text-zinc-300 content [&>*]:pb-2 [&>ul]:list-disc [&_ul]:pl-5 [&>ul]:[&_ul]:list-['⮞'] [&_ol]:list-decimal [&_ol]:pl-5 assistant-content" dangerouslySetInnerHTML={{ __html: markdown(message.content) }}/>
           </div>
           <div className="flex items-center gap-3 text-gray-400 transition-colors">
-            <button className="cursor-pointer px-1 pt-1.5 hover:bg-gray-200 rounded-md hover:text-gray-800">
-              <span className="material-symbols-outlined like" style={{fontVariationSettings: (message?.like == 1 ? "'FILL' 1" : '')}}>thumb_up</span>
+            <button className="cursor-pointer px-1 pt-1.5 hover:bg-gray-200 rounded-md hover:text-gray-800" onClick={() => setLike(message, 1)}>
+              <span className="material-symbols-outlined" style={{fontVariationSettings: (message?.like == 1 ? "'FILL' 1" : '')}}>thumb_up</span>
             </button>
-            <button className="cursor-pointer px-1 pt-1.5 hover:bg-gray-200 rounded-md hover:text-gray-800">
-              <span className="material-symbols-outlined like" style={{fontVariationSettings: (message?.like == -1 ? "'FILL' 1" : '')}}>thumb_down</span>
+            <button className="cursor-pointer px-1 pt-1.5 hover:bg-gray-200 rounded-md hover:text-gray-800" onClick={() => setLike(message, -1)}>
+              <span className="material-symbols-outlined" style={{fontVariationSettings: (message?.like == -1 ? "'FILL' 1" : '')}}>thumb_down</span>
             </button>
             <button className="cursor-pointer px-1 pt-1.5 hover:bg-gray-200 rounded-md hover:text-gray-800"
               onClick={() => copyText(message?.content)}>
               <span className="material-symbols-outlined">content_copy</span>
             </button>
             <p className="text-[10px] text-zinc-500 mb-1">{(new Date(message?.times?.created_at)).toLocaleString()}</p>
-            <a className="text-[10px] text-zinc-500 mb-1" href="/detail.html?id={message?.id}">detalhes</a>
+            <button className="cursor-pointer text-[10px] text-zinc-500 mb-1" onClick={() => setDetail(message)}>detalhes</button>
           </div>
         </div>
       </div>
@@ -45,7 +40,7 @@ const ChatAssistant = ({message}) => {
         {getContext(message.contexts)}
       </div>
     </div>
-  )
-};
+  );
+}
 
 export default ChatAssistant;

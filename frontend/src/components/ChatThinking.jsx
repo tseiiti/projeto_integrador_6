@@ -17,7 +17,7 @@ const ChatThinking = ({model}) => {
         </p>
       </div>
     </div>
-  )
-};
+  );
+}
 
 export default ChatThinking;

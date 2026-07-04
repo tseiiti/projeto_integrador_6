@@ -13,10 +13,16 @@ const getContent = (id, str, setMessages) => {
       const items = [...prev];
       const i = items.length - 1;
       if (i >= 0) {
-        items[i] = { ...items[i],
+        items[i] = {
+          ...items[i],
           content: buffer,
           up_tokens: items[i].up_tokens + json.prompt_eval_count,
-          dw_tokens: items[i].dw_tokens + json.eval_count, };
+          dw_tokens: items[i].dw_tokens + json.eval_count, 
+          times: {
+            ...items[i].times,
+            finish_at: Date.now()
+          }
+        }
       }
       return items;
     });
