@@ -1,6 +1,6 @@
 import { KEYS, cl, ce, qs, sleep, showToast } from './util';
 
-var buffer;
+var BUFFER;
 
 // trata stream do chat e contagem de tokens
 const getContent = (id, str, setMessages) => {
@@ -15,7 +15,7 @@ const getContent = (id, str, setMessages) => {
       if (i >= 0) {
         items[i] = {
           ...items[i],
-          content: buffer,
+          content: BUFFER,
           up_tokens: items[i].up_tokens + json.prompt_eval_count,
           dw_tokens: items[i].dw_tokens + json.eval_count, 
           times: {
@@ -29,14 +29,14 @@ const getContent = (id, str, setMessages) => {
     // setMessages(
     //   prev => prev.map(item => item.id === id ? {
     //     ...item,
-    //     content: buffer,
+    //     content: BUFFER,
     //     up_tokens: item.up_tokens + json.prompt_eval_count,
     //     dw_tokens: item.dw_tokens + json.eval_count,
     //   } : item)
     // );
   } else {
-    buffer += json.message.content;
-    con.innerHTML = buffer;
+    BUFFER += json.message.content;
+    con.innerHTML = BUFFER;
   }
 }
 
@@ -92,7 +92,7 @@ const callChatApi = async (msgs, file, score, temperature, quantity, memory,
     }]);
     await sleep(10);
     
-    buffer = '';
+    BUFFER = '';
     const td = new TextDecoder('utf-8');
     while (true) {
       const { done, value } = await reader.read();

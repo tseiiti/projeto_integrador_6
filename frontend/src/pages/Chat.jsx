@@ -15,10 +15,7 @@ const Chat = () => {
   const endRef = useRef(null);
   
   const setLike = (message, value) => {
-    // value = message?.like == value ? 0 : value
     if (value == message?.like) value = 0;
-    // stgMsg.upd(message.id, {...message, like: value});
-    // fetchMessages();
     
     setMessages(prev => {
       const items = [...prev];

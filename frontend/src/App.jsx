@@ -3,7 +3,7 @@ import Toast from './components/Toast';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Chat from './pages/Chat';
-import Settings from './pages/Settings';
+import Config from './pages/Config';
 
 const App = () => {
   const [active, setActive] = useState('chat');   // controla tela atual
@@ -36,7 +36,7 @@ const App = () => {
         return <Chat />;
       case 'config':
         return (
-          <Settings />
+          <Config />
         );
       default:
         return <Chat />;
