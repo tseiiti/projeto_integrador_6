@@ -14,10 +14,10 @@ const Header = ({active, theme, setTheme, mobile, setMobile}) => {
         </button>
 
         <div className="flex items-center space-x-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-550 font-sans hidden sm:inline">
+          <span className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-550 font-sans hidden sm:inline">
             Chat IA
           </span>
-          <span className="text-gray-300 dark:text-zinc-400 hidden sm:inline">/</span>
+          <span className="text-xs font-bold text-gray-600 dark:text-zinc-400 hidden sm:inline">/</span>
           <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 font-sans">
             {MENU_ITEMS.find(e => e.id == active).label}
           </span>

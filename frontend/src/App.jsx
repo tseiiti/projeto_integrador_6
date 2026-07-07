@@ -6,7 +6,7 @@ import Chat from './pages/Chat';
 import Config from './pages/Config';
 
 const App = () => {
-  const [active, setActive] = useState('chat');   // controla tela atual
+  const [active, setActive] = useState('config');   // controla tela atual
   const [desktop, setDesktop] = useState(true);   // se menu desktop está aberto
   const [mobile, setMobile] = useState(false);    // se menu mobile está aberto
   

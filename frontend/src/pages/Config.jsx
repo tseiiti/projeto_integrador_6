@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { KEYS, get, set } from '../services/config';
+import Card from '../components/Card';
+import ConfigModel from '../components/ConfigModel';
 
 const Config = () => {
   const [models, setModels] = useState([]);
@@ -24,84 +26,193 @@ const Config = () => {
 
   useEffect(() => {
     setCurModel(get(KEYS.C_MODEL, models.filter(m => m.model.includes('gemma3:1b'))[0]?.model || models[0]?.model) || 'gemma3:1b');
-    console.log('a', curModel)
   }, [curModel]);
 
-  const capabilities = {
-    vision: 'eye_tracking',
-    completion: 'text_snippet',
-    tools: 'construction',
-    thinking: 'network_intel_node',
-  }
+  const cleanChat = () => {}
+  const saveChat = () => {}
+  const newChat = () => {}
 
-  // auxiliar itens do menu
-  const getModelItem = (model) => {
-    if (!model) return;
-    let cur_aux = model.model == curModel ? 'blue' : 'gray';
-    let names = model.name.split(':');
-
-    return (<>
-      <div className={`relative flex flex-col bg-white border border-${cur_aux}-500 rounded-xl overflow-hidden transition-all hover:border-blue-600 hover:shadow-md cursor-pointer group`}>
-        <div className={`p-4 pb-2 border-b border-${cur_aux}-300 bg-${cur_aux}-100`}>
-          <div className="flex items-start justify-between mb-2">
-            <h3 className={`text-${cur_aux}-800 group-hover:font-medium text-[18px] capitalize`}>{names[0]}:<span className="uppercase">{names[1]}</span></h3>
-          </div>
-          <div className="flex items-center gap-2 mt-2">
-            <span className={`text-[13px] font-bold text-${cur_aux}-800 group-hover:text-gray-500`}>{model.details.parameter_size}</span>
-            <span className="text-[10px] text-gray-500 px-2 bg-white py-px border border-gray-200 rounded-sm uppercase">{model.details.format} * {model.details.quantization_level}</span>
-            <span className="bg-gray-200 px-1.5 py-0.5 rounded text-[10px] ml-auto text-gray-600 font-bold uppercase">{model.details.family}</span>
-          </div>
-        </div>
-        <div className="p-4 space-y-4 flex-grow flex flex-col justify-between">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-[11px]">
-              <span className="material-symbols-outlined text-[14px] text-gray-600">schedule</span>
-              <span className="text-gray-500">Modificado em {(new Date(model.modified_at)).toLocaleString()}</span>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              { model.capabilities.map((c, i) => {
-                return <span key={`span-capability-${i}`} className="material-symbols-outlined text-[16px] text-gray-600" title={c.charAt(0).toUpperCase() + c.slice(1)}>{capabilities[c]}</span>;
-              }) }
-            </div>
-          </div>
-          <hr className="text-gray-300 mb-2" />
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2 text-[11px]">
-              <span className="material-symbols-outlined text-[14px] text-gray-600">data_table</span>
-              <span className="text-gray-500">{(model.size / 1024 ** 2).toFixed(2)}MB</span>
-            </div>
-            <button className="p-1.5 rounded-full border border-gray-500 text-gray-500 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-100 transition-all flex items-center justify-center" title="Selecionar modelo">
-              <span className={`material-symbols-outlined text-${cur_aux}-500 text-[20px]`}>radio_button_unchecked</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </>);
-  }
-
-  return (
-    <section className="flex-grow overflow-y-auto p-4 max-w-[1376px] mx-auto w-full h-full">
-      <div className="bg-white border border-gray-300 rounded-xl py-4 px-6">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-blue-500"
-              style={{fontVariationSettings: "'FILL' 1"}}>model_training</span>
-            <h2 className="text-xl font-medium tracking-tight">Modelos</h2>
-          </div>
-          <span className="text-sm font-medium text-gray-600">
-            {models.length + (models.length > 1 ? ' modelos disponíveis' : ' modelo disponível')}
-          </span>
-        </div>
+  const getModelCards = () => {
+    return (
+      <Card title='Modelos' icon='model_training'
+        rightTitle={models.length + (models.length > 1 ? ' modelos disponíveis' : ' modelo disponível')}>
 
         <nav className="flex items-center gap-2 overflow-x-auto hide-scrollbar mask-gradient relative">
           <div className="flex items-center gap-6 whitespace-nowrap mb-4">
-            
-            { models.map((m, i) => {
-              return getModelItem(m);
-            }) }
-
+            { models.map((model, i) => 
+              <ConfigModel 
+                key={`config-model-${i}`}
+                model={model}
+                curModel={curModel}
+                setCurModel={setCurModel} />) }
           </div>
         </nav>
+      </Card>
+    );
+  }
+
+  const getContext = () => {
+    return (
+      <Card title='Contexto' icon='contextual_token'>
+
+        <div className="space-y-4 flex-grow">
+          <div className="flex items-center justify-between p-4 bg-gray-100 rounded-xl border border-gray-300">
+            <div className="flex items-center gap-4">
+              <div className="p-2 bg-gray-200 rounded-lg text-gray-600">
+                <span className="material-symbols-outlined">17mp</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Quantidade de Máxima</p>
+                <p className="text-[12px] text-gray-500">Quantidade máxima de buscas de contexto que corresponda a pergunta.</p>
+              </div>
+            </div>
+            <input type="number" id="quantity" min="1" max="10" value={quantity} onChange={(e) => setQuantity(e.target.value)}
+              className="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
+          </div>
+
+          <div className="flex items-center justify-between p-4 bg-gray-100 rounded-xl border border-gray-300">
+            <div className="flex items-center gap-4">
+              <div className="p-2 bg-gray-200 rounded-lg text-gray-600">
+                <span className="material-symbols-outlined">grain</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Quantidade de Relações</p>
+                <p className="text-[12px] text-gray-500">Quantidade de perguntas anteriores que influenciam no contexto atual.</p>
+              </div>
+            </div>
+            <input type="number" id="influence" min="0" max="10" value={influence} onChange={(e) => setInfluence(e.target.value)} className="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
+          </div>
+
+          <div className="bg-gray-100 p-4 rounded-xl border border-gray-300">
+            <div className="flex justify-between items-center">
+              <label className="text-sm font-medium">Score Mínimo</label>
+              <span className="px-2 py-1 rounded text-sm" id="score-value">75</span>
+            </div>
+            <input className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600" id="score-range" max="100" min="1" step="1" type="range" defaultValue={score} />
+            <div className="flex justify-between text-[11px] text-gray-700">
+              <span className="">Mínimo (1)</span>
+              <span className="">Máximo (100)</span>
+            </div>
+            <p className="text-[12px] text-gray-500 mt-4">
+              Define o nível mínimo de relevância para que um fragmento de contexto seja utilizado na resposta.
+            </p>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
+  const getThinking = () => {
+    return (
+      <div className="bg-white border border-gray-300 rounded-xl p-8 h-full">
+        <div className="flex items-center gap-2 mb-8">
+          <span className="material-symbols-outlined text-blue-500"
+            style={{ fontVariationSettings: "'FILL' 1" }}>psychology</span>
+          <h2 className="text-xl font-medium">Raciocínio</h2>
+        </div>
+
+        <div className="space-y-4 flex-grow">
+          <div className="flex items-center justify-between p-4 bg-gray-100 rounded-xl border border-gray-300">
+            <div className="flex items-center gap-4">
+              <div className="p-2 bg-gray-200 rounded-lg text-gray-600">
+                <span className="material-symbols-outlined">threat_intelligence</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Modo Thinking</p>
+                <p className="text-[12px] text-gray-500">Habilita o processo de raciocínio detalhado da IA. Tem um processamento mais demorado.</p>
+              </div>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input className="sr-only peer" id="thinking" type="checkbox" onChange={(e) => setThinking(e.target.value)} />
+              <div className="w-11 h-6 bg-gray-400 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500">
+              </div>
+            </label>
+          </div>
+
+          <div className="flex items-center justify-between p-4 bg-gray-100 rounded-xl border border-gray-300">
+            <div className="flex items-center gap-4">
+              <div className="p-2 bg-gray-200 rounded-lg text-gray-600">
+                <span className="material-symbols-outlined">book</span>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Lembranças</p>
+                <p className="text-[12px] text-gray-500">Quantidade de perguntas e respostas que enviadas como complemento.</p>
+              </div>
+            </div>
+            <input type="number" id="memory" min="0" max="10" value={memory} onChange={(e) => setMemory(e.target.value)} className="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
+          </div>
+
+          <div className="bg-gray-100 p-4 rounded-xl border border-gray-300">
+            <div className="flex justify-between items-center">
+              <label className="text-sm font-medium">Temperatura</label>
+              <span className="bg-blue-400 text-blue-300 px-2 py-1 rounded text-sm" id="temperature-value">0.7</span>
+            </div>
+            <input className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500" id="temperature-range" max="2" min="0" step="0.1" type="range" defaultValue={temperature} />
+            <div className="flex justify-between text-[11px] text-gray-700">
+              <span className="">Preciso (0.0)</span>
+              <span className="">Criativo (2.0)</span>
+            </div>
+            <p className="text-[12px] text-gray-500">
+              Define a aleatoriedade das respostas. Valores baixos são mais determinísticos e os altos mais inventivos.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const getHistory = () => {
+    return (
+      <div className="bg-white border border-gray-300 rounded-xl p-8 h-full">
+        <div className="flex items-center gap-2">
+          <span className="material-symbols-outlined text-blue-500"
+            style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
+          <h2 className="text-xl font-medium">Conversas</h2>
+        </div>
+
+        <div className="flex-grow">
+          <div className="flex items-center justify-end space-x-2 sm:space-x-4">
+            <button className="inline-block bg-transparent border border-red-300 hover:bg-red-400 text-red-400 hover:text-white rounded-lg py-0.5 pl-2 pr-3 sm:pl-6 sm:pr-8 whitespace-nowrap" onClick={cleanChat} title="Limpar conversa atual">
+              <span className="material-symbols-outlined">mop</span>Limpar
+            </button>
+
+            <button className="inline-block bg-gray-600 text-white rounded-lg py-1 pl-2 pr-3 sm:pl-6 sm:pr-8 flex items-center justify-center hover:bg-gray-700 shadow-md whitespace-nowrap" onClick={saveChat} title="Salvar conversa atual">
+              <span className="material-symbols-outlined">keep</span>Salvar
+            </button>
+
+            <button className="inline-block bg-blue-400 text-white rounded-lg py-1 pl-2 pr-3 sm:pl-6 sm:pr-8 flex items-center justify-center hover:bg-blue-600 shadow-md whitespace-nowrap" onClick={newChat} title="Salvar a atual e criar uma nova conversa">
+              <span className="material-symbols-outlined">add</span>Novo Chat
+            </button>
+          </div>
+
+          <div className="flex-grow overflow-y-auto px-2 space-y-xs">
+            <div className="px-md py-sm">
+              <h3 className="text-sm text-gray-500 uppercase tracking-wider">Histórico</h3>
+            </div>
+            <div className="history">
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <section className="flex-grow overflow-y-auto p-6 max-w-[1376px] mx-auto w-full h-full space-y-4">
+      {getModelCards()}
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-6">
+          {getContext()}
+        </div>
+
+        <div className="lg:col-span-6">
+          {getThinking()}
+        </div>
+
+        <div className="lg:col-span-12">
+          {getHistory()}
+        </div>
       </div>
     </section>
   );

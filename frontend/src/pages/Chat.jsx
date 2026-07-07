@@ -58,8 +58,8 @@ const Chat = () => {
 
       {/* Detalhes */}
       <ChatDetail detail={detail} setDetail={setDetail} />
-    </section>
 
+    </section>
   </>);
 }
 
