@@ -1,4 +1,4 @@
-import { copyText } from '../services/util';
+import { copyText } from '../../services/util';
 
 const ChatUser = ({message}) => {
   return (

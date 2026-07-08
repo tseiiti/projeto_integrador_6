@@ -1,5 +1,5 @@
-import { pasteText } from '../services/util';
-import { sendQuery } from '../services/chat';
+import { pasteText } from '../../services/util';
+import { sendQuery } from '../../services/chat';
 
 const ChatShell = ({messages, setMessages, setLoading}) => {
 

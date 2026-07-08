@@ -15,7 +15,11 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 // funções de armazenamento
 const get = (key, defaultValue) => {
   const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : defaultValue;
+  try {
+    return data ? JSON.parse(data) : defaultValue;
+  } catch (error) {
+    return null;
+  }
 };
 
 const set = (key, value) => {

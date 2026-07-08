@@ -1,5 +1,5 @@
-import Modal from './Modal';
-import { KEYS, set, get, qs, showToast, pasteText } from '../services/util';
+import Modal from '../Modal';
+import { KEYS, set, get, qs, showToast, pasteText } from '../../services/util';
 
 const ChatDetail = ({ detail, setDetail }) => {
   if (!detail) return null;

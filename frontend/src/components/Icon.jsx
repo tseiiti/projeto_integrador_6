@@ -1,6 +1,6 @@
-const Icon = ({icon = 'ads_click', fontVariation = "'FILL' 1", otherClasses = ''}) => {
+const Icon = ({icon = 'ads_click', fill = "'FILL' 1", otherClasses = ''}) => {
   return <span className={`material-symbols-outlined ${otherClasses}`}
-    style={{fontVariationSettings: fontVariation}}>{icon}</span>;
+    style={{fontVariationSettings: fill}}>{icon}</span>;
 }
 
 export default Icon;

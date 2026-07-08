@@ -1,4 +1,4 @@
-import { copyText, markdown } from '../services/util';
+import { copyText, markdown } from '../../services/util';
 
 const ChatAssistant = ({message, setDetail, setLike}) => {
 

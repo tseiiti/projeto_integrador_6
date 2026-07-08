@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { KEYS, set, get, qs, showToast, pasteText } from '../services/util';
-import ChatUser from '../components/ChatUser';
-import ChatAssistant from '../components/ChatAssistant';
-import ChatThinking from '../components/ChatThinking';
-import ChatShell from '../components/ChatShell';
-import ChatDetail from '../components/ChatDetail';
+import ChatUser from '../components/chat/ChatUser';
+import ChatAssistant from '../components/chat/ChatAssistant';
+import ChatThinking from '../components/chat/ChatThinking';
+import ChatShell from '../components/chat/ChatShell';
+import ChatDetail from '../components/chat/ChatDetail';
 
 const Chat = () => {
   const [messages, setMessages] = useState(() => {
@@ -38,7 +38,7 @@ const Chat = () => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
 
-  return (<>
+  return (
     <section className="flex-grow overflow-y-auto custom-scrollbar p-md max-w-[1376px] mx-auto w-full h-full">
 
       {/* Messagens */}
@@ -60,7 +60,7 @@ const Chat = () => {
       <ChatDetail detail={detail} setDetail={setDetail} />
 
     </section>
-  </>);
+  );
 }
 
 export default Chat;

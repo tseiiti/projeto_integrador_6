@@ -30,7 +30,7 @@ const App = () => {
   }, [theme]);
 
   // reinderiza tela atual
-  const render = () => { 
+  const render = () => {
     switch (active) {
       case 'chat':
         return <Chat />;
