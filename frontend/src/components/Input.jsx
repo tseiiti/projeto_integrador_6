@@ -4,7 +4,7 @@ const Input = (props) => {
   const typeNumber = () => {
     return (
       <div className="flex items-center justify-between bg-gray-100/50 p-4 rounded-xl border border-gray-300">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 lg:gap-4">
           {props.icon && <div className="px-2 pt-1.5 bg-gray-200 rounded-lg border border-gray-400 text-gray-600">
             <Icon icon={props.icon} fill='' />
           </div>}
@@ -12,7 +12,7 @@ const Input = (props) => {
           <p className="text-[12px] text-gray-500">{props.description}</p>
         </div>
 
-        <input type={props.type} id={props.id} min={props.min} max={props.max} value={props.value} onChange={props.onChange} className="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
+        <input type={props.type} id={props.id} min={props.min} max={props.max} value={props.value} onChange={props.onChange} className="p-2 sm:pr-0 bg-white border border-gray-300 rounded-md text-sm shadow-sm placeholder-gray-400 max-w-10 text-right focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" />
       </div>
     );
   }
@@ -20,7 +20,7 @@ const Input = (props) => {
   const typeRange = () => {
     return (
       <div className="bg-gray-100/50 p-4 rounded-xl border border-gray-300">
-        <div className="flex justify-between items-center gap-4">
+        <div className="flex justify-between items-center gap-2 lg:gap-4">
           {props.icon && <div className="px-2 pt-1.5 bg-gray-200 rounded-lg border border-gray-400 text-gray-600">
             <Icon icon={props.icon} fill='' />
           </div>}
@@ -41,7 +41,7 @@ const Input = (props) => {
   const typeCheckBox = () => {
     return (
       <div className="flex items-center justify-between bg-gray-100/50 p-4 rounded-xl border border-gray-300">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 lg:gap-4">
           {props.icon && <div className="px-2 pt-1.5 bg-gray-200 rounded-lg border border-gray-400 text-gray-600">
             <Icon icon={props.icon} fill='' />
           </div>}

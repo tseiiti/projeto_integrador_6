@@ -6,19 +6,46 @@ import ConfigModel from '../components/config/ConfigModel';
 
 const Config = () => {
   const [conf, setConf] = useState(() => {
-    let saved = get(KEYS.CONF);
-    if (saved) return saved;
-    return {
-      models: [],
-      current: null,
-      quantity: 8,
-      influence: 2,
-      score: 75,
-      thinking: false,
-      memory: 4,
-      temperature: 0.5,
-    }
+    return get(KEYS.CONF, KEYS.DEFAULT_CONF);
   });
+  const [backup, setBackup] = useState(() => {
+    return get(KEYS.BACKUP, []);
+  });
+  const [chatId, setChatId] = useState();
+
+  const setCurrent = (current) => { setConf({...conf, current: current}) }
+  const setQuantity = (quantity) => { setConf({...conf, quantity: quantity}) }
+  const setInfluence = (influence) => { setConf({...conf, influence: influence}) }
+  const setScore = (score) => { setConf({...conf, score: score}) }
+  const setThinking = (thinking) => { setConf({...conf, thinking: thinking}) }
+  const setMemory = (memory) => { setConf({...conf, memory: memory}) }
+  const setTemperature = (temperature) => { setConf({...conf, temperature: temperature}) }
+
+  const backupChat = (id) => {console.log(2); 
+    const messages = get(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
+    if (messages?.length > 1) {console.log(3); 
+      setBackup(prev => {
+        const i = prev.findIndex(e => e.id == id);
+        if (id && i >= 0) {
+          prev[i] = {
+            ...prev[i],
+            messages: messages,
+            conf: conf
+          }
+          return prev;
+        } else {
+          return [...prev, {
+            id: prev.length,
+            messages: messages,
+            conf: conf
+          }];
+        }
+      });
+    }
+  }
+  const cleanChat = () => {}
+  const saveChat = () => {console.log(1); backupChat()}
+  const newChat = () => {}
 
   useEffect(() => {
     (async () => {
@@ -33,11 +60,11 @@ const Config = () => {
       if (!models.map(m => m.model).includes(current))
         current = models.filter(m => m.model.includes('gemma3:1b'))[0]?.model || models[0]?.model;
 
-      setConf(prev => { return {
+      setConf(prev => {return {
         ...prev, 
         models: models,
         current: current,
-      } });
+      }});
     })();
   }, []);
 
@@ -45,16 +72,10 @@ const Config = () => {
     set(KEYS.CONF, conf);
   }, [conf]);
 
-  const setCurrent = (current) => { setConf({...conf, current: current}) }
-  const setQuantity = (quantity) => { setConf({...conf, quantity: quantity}) }
-  const setInfluence = (influence) => { setConf({...conf, influence: influence}) }
-  const setScore = (score) => { setConf({...conf, score: score}) }
-  const setThinking = (thinking) => { setConf({...conf, thinking: thinking}) }
-  const setMemory = (memory) => { setConf({...conf, memory: memory}) }
-  const setTemperature = (temperature) => { setConf({...conf, temperature: temperature}) }
-  const cleanChat = () => {}
-  const saveChat = () => {}
-  const newChat = () => {}
+  useEffect(() => {
+    set(KEYS.BACKUP, backup);
+  }, [backup]);
+
 
   const getModelCards = () => {
     return (
@@ -111,28 +132,28 @@ const Config = () => {
     );
   }
 
+  const getHistBtn = (color, onclick, title, icon, desc) => {
+    return (
+      <button className={`flex items-center justify-center rounded-lg py-1 pl-2 pr-3 sm:pl-6 sm:pr-7 whitespace-nowrap text-white shadow-md bg-${color}/60 hover:bg-${color}`} onClick={onclick} title={title}>
+        <span className="material-symbols-outlined">{icon}</span> {desc}
+      </button>
+    );
+  }
+
   const getHistory = () => {
     return (
       <Card title='Conversas' icon='chat'>
         <div className="flex items-center justify-end space-x-2 sm:space-x-4">
-          <button className="flex items-center justify-center rounded-lg py-1 pl-2 pr-3 sm:pl-6 sm:pr-7 whitespace-nowrap text-white shadow-md bg-red-500/60 hover:bg-red-500" onClick={cleanChat} title="Limpar conversa atual">
-            <span className="material-symbols-outlined sm:mr-1">mop</span> Limpar
-          </button>
-
-          <button className="flex items-center justify-center rounded-lg py-1 pl-2 pr-3 sm:pl-6 sm:pr-7 whitespace-nowrap text-white shadow-md bg-green-600/60 hover:bg-green-600" onClick={saveChat} title="Salvar conversa atual">
-            <span className="material-symbols-outlined">keep</span> Salvar
-          </button>
-
-          <button className="flex items-center justify-center rounded-lg py-1 pl-2 pr-3 sm:pl-6 sm:pr-7 whitespace-nowrap text-white shadow-md bg-blue-600/60 hover:bg-blue-600" onClick={newChat} title="Salvar a atual e criar uma nova conversa">
-            <span className="material-symbols-outlined">add</span> Novo Chat
-          </button>
+          {getHistBtn('red-500', cleanChat, 'Limpar conversa atual', 'mop', 'Limpar')}
+          {getHistBtn('green-600', saveChat, 'Salvar conversa atual', 'keep', 'Salvar')}
+          {getHistBtn('blue-600', newChat, 'Salvar a atual e criar uma nova conversa', 'add', 'Novo Chat')}
         </div>
 
         <div className="flex-grow overflow-y-auto px-2 space-y-xs">
           <div className="px-4 py-2">
             <h3 className="text-sm text-gray-500 uppercase tracking-wider">Histórico</h3>
           </div>
-          <div className="history"></div>
+          <div className="history">as</div>
         </div>
       </Card>
     );
@@ -142,16 +163,16 @@ const Config = () => {
     <section className="overflow-y-auto p-6 max-w-[1376px] mx-auto w-full h-full space-y-4">
       {getModelCards()}
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-6">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <div className="md:col-span-6">
           {getContext()}
         </div>
 
-        <div className="lg:col-span-6">
+        <div className="md:col-span-6">
           {getThinking()}
         </div>
 
-        <div className="lg:col-span-12">
+        <div className="md:col-span-12">
           {getHistory()}
         </div>
       </div>
