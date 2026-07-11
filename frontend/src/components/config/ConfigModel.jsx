@@ -42,7 +42,7 @@ const ConfigModel = ({model, current, setCurrent}) => {
             <span className="material-symbols-outlined text-[14px] text-gray-500">data_table</span>
             <span className="text-gray-500">{(model.size / 1024 ** 2).toFixed(2)}MB</span>
           </div>
-          <button className="p-1.5 rounded-full border border-gray-500 text-gray-500 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-100 transition-all flex items-center justify-center cursor-pointer" title="Selecionar modelo" onClick={() => setCurrent (model.model)}>
+          <button className="p-1.5 rounded-full border border-gray-500 text-gray-500 hover:border-blue-500 hover:text-blue-500 hover:bg-blue-100 transition-all flex items-center justify-center cursor-pointer" title="Selecionar modelo" onClick={setCurrent}>
             <span className={`material-symbols-outlined text-${cur_aux}-500 text-[20px]`}>radio_button_unchecked</span>
           </button>
         </div>

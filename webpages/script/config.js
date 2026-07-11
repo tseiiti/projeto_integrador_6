@@ -176,7 +176,6 @@ const title_chat = async (id) => {
   .then(response => { return response.json(); })
   .then(json => {
     BACKUP.upd(id, { title: json.message.content })
-    console.log(json.message.content)
   });
 
   window.location.reload();

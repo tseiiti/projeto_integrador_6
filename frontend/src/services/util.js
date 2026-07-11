@@ -91,7 +91,7 @@ class StorageArray {
 }
 
 const showToast = (title = '', text = '', time = 3) => {
-  clearTimeout(time_id);
+  clearTimeout(tstId);
 
   if (title.length == 0 || text.length == 0) return;
   const toast = qs('#toast');
@@ -102,7 +102,7 @@ const showToast = (title = '', text = '', time = 3) => {
   toast.classList.remove('opacity-0');
   toast.classList.add('opacity-80');
   
-  time_id = setTimeout(() => {
+  tstId = setTimeout(() => {
     toast.classList.remove('opacity-80');
     toast.classList.add('opacity-0');
   }, time * 1000);
@@ -146,19 +146,19 @@ const markdown = (text) => {
   return converter.makeHtml(text);
 }
 
-var time_id;
+var tstId;
 
 export {
   KEYS,
-  cl, 
-  ce, 
-  qs, 
-  qsa, 
-  sleep, 
-  get, 
-  set, 
-  showToast, 
-  copyText, 
-  pasteText, 
+  cl,
+  ce,
+  qs,
+  qsa,
+  sleep,
+  get,
+  set,
+  showToast,
+  copyText,
+  pasteText,
   markdown,
 }

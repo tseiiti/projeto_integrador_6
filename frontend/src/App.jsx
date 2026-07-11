@@ -36,7 +36,7 @@ const App = () => {
         return <Chat />;
       case 'config':
         return (
-          <Config />
+          <Config desktop={desktop} />
         );
       default:
         return <Chat />;
