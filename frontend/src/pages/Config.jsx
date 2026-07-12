@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { KEYS, get, set, handleSave } from '../services/config';
+import { KEYS, get, set, bottomToast } from '../services/config';
 import Card from '../components/Card';
 import Input from '../components/Input';
 import ConfigModel from '../components/config/ConfigModel';
 
-const Config = ({desktop}) => {
+const Config = ({desktop, setActive, theme, setTheme}) => {
   const [config, setConfig] = useState(() => {
     return get(KEYS.CONFIG, KEYS.DEFAULT_CONFIG);
   });
@@ -38,7 +38,6 @@ const Config = ({desktop}) => {
 
   useEffect(() => {
     set(KEYS.CONFIG, config);
-    handleSave();
   }, [config]);
 
   useEffect(() => {
@@ -49,13 +48,13 @@ const Config = ({desktop}) => {
     set(KEYS.CHAT_ID, chatId);
   }, [chatId]);
 
-  const setCurrent = (e) => { setConfig({...config, current: e.model}); }
-  const setQuantity = (e) => { setConfig({...config, quantity: e.target.value}); }
-  const setInfluence = (e) => { setConfig({...config, influence: e.target.value}); }
-  const setScore = (e) => { setConfig({...config, score: e.target.value}); }
-  const setThinking = (e) => { setConfig({...config, thinking: e.target.checked}); }
-  const setMemory = (e) => { setConfig({...config, memory: e.target.value}); }
-  const setTemperature = (e) => { setConfig({...config, temperature: e.target.value}); }
+  const setCurrent = (e) => { setConfig({...config, current: e.model}); bottomToast(); }
+  const setQuantity = (e) => { setConfig({...config, quantity: e.target.value}); bottomToast(); }
+  const setInfluence = (e) => { setConfig({...config, influence: e.target.value}); bottomToast(); }
+  const setScore = (e) => { setConfig({...config, score: e.target.value}); bottomToast(); }
+  const setThinking = (e) => { setConfig({...config, thinking: e.target.checked}); bottomToast(); }
+  const setMemory = (e) => { setConfig({...config, memory: e.target.value}); bottomToast(); }
+  const setTemperature = (e) => { setConfig({...config, temperature: e.target.value}); bottomToast(); }
 
   const bkp = (addOther) => {
     const messages = get(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
@@ -63,7 +62,7 @@ const Config = ({desktop}) => {
       const aux = {
         messages: messages,
         config: config,
-        updated_at: Date.now()
+        updated_at: Date.now(),
       }
       setBackup(ant => {
         const i = ant.findIndex(e => e.id == chatId);
@@ -75,13 +74,13 @@ const Config = ({desktop}) => {
           if (!addOther) setChatId(ant.length);
         }
         if (addOther) set(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
-        handleSave();
+        bottomToast();
         return ant;
       });
     }
   }
-  const savChat = () => { bkp(false) }
-  const newChat = () => { bkp(true) }
+  const savChat = () => { bkp(false); }
+  const newChat = () => { bkp(true); setActive('chat'); }
   const selChat = (id) => {
     const aux = backup.find(e => e.id == id);
     if (aux) {
@@ -90,12 +89,28 @@ const Config = ({desktop}) => {
       set(KEYS.CONFIG, aux.config);
       setConfig(aux.config);
       set(KEYS.MESSAGES, aux.messages);
-      handleSave();
+      setActive('chat');
     }
   }
-  const clrChat = () => {}
+  const clrChat = () => {
+    setConfig(KEYS.DEFAULT_CONFIG)
+    set(KEYS.CONFIG, KEYS.DEFAULT_CONFIG);
+    localStorage.removeItem(KEYS.MESSAGES);
+    setActive('chat');
+  }
   const titleChat = () => {}
-  const deleteChat = () => {}
+  const deleteChat = (id) => {
+    setBackup(ant => {
+      const aux = [...ant];
+      const i = aux.findIndex(e => e.id == id);
+      if (i >= 0) {
+        aux.splice(i, i); 
+      }
+      console.log(aux)
+      return aux;
+    });
+    bottomToast();
+  }
 
   const getModelCards = () => {
     return (
@@ -147,6 +162,38 @@ const Config = ({desktop}) => {
             description='Define a aleatoriedade das respostas. Valores baixos são mais determinísticos e os altos mais inventivos.'
             min={0} max={2} step={0.1} value={config.temperature} onChange={(e) => setTemperature(e)}
             minDesc='Preciso (0.0)' maxDesc='Criativo (2.0)' />
+        </div>
+      </Card>
+    );
+  }
+
+  const getTheme = () => {
+    return (
+      <Card title='Aparência Visual' icon='palette'>
+        <p className="text-xs text-gray-450 dark:text-gray-400 leading-relaxed font-sans">
+          Alterne o visual de layout completo de acordo com o conforto de iluminação de seu monitor.
+        </p>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            onClick={() => setTheme('light')}
+            className={`p-3 border rounded-xl flex flex-col items-center justify-center transition space-y-1.5 cursor-pointer ${
+              theme === 'light'
+                ? 'border-blue-500 bg-blue-50/50 dark:bg-zinc-900 text-blue-600 font-semibold'
+                : 'border-gray-200 dark:border-zinc-800 text-gray-550 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-zinc-850'
+            }`}>
+            <span className="material-symbols-rounded select-none text-[22px]">light_mode</span>
+            <span className="text-xs">Tema Claro</span>
+          </button>
+          <button
+            onClick={() => setTheme('dark')}
+            className={`p-3 border rounded-xl flex flex-col items-center justify-center transition space-y-1.5 cursor-pointer ${
+              theme === 'dark'
+                ? 'border-blue-500 bg-zinc-800 text-blue-400 font-semibold'
+                : 'border-gray-200 dark:border-zinc-800 text-gray-550 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-zinc-855'
+            }`}>
+            <span className="material-symbols-rounded select-none text-[22px]">dark_mode</span>
+            <span className="text-xs">Tema Escuro</span>
+          </button>
         </div>
       </Card>
     );
@@ -207,19 +254,13 @@ const Config = ({desktop}) => {
         <div className={`${desktop ? 'md' : 'lg'}:col-span-6`}>
           {getThinking()}
         </div>
+        {/* <div className={`col-span-4 ${desktop ? 'md' : 'lg'}:col-span-4`}>
+          {getTheme()}
+        </div> */}
         <div className={`${desktop ? 'md' : 'lg'}:col-span-12`}>
           {getHistory()}
         </div>
       </div>
-
-      <div className="fixed bottom-8 right-8 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-100 text-gray-600 px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4" id="success-toast">
-        <span className="material-symbols-outlined text-green-400">check_circle</span>
-        <div>
-          <p className="text-md font-bold">Sucesso!</p>
-          <p className="text-sm opacity-80">Suas configurações foram atualizadas.</p>
-        </div>
-      </div>
-      
     </section>
   );
 }

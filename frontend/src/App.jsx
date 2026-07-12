@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import Toast from './components/Toast';
+import { Toast, BottomToast } from './components/Toast';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Chat from './pages/Chat';
 import Config from './pages/Config';
 
 const App = () => {
-  const [active, setActive] = useState('config');   // controla tela atual
+  const [active, setActive] = useState('chat');   // controla tela atual
   const [desktop, setDesktop] = useState(true);   // se menu desktop está aberto
   const [mobile, setMobile] = useState(false);    // se menu mobile está aberto
   
@@ -36,7 +36,7 @@ const App = () => {
         return <Chat />;
       case 'config':
         return (
-          <Config desktop={desktop} />
+          <Config desktop={desktop} setActive={setActive} theme={theme} setTheme={setTheme} />
         );
       default:
         return <Chat />;
@@ -63,6 +63,7 @@ const App = () => {
 
         {render()}
         <Toast />
+        <BottomToast />
       </div>
     </div>
   );

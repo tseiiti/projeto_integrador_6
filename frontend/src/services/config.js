@@ -1,4 +1,4 @@
-import { KEYS, qs, get, set } from './util';
+import { KEYS, qs, get, set, bottomToast } from './util';
 
 // var LAST_UPD;
 // var MODELS;
@@ -23,23 +23,10 @@ import { KEYS, qs, get, set } from './util';
 //     MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
 // }
 
-const handleSave = () => {
-  clearTimeout(savId);
-
-  let toast = qs('#success-toast');
-  toast.classList.remove('translate-y-20', 'opacity-0');
-  toast.classList.add('translate-y-0', 'opacity-90');
-  
-  savId = setTimeout(() => {
-    toast.classList.add('translate-y-20', 'opacity-0');
-    toast.classList.remove('translate-y-0', 'opacity-90');
-  }, 1000);
-}
-var savId;
 
 export {
-  KEYS,
+  KEYS, 
   get, 
   set, 
-  handleSave
+  bottomToast, 
 }

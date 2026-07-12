@@ -99,13 +99,26 @@ const showToast = (title = '', text = '', time = 3) => {
 
   toast.querySelector('h1').innerHTML = title;
   toast.querySelector('p').innerHTML = text;
-  toast.classList.remove('opacity-0');
-  toast.classList.add('opacity-80');
+  toast.classList.remove('-translate-y-20', 'opacity-0');
+  toast.classList.add('translate-y-0', 'opacity-80');
   
   tstId = setTimeout(() => {
-    toast.classList.remove('opacity-80');
-    toast.classList.add('opacity-0');
+    toast.classList.remove('translate-y-0', 'opacity-80');
+    toast.classList.add('-translate-y-20', 'opacity-0');
   }, time * 1000);
+}
+
+const bottomToast = () => {
+  clearTimeout(savId);
+
+  let toast = qs('#bottom-toast');
+  toast.classList.remove('translate-y-20', 'opacity-0');
+  toast.classList.add('translate-y-0', 'opacity-80');
+  
+  savId = setTimeout(() => {
+    toast.classList.add('translate-y-20', 'opacity-0');
+    toast.classList.remove('translate-y-0', 'opacity-80');
+  }, 1000);
 }
 
 const copyText = async (text) => {
@@ -147,6 +160,7 @@ const markdown = (text) => {
 }
 
 var tstId;
+var savId;
 
 export {
   KEYS,
@@ -158,6 +172,7 @@ export {
   get,
   set,
   showToast,
+  bottomToast, 
   copyText,
   pasteText,
   markdown,

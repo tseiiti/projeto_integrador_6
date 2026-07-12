@@ -40,7 +40,6 @@ const Chat = () => {
 
   return (
     <section className="flex-grow overflow-y-auto custom-scrollbar p-md max-w-[1376px] mx-auto w-full h-full">
-
       {/* Messagens */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-8 lg:px-16 space-y-2 min-h-[calc(100dvh/2-64px)]">
         {messages.map((message) => {
@@ -58,7 +57,6 @@ const Chat = () => {
 
       {/* Detalhes */}
       <ChatDetail detail={detail} setDetail={setDetail} />
-
     </section>
   );
 }
