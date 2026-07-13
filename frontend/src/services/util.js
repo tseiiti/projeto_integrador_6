@@ -108,17 +108,28 @@ const showToast = (title = '', text = '', time = 3) => {
   }, time * 1000);
 }
 
-const bottomToast = () => {
+const bottomToast = (title = '', text = '', color = '', time = 1) => {
   clearTimeout(savId);
 
   let toast = qs('#bottom-toast');
+  if (!toast) return;
+
+  if (title.length > 0)
+    toast.querySelector('.bottom-toast-title').innerHTML = title;
+
+  if (text.length > 0)
+    toast.querySelector('.bottom-toast-text').innerHTML = text;
+
+  if (color.length > 0)
+    toast.querySelector('span').classList.add(`text-$(color)-400`);
+
   toast.classList.remove('translate-y-20', 'opacity-0');
   toast.classList.add('translate-y-0', 'opacity-80');
   
   savId = setTimeout(() => {
     toast.classList.add('translate-y-20', 'opacity-0');
     toast.classList.remove('translate-y-0', 'opacity-80');
-  }, 1000);
+  }, time * 1000);
 }
 
 const copyText = async (text) => {
@@ -143,6 +154,26 @@ const pasteText = async (arg) => {
     ce(error);
   }
 };
+
+const initLoad = async () => {
+  const resp = await fetch(KEYS.API_TAGS_URL);
+  const data = await resp.json();
+  
+  let models = data.models
+      .filter(m => !m.capabilities.includes('embedding'))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  
+  let config = get(KEYS.CONFIG, KEYS.DEFAULT_CONFIG);
+  let current = config.current;
+  if (!models.map(m => m.model).includes(current))
+    current = models.filter(m => m.model.includes('gemma3:1b'))[0]?.model || models[0]?.model;
+
+  set(KEYS.CONFIG, {
+    ...config, 
+    models: models,
+    current: current,
+  });
+}
 
 const markdown = (text) => {
   // trata latex
@@ -175,5 +206,6 @@ export {
   bottomToast, 
   copyText,
   pasteText,
+  initLoad,
   markdown,
 }

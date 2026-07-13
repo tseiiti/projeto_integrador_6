@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { KEYS, get, set, bottomToast } from '../services/config';
+import { KEYS, get, set, getTitle, bottomToast, initLoad } from '../services/config';
 import Card from '../components/Card';
 import Input from '../components/Input';
 import ConfigModel from '../components/config/ConfigModel';
@@ -16,27 +16,7 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
   });
   
   useEffect(() => {
-    (async () => {
-      const resp = await fetch(KEYS.API_TAGS_URL);
-      const data = await resp.json();
-      
-      let models = data.models
-          .filter(m => !m.capabilities.includes('embedding'))
-          .sort((a, b) => a.name.localeCompare(b.name));
-      
-      let current = config.current;
-      if (!models.map(m => m.model).includes(current))
-        current = models.filter(m => m.model.includes('gemma3:1b'))[0]?.model || models[0]?.model;
-
-      setConfig(ant => {return {
-        ...ant, 
-        models: models,
-        current: current,
-      }});
-    })();
-  }, []);
-
-  useEffect(() => {
+    if (!get(KEYS.CONFIG)?.current) initLoad();
     set(KEYS.CONFIG, config);
   }, [config]);
 
@@ -49,12 +29,12 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
   }, [chatId]);
 
   const setCurrent = (e) => { setConfig({...config, current: e.model}); bottomToast(); }
-  const setQuantity = (e) => { setConfig({...config, quantity: e.target.value}); bottomToast(); }
-  const setInfluence = (e) => { setConfig({...config, influence: e.target.value}); bottomToast(); }
-  const setScore = (e) => { setConfig({...config, score: e.target.value}); bottomToast(); }
+  const setQuantity = (e) => { setConfig({...config, quantity: Number(e.target.value)}); bottomToast(); }
+  const setInfluence = (e) => { setConfig({...config, influence: Number(e.target.value)}); bottomToast(); }
+  const setScore = (e) => { setConfig({...config, score: Number(e.target.value)}); bottomToast(); }
   const setThinking = (e) => { setConfig({...config, thinking: e.target.checked}); bottomToast(); }
-  const setMemory = (e) => { setConfig({...config, memory: e.target.value}); bottomToast(); }
-  const setTemperature = (e) => { setConfig({...config, temperature: e.target.value}); bottomToast(); }
+  const setMemory = (e) => { setConfig({...config, memory: Number(e.target.value)}); bottomToast(); }
+  const setTemperature = (e) => { setConfig({...config, temperature: Number(e.target.value)}); bottomToast(); }
 
   const bkp = (addOther) => {
     const messages = get(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
@@ -98,7 +78,25 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
     localStorage.removeItem(KEYS.MESSAGES);
     setActive('chat');
   }
-  const titleChat = () => {}
+  const titChat = async (id) => {
+    const msg = backup
+                .find(b => b.id == id)
+                .messages
+                .slice(1)
+                .map(m => {return m.content})
+                .join(' ')
+                .replace(/\n/g, ' ');
+    let title = await getTitle(msg);
+    title = title.split(/\r?\n/)[0];
+    const aux = [...backup];
+    const i = aux.findIndex(e => e.id == id);
+    if (i >= 0) {
+      aux[i] = {...aux[i], title: title}
+      bottomToast();
+      set(KEYS.BACKUP, aux);
+      setBackup(aux);
+    }
+  }
   const deleteChat = (id) => {
     setBackup(ant => {
       const aux = [...ant];
@@ -106,7 +104,6 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
       if (i >= 0) {
         aux.splice(i, i); 
       }
-      console.log(aux)
       return aux;
     });
     bottomToast();
@@ -215,7 +212,7 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
             <span className={`material-symbols-outlined text-${chat.id == chatId ? 'blue-500' : 'gray-500'} mr-1 sm:mr-2`}>chat_bubble</span>
             {`${chat.id}: ${chat.title || chat.messages.at(-1).content}`}
           </p>
-          <span className="material-symbols-outlined text-green-400 cursor-pointer" onClick={() => titleChat(chat.id)} title="cria um título">label</span>
+          <span className="material-symbols-outlined text-green-400 cursor-pointer" onClick={() => titChat(chat.id)} title="cria um título">label</span>
           <span className="material-symbols-outlined text-red-400 cursor-pointer" onClick={() => deleteChat(chat.id)} title="excluir a conversa">delete</span>
         </div>
         <p className="text-[12px] italic">{(new Date(chat.updated_at)).toLocaleString()}</p>

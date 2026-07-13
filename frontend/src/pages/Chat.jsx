@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { KEYS, set, get, qs, showToast, pasteText } from '../services/util';
+import { KEYS, set, get, qs, showToast, pasteText, initLoad } from '../services/util';
 import ChatUser from '../components/chat/ChatUser';
 import ChatAssistant from '../components/chat/ChatAssistant';
 import ChatThinking from '../components/chat/ChatThinking';
@@ -21,16 +21,14 @@ const Chat = () => {
       const items = [...prev];
       const i = items.findIndex(e => e.id == message.id);
       if (i >= 0) {
-        items[i] = {
-          ...items[i],
-          like: value
-        }
+        items[i] = { ...items[i], like: value }
       }
       return items;
     });
   }
 
   useEffect(() => {
+    if (!get(KEYS.CONFIG)?.current) initLoad();
     set(KEYS.MESSAGES, messages);
   }, [messages]);
 

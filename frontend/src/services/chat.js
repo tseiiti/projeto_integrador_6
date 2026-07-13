@@ -26,14 +26,6 @@ const getContent = (id, str, setMessages) => {
       }
       return items;
     });
-    // setMessages(
-    //   prev => prev.map(item => item.id === id ? {
-    //     ...item,
-    //     content: BUFFER,
-    //     up_tokens: item.up_tokens + json.prompt_eval_count,
-    //     dw_tokens: item.dw_tokens + json.eval_count,
-    //   } : item)
-    // );
   } else {
     BUFFER += json.message.content;
     con.innerHTML = BUFFER;
@@ -43,7 +35,7 @@ const getContent = (id, str, setMessages) => {
 // consome serviço de chat
 const callChatApi = async (msgs, file, score, temperature, quantity, memory, 
   influence, contexts, prompt, context_at, setMessages) => {
-  const cur_mod = 'gemma3:1b';// get(KEYS.C_MODEL);
+  const cur_mod = get(KEYS.CONFIG).current;
   const think_at = Date.now();
   const thinking = false;// get(KEYS.THINKING) && MODELS.find(m => m.model == cur_mod).capabilities.includes('thinking');
   try {

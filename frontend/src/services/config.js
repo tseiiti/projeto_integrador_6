@@ -1,32 +1,45 @@
-import { KEYS, qs, get, set, bottomToast } from './util';
+import { KEYS, get, set, ce, bottomToast, initLoad } from './util';
 
-// var LAST_UPD;
-// var MODELS;
+const getTitle = async (msg) => {
+  let tit;
 
-// const load = async () => {
-//   if (LAST_UPD + 60000 < Date.now() && MODELS) return MODELS;
+  try {
+    const res = await fetch(KEYS.API_CHAT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: get('config').current,
+        think: false,
+        stream: false,
+        messages: [{
+          role: 'user',
+          content: `Crie um título criativo para o conteúdo abaixo. em português. NÃO INCLUA MAIS NADA, SOMENTE O TÍTULO.
 
-//   // carrega lista de modelos
-//   await fetch(KEYS.API_TAGS_URL)
-//   .then(response => { return response.json(); })
-//   .then(json => {
-//     LAST_UPD = Date.now();
-//     MODELS = json.models.filter(m => !m.capabilities.includes('embedding')).sort(
-//       (a, b) => a.name.localeCompare(b.name)
-//     ); })
-//   .catch(error => ce(error));
-// }
-
-// const current = async () => {
-//   await load();
-//   get(KEYS.C_MODEL,
-//     MODELS.filter(m => m.model.includes('gemma3:1b'))[0]?.model || MODELS[0]?.model);
-// }
-
+"""
+${msg}
+"""`
+        }]
+      })
+    });
+    
+    if (res.ok) {
+      const json = await res.json();
+      tit = json.message?.content?.trim();
+    }
+  } catch (e) {
+    ce(e);
+  } finally {
+    return tit;
+  }
+}
 
 export {
   KEYS, 
   get, 
   set, 
+  getTitle, 
   bottomToast, 
+  initLoad, 
 }
