@@ -9,7 +9,7 @@ const Sidebar = ({active, setActive, desktop, setDesktop, mobile, setMobile}) =>
     return (
       <div className="px-1.5 flex items-center space-x-1.5 border-b border-slate-200 dark:border-slate-700 min-h-[48px]">
         <button onClick={() => setDesktop(!desktop)}
-          className="hidden md:flex p-1.5 rounded-lg text-slate-500 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 dark:hover:text-slate-300 cursor-pointer"
+          className="hidden md:flex p-1.5 rounded-lg text-slate-500 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 dark:hover:text-slate-300 cursor-pointer focus:outline-none"
           title={desktop ? "Expandir menu" : "Recolher menu"}>
           <span className="material-symbols-rounded select-none text-[18px]">
             {desktop ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left'}
@@ -38,7 +38,7 @@ const Sidebar = ({active, setActive, desktop, setDesktop, mobile, setMobile}) =>
           setMobile(false);
         }}
         style={{ contentVisibility: 'auto' }}
-        className={`w-full group flex items-center space-x-2 px-2 py-1 rounded-xl relative cursor-pointer ${isActive
+        className={`w-full group flex items-center space-x-2 px-2 py-1 rounded-xl relative cursor-pointer focus:outline-none ${isActive
             ? 'text-indigo-500 dark:text-indigo-400 font-semibold bg-indigo-100 dark:bg-slate-800'
             : 'hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 dark:hover:text-slate-300'}`}
         title={!show ? item.label : undefined}>
