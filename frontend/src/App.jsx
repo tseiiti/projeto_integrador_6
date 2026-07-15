@@ -3,6 +3,7 @@ import { Toast, BottomToast } from './components/Toast';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Chat from './pages/Chat';
+import Report from './pages/Report';
 import Config from './pages/Config';
 
 const App = () => {
@@ -34,6 +35,9 @@ const App = () => {
     switch (active) {
       case 'chat':
         return <Chat />;
+      case 'report':
+        return <Report />;
+        
       case 'config':
         return (
           <Config desktop={desktop} setActive={setActive} theme={theme} setTheme={setTheme} />

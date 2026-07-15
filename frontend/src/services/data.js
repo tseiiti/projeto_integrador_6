@@ -19,6 +19,7 @@ const KEYS = {
     content: 'O usuário deve enviar o contexto, caso o contexto não seja informado, não responda. Diga que a pergunta deve ser sobre o Sistema EGA Soluções Industriais. Responda a pergunta com base no contexto e no histórico de mensagens. Ainda, caso o contexto não seja encontrado, informe que é possível reduzir o score, mas acarreta na degradação da precisão do contexto. E você é um especialista no assunto deste contexto. A resposta deve ser SEMPRE EM PORTUGUÊS, bem elaborado, completo, em poucos parágrafos fluidos. Sem qualquer formatação, a menos que esteja explícito outro formato na pergunta.'
   },
   DEFAULT_CONFIG: {
+    categories: [],
     models: [],
     quantity: 8,
     influence: 2,
@@ -26,6 +27,7 @@ const KEYS = {
     thinking: false,
     memory: 4,
     temperature: 0.5,
+    category: 'Todos',
   }
 }
 
@@ -35,12 +37,12 @@ const MENU_ITEMS = [{
   icon: 'chat',
   description: 'Perguntar ao Chatbot'
 }, {
-  id: 'cadastros',
+  id: 'cadastro',
   label: 'Cadastros',
   icon: 'assignment',
   description: 'Gestão de tarefas e categorias'
 }, {
-  id: 'relatorios',
+  id: 'report',
   label: 'Relatórios',
   icon: 'table_chart',
   description: 'Exportação e filtros avançados'

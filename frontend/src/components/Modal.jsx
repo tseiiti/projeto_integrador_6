@@ -1,10 +1,10 @@
-const Modal = ({ isOpen, onClose, w, title, children }) => {
+const Modal = ({ isOpen, onClose1, onClose2, onAcion, title, children }) => {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div onClick={onClose}
+      <div onClick={onClose1}
         className="fixed inset-0 bg-black/10 backdrop-blur transition-opacity -z-10" />
       
       {/* Modal Content Box */}
@@ -15,7 +15,7 @@ const Modal = ({ isOpen, onClose, w, title, children }) => {
           <h3 className="text-lg font-medium leading-6 text-gray-900">
             {title}
           </h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-500 text-[26px] font-bold absolute top-[-11px] right-[-5px]">
+          <button onClick={onClose1} className="text-gray-400 hover:text-gray-500 text-[26px] font-bold absolute top-[-11px] right-[-5px]">
             &times;
           </button>
         </div>
@@ -27,19 +27,19 @@ const Modal = ({ isOpen, onClose, w, title, children }) => {
 
         {/* Footer */}
         <div className="mt-6 flex justify-end space-x-3">
-          {/* <button type="button"
+          {onClose2 && <button type="button"
             className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-            onClick={onClose}>
+            onClick={onClose2}>
             Fechar
-          </button> */}
-          <button type="button"
+          </button>}
+          {onAcion && onClose2 && <button type="button"
             className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
             onClick={() => {
-              // alert("Action Confirmed!");
-              onClose();
+              onAcion();
+              onClose2();
             }}>
             Fechar
-          </button>
+          </button>}
         </div>
       </div>
     </div>

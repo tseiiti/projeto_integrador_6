@@ -1,4 +1,4 @@
-import { KEYS, cl, ce, qs, sleep, showToast } from './util';
+import { KEYS, cl, ce, qs, sleep, get, showToast } from './util';
 
 var BUFFER;
 
@@ -37,7 +37,8 @@ const callChatApi = async (msgs, file, score, temperature, quantity, memory,
   influence, contexts, prompt, context_at, setMessages) => {
   const cur_mod = get(KEYS.CONFIG).current;
   const think_at = Date.now();
-  const thinking = false;// get(KEYS.THINKING) && MODELS.find(m => m.model == cur_mod).capabilities.includes('thinking');
+  const thinking = get(KEYS.CONFIG).thinking && 
+    get(KEYS.CONFIG).models.find(m => m.model == cur_mod).capabilities.includes('thinking');
   try {
     const response = await fetch(KEYS.API_CHAT_URL, {
       method: 'POST',
@@ -98,7 +99,7 @@ const callChatApi = async (msgs, file, score, temperature, quantity, memory,
 }
 
 // pega contexto embedding da pergunta
-const getContext = async (prompt, categories, score, quantity) => {
+const getContext = async (prompt, category, score, quantity) => {
   try {
     const response = await fetch(KEYS.CONTEXT_URL, {
       method: 'POST',
@@ -108,7 +109,7 @@ const getContext = async (prompt, categories, score, quantity) => {
       body: JSON.stringify({
         query: prompt,
         score: score,
-        cate: categories,
+        cate: category,
         k: quantity
       })
     });
@@ -129,12 +130,12 @@ const sendQuery = async (arg, messages, setMessages, setLoading) => {
   const prompt = textarea.value;
   
   const context_at = Date.now();
-  const categories = 'Todos';// CATEGORIES[qs('.categories').value];
-  const score = 1.05;// (180 - Number(get(KEYS.SCORE))) / 100;
-  const temperature = 0.5;// Number(get(KEYS.TEMPERATURE));
-  const quantity = 8;// Number(get(KEYS.QUANTITY));
-  const memory = 4;// Number(get(KEYS.MEMORY));
-  const influence = 2;// Number(get(KEYS.INFLUENCE));
+  const category = get(KEYS.CONFIG).category;
+  const score = (180 - get(KEYS.CONFIG).score) / 100;;
+  const temperature = get(KEYS.CONFIG).temperature;
+  const quantity = get(KEYS.CONFIG).quantity;
+  const memory = get(KEYS.CONFIG).memory;
+  const influence = get(KEYS.CONFIG).influence;
   
   textarea.readOnly = true;
   textarea.value = '';
@@ -166,7 +167,7 @@ const sendQuery = async (arg, messages, setMessages, setLoading) => {
     .slice(-influence)
     .map(m => { return m.prompt }).join('\n') + '\n' + prompt;
   
-  const contexts = await getContext(aux, categories, score, quantity);
+  const contexts = await getContext(aux, category, score, quantity);
   msgs.push({ role: 'user', content: `
     Pergunta: ${prompt}
 
@@ -174,7 +175,7 @@ const sendQuery = async (arg, messages, setMessages, setLoading) => {
   `});
 
   // chamada da api do assistente
-  await callChatApi(msgs, categories, score, temperature, quantity, memory, 
+  await callChatApi(msgs, category, score, temperature, quantity, memory, 
     influence, contexts, prompt, context_at, setMessages);
   
   textarea.readOnly = false;

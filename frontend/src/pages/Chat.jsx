@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { KEYS, set, get, qs, showToast, pasteText, initLoad } from '../services/util';
+import { KEYS, set, get, initLoad } from '../services/util';
 import ChatUser from '../components/chat/ChatUser';
 import ChatAssistant from '../components/chat/ChatAssistant';
 import ChatThinking from '../components/chat/ChatThinking';
@@ -7,12 +7,24 @@ import ChatShell from '../components/chat/ChatShell';
 import ChatDetail from '../components/chat/ChatDetail';
 
 const Chat = () => {
+  const [config, setConfig] = useState(() => {
+    return get(KEYS.CONFIG, KEYS.DEFAULT_CONFIG);
+  });
   const [messages, setMessages] = useState(() => {
     return get(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
   });
   const [loading, setLoading] = useState(false);
   const [detail, setDetail] = useState(null);
   const endRef = useRef(null);
+
+  useEffect(() => {
+    if (!get(KEYS.CONFIG)?.current) initLoad(setConfig);
+    set(KEYS.MESSAGES, messages);
+  }, [messages]);
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, loading]);
   
   const setLike = (message, value) => {
     if (value == message?.like) value = 0;
@@ -26,15 +38,6 @@ const Chat = () => {
       return items;
     });
   }
-
-  useEffect(() => {
-    if (!get(KEYS.CONFIG)?.current) initLoad();
-    set(KEYS.MESSAGES, messages);
-  }, [messages]);
-
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, loading]);
 
   return (
     <section className="flex-grow overflow-y-auto custom-scrollbar p-md max-w-[1376px] mx-auto w-full h-full">
@@ -51,7 +54,7 @@ const Chat = () => {
       </div>
     
       {/* Entrada */}
-      {<ChatShell messages={messages} setMessages={setMessages} setLoading={setLoading} />}
+      {<ChatShell config={config} setConfig={setConfig} messages={messages} setMessages={setMessages} setLoading={setLoading} />}
 
       {/* Detalhes */}
       <ChatDetail detail={detail} setDetail={setDetail} />

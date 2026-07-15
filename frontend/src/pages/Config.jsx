@@ -16,7 +16,7 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
   });
   
   useEffect(() => {
-    if (!get(KEYS.CONFIG)?.current) initLoad();
+    if (!get(KEYS.CONFIG)?.current) initLoad(setConfig);
     set(KEYS.CONFIG, config);
   }, [config]);
 

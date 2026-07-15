@@ -155,24 +155,29 @@ const pasteText = async (arg) => {
   }
 };
 
-const initLoad = async () => {
-  const resp = await fetch(KEYS.API_TAGS_URL);
-  const data = await resp.json();
-  
+const initLoad = async (setConfig) => {
+  let resp = await fetch(KEYS.API_TAGS_URL);
+  let data = await resp.json();
   let models = data.models
       .filter(m => !m.capabilities.includes('embedding'))
       .sort((a, b) => a.name.localeCompare(b.name));
   
+  resp = await fetch(KEYS.CATEGORIES_URL);
+  let categories = await resp.json();
+
   let config = get(KEYS.CONFIG, KEYS.DEFAULT_CONFIG);
   let current = config.current;
   if (!models.map(m => m.model).includes(current))
     current = models.filter(m => m.model.includes('gemma3:1b'))[0]?.model || models[0]?.model;
 
-  set(KEYS.CONFIG, {
+  data = {
     ...config, 
+    categories: categories,
     models: models,
     current: current,
-  });
+  }
+  setConfig(data);
+  set(KEYS.CONFIG, data);
 }
 
 const markdown = (text) => {
