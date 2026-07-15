@@ -1,3 +1,43 @@
+
+
+o que é cálculo oee?
+qual a diferenças entre o cálculo oee e o cálculo teep?
+
+
+
+texto: slate-500
+  hover: slate-600
+  active: indigo-500
+  dark: slate-400
+    hover: slate-300
+    active: indigo-400
+  secondary: slate-400
+    dark: slate-600
+      hover: slate-400
+    hover: slate-600
+  emphasis: slate-800
+    dark: slate-200
+
+bg: slate-100
+  header: white
+  hover: slate-100
+  active: indigo-100
+  dark: slate-800
+    header: slate-900
+    active: slate-800
+    hover: slate-700
+  secondary: slate-100
+    dark: slate-800
+
+border: slate-200
+  dark: slate-800
+  secondary: slate-300
+    dark: slate-600
+
+
+
+
+
 :root {
   --background: #f8fafc;        /* Slate 50 - Fundo limpo */
   --surface: #ffffff;           /* Branco puro para cards */

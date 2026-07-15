@@ -36,7 +36,7 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
   const setMemory = (e) => { setConfig({...config, memory: Number(e.target.value)}); bottomToast(); }
   const setTemperature = (e) => { setConfig({...config, temperature: Number(e.target.value)}); bottomToast(); }
 
-  const bkp = (addOther) => {
+  const bkp = (add) => {
     const messages = get(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
     if (messages?.length > 1) {
       const aux = {
@@ -44,23 +44,24 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
         config: config,
         updated_at: Date.now(),
       }
-      setBackup(ant => {
-        const i = ant.findIndex(e => e.id == chatId);
-        if (i >= 0) {
-          ant[i] = {...ant[i], ...aux}
-          if (addOther) setChatId(null);
-        } else {
-          ant = [...ant, {id: ant.length + 1, ...aux}];
-          if (!addOther) setChatId(ant.length);
-        }
-        if (addOther) set(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
-        bottomToast();
-        return ant;
-      });
+
+      let cpy = [...backup];
+      const i = cpy.findIndex(e => e.id == chatId);
+      if (i >= 0) {
+        cpy[i] = {...cpy[i], ...aux}
+        if (add) setChatId(null);
+      } else {
+        cpy = [...cpy, {id: cpy.length + 1, ...aux}];
+        if (!add) setChatId(cpy.length);
+      }
+
+      if (add) set(KEYS.MESSAGES, [KEYS.DEFAULT_MESSAGE]);
+      setBackup(cpy);
+      set(KEYS.BACKUP, cpy);
     }
   }
-  const savChat = () => { bkp(false); }
-  const newChat = () => { bkp(true); setActive('chat'); }
+  const savChat = () => { bkp(false); bottomToast(); }
+  const newChat = () => { bkp(true); setActive('chat'); bottomToast(); }
   const selChat = (id) => {
     const aux = backup.find(e => e.id == id);
     if (aux) {
@@ -72,12 +73,14 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
       setActive('chat');
     }
   }
+
   const clrChat = () => {
     setConfig(KEYS.DEFAULT_CONFIG)
     set(KEYS.CONFIG, KEYS.DEFAULT_CONFIG);
     localStorage.removeItem(KEYS.MESSAGES);
     setActive('chat');
   }
+
   const titChat = async (id) => {
     const msg = backup
                 .find(b => b.id == id)
@@ -97,6 +100,7 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
       setBackup(aux);
     }
   }
+
   const deleteChat = (id) => {
     setBackup(ant => {
       const aux = [...ant];

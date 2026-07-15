@@ -5,8 +5,8 @@ const ChatDetail = ({ detail, setDetail }) => {
   if (!detail) return null;
 
   return (
-    <Modal isOpen={detail != null} onClose1={() => setDetail(null)} title='Detalhes'>
-      <div className="pr-2">
+    <Modal isOpen={detail != null} onClose1={() => setDetail(null)} onClose2={() => setDetail(null)} onAction={() => setDetail(null)} title='Detalhes'>
+      <div className="pr-1 pt-2 border-t border-gray-200">
         <h3 className="text-2xl mb-0 uppercase">ID: {detail.id}</h3>
         <p className="text-gray-500 mb-8">{detail.model}</p>
 

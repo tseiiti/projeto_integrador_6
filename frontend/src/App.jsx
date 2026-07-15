@@ -48,7 +48,7 @@ const App = () => {
   }
 
   return (
-    <div id="main" className="flex h-screen w-screen overflow-hidden bg-gray-50 dark:bg-zinc-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <div id="main" className="flex h-screen w-screen overflow-hidden bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors duration-500">
       <Sidebar
         active={active}
         setActive={setActive}

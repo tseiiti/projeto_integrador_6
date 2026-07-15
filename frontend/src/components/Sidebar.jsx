@@ -7,23 +7,22 @@ const Sidebar = ({active, setActive, desktop, setDesktop, mobile, setMobile}) =>
   // cabeçalho do menu
   const header = (show) => {
     return (
-      <div className="px-2 flex items-center justify-between border-b border-gray-200 dark:border-zinc-700/60 min-h-[48px]">
-        <div className="flex items-center space-x-3 overflow-hidden">
-          <div className="w-9 h-9 rounded-lg bg-white dark:bg-gray-800 flex items-center justify-center shadow-sm border border-gray-300 dark:border-gray-600">
-            <img src="favicon.png" className="h-6 w-6" alt="Logo" />
-          </div>
-          {show && (
-            <span className="font-display font-bold text-gray-900 dark:text-white text-base tracking-tight whitespace-nowrap">Chat IA</span>
-          )}
-        </div>
-        
+      <div className="px-1.5 flex items-center space-x-1.5 border-b border-slate-200 dark:border-slate-700 min-h-[48px]">
         <button onClick={() => setDesktop(!desktop)}
-          className="hidden md:flex p-1.5 rounded-lg text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-zinc-800 transition cursor-pointer"
+          className="hidden md:flex p-1.5 rounded-lg text-slate-500 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 dark:hover:text-slate-300 cursor-pointer"
           title={desktop ? "Expandir menu" : "Recolher menu"}>
           <span className="material-symbols-rounded select-none text-[18px]">
             {desktop ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left'}
           </span>
         </button>
+        <div className="flex items-center space-x-3 overflow-hidden">
+          <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center shadow-sm border border-slate-300 dark:border-slate-600">
+            <img src="favicon.png" className="h-6 w-6" alt="Logo" />
+          </div>
+          {show && (
+            <span className="font-display font-bold text-slate-800 dark:text-slate-200 text-base tracking-tight whitespace-nowrap">Chat IA</span>
+          )}
+        </div>
       </div>
     );
   }
@@ -39,28 +38,26 @@ const Sidebar = ({active, setActive, desktop, setDesktop, mobile, setMobile}) =>
           setMobile(false);
         }}
         style={{ contentVisibility: 'auto' }}
-        className={`w-full group flex items-center space-x-2 px-2 py-1 rounded-xl transition-all relative cursor-pointer ${
-          isActive
-            ? 'text-blue-700 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-zinc-800'
-            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-zinc-800/50 hover:text-gray-900 dark:hover:text-white'
-        }`}
+        className={`w-full group flex items-center space-x-2 px-2 py-1 rounded-xl relative cursor-pointer ${isActive
+            ? 'text-indigo-500 dark:text-indigo-400 font-semibold bg-indigo-100 dark:bg-slate-800'
+            : 'hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 dark:hover:text-slate-300'}`}
         title={!show ? item.label : undefined}>
 
-        {isActive && (
-          <div className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-blue-600 dark:bg-blue-400 rounded-r-md"></div>
-        )}
-        
-        <span className={`material-symbols-rounded select-none text-[22px] flex-shrink-0 transition-transform group-hover:scale-105 ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-550'}`}>
+        <span className={`material-symbols-rounded select-none text-[22px] flex-shrink-0 ${isActive ? '' : 'transition-transform group-hover:scale-105 group-hover:text-slate-600 dark:group-hover:text-slate-300'}`}>
           {item.icon}
         </span>
         
         {show && (
           <div className="flex flex-col items-start text-left overflow-hidden">
             <span className="text-sm leading-tight">{item.label}</span>
-            <span className="text-[10px] text-gray-400 dark:text-gray-500 font-normal leading-normal whitespace-nowrap truncate w-full group-hover:text-gray-600 dark:group-hover:text-gray-300">
+            <span className="text-[10px] text-slate-400 dark:text-slate-600 whitespace-nowrap truncate w-full group-hover:text-slate-600 dark:group-hover:text-slate-300">
               {item.description}
             </span>
           </div>
+        )}
+
+        {isActive && (
+          <div className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-indigo-500 dark:bg-indigo-400 rounded-r-md" />
         )}
       </button>
     );
@@ -71,7 +68,7 @@ const Sidebar = ({active, setActive, desktop, setDesktop, mobile, setMobile}) =>
     const show = isMobile || !desktop;
 
     return (
-      <div className="flex flex-col h-full bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-zinc-800 transition-colors duration-300">
+      <div className="flex flex-col h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-700">
         {/* Header */}
         {header(show)}
     
@@ -86,20 +83,20 @@ const Sidebar = ({active, setActive, desktop, setDesktop, mobile, setMobile}) =>
   return (<>
     {/* Desktop */}
     <aside id="sidebar-desktop"
-      className={`hidden md:block h-screen h-stretch shrink-0 transition-all duration-300 z-20 ${desktop ? 'w-[52px]' : 'w-64'}`}>
+      className={`hidden md:block h-screen h-stretch shrink-0 z-20 transition-all duration-500 ${desktop ? 'w-[52px]' : 'w-64'}`}>
       {sidebar(false)}
     </aside>
 
     {mobile && (
       <div id="mobile-backdrop"
         onClick={() => setMobile(false)}
-        className="md:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-30 transition-opacity"
+        className="md:hidden fixed inset-0 backdrop-blur-sm z-30 transition-opacity duration-700"
       />
     )}
 
     {/* Mobile */}
     <aside id="sidebar-mobile"
-      className={`md:hidden fixed top-0 bottom-0 left-0 w-64 z-40 transition-transform duration-300 transform ${mobile ? 'translate-x-0' : '-translate-x-full'}`}>
+      className={`md:hidden fixed top-0 bottom-0 left-0 w-64 z-40 transition-transform duration-700 ${mobile ? 'translate-x-0' : '-translate-x-full'}`}>
       {sidebar(true)}
     </aside>
   </>);
