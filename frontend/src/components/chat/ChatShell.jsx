@@ -31,15 +31,15 @@ const ChatShell = ({config, setConfig, messages, setMessages, setLoading}) => {
   const getMenu = () => {
     return (
       <div className="relative inline-block text-left group" title="Selecione uma Categoria">
-        <div className="absolute bottom-0 right-0 origin-bottom-right hidden group-hover:block">
-          <div className="mb-9 rounded-lg bg-white dark:bg-slate-900 shadow-lg p-2 border border-slate-300 dark:border-slate-700">
+        <div className="absolute bottom-6 right-0 origin-top-right hidden group-hover:block">
+          <div className="mb-4 rounded-lg bg-white dark:bg-slate-900 shadow-lg p-2 border border-slate-300 dark:border-slate-700">
             {getMenBtn('Todos', 0)}
             {config.categories.map((category, i) => 
               getMenBtn(category, i + 1)
             )}
           </div>
         </div>
-        <button className="inline-flex justify-center text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-md hover:font-bold transform cursor-pointer focus:outline-none" title="As respostas do assistente serão baseadas pela Categoria selecionada">
+        <button className="inline-flex justify-center text-sm font-medium text-slate-600 dark:text-slate-400 group-hover:text-md group-hover:font-bold transform cursor-pointer focus:outline-none" title="As respostas do assistente serão baseadas pela Categoria selecionada">
           {config.category} 
           <span className="material-symbols-outlined">keyboard_arrow_down</span>
         </button>
