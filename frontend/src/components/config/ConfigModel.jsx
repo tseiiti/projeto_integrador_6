@@ -14,19 +14,14 @@ const ConfigModel = ({model, current, setCurrent}) => {
 
   return (
     <div className={`relative flex flex-col bg-white border border-${cur_aux}-300 dark:border-${cur_aux}-500 rounded-xl overflow-hidden transition-all hover:border-indigo-600 hover:shadow-md group`}>
-      <div className="hidden
-        border-slate-300 border-slate-500 border-indigo-300 border-indigo-500
-        bg-slate-100 bg-slate-700 bg-indigo-100 bg-indigo-700 
-        text-slate-200 text-slate-300 text-slate-500 text-slate-800 
-        text-indigo-200 text-indigo-300 text-indigo-500 text-indigo-800" />
       <div className={`p-4 pb-2 border-b border-${cur_aux}-300 dark:border-${cur_aux}-500 bg-${cur_aux}-100 dark:bg-${cur_aux}-800`}>
         <div className="flex items-start justify-between mb-2">
-          <h3 className={`text-${cur_aux}-800 dark:text-${cur_aux}-300 group-hover:font-medium text-[18px] capitalize`}>
+          <h3 className={`text-${cur_aux}-500 dark:text-${cur_aux}-300  group-hover:text-${cur_aux}-600 group-hover:dark:text-${cur_aux}-200 group-hover:font-medium text-[18px] capitalize`}>
             {names[0]}:<span className="uppercase">{names[1]}</span>
           </h3>
         </div>
         <div className="flex items-center gap-2 mt-2">
-          <div className={`text-${cur_aux}-400 group-hover:text-${cur_aux}-200 text-[13px] font-bold`}>
+          <div className={`text-${cur_aux}-400 group-hover:text-${cur_aux}-600 group-hover:dark:text-${cur_aux}-300 text-[13px] font-bold`}>
             {model.details.parameter_size}
           </div>
           <div className={`text-[10px] px-2 bg-white border border-${cur_aux}-200 dark:border-${cur_aux}-600 rounded-sm uppercase`}>
@@ -60,6 +55,12 @@ const ConfigModel = ({model, current, setCurrent}) => {
           </button>
         </div>
       </div>
+
+      <div className="hidden
+        border-slate-300 border-slate-500 border-indigo-300 border-indigo-500
+        bg-slate-100 bg-slate-700 bg-indigo-100 bg-indigo-700 
+        text-slate-200 text-slate-300 text-slate-500 text-slate-800 
+        text-indigo-200 text-indigo-300 text-indigo-500 text-indigo-800 group-hover:dark:text-slate-200 group-hover:dark:text-slate-300 group-hover:dark:text-indigo-200 group-hover:dark:text-indigo-300 group-hover:text-slate-200 group-hover:text-indigo-200 group-hover:text-slate-300 group-hover:text-indigo-300 group-hover:text-slate-600 group-hover:text-indigo-600" />
     </div>
   );
 }
