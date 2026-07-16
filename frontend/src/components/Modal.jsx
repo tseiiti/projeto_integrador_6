@@ -28,7 +28,7 @@ const Modal = ({ isOpen, onClose1, onClose2, title, children }) => {
         {/* Footer */}
         {onClose2 && <div className="mt-4 flex justify-end space-x-3">
           {onClose2 && <button type="button"
-            className="rounded-md border border-slate-300 dark:border-slate-700 bg-slate-300 dark:bg-slate-700 px-4 py-1 text-sm font-medium text-slate-900 dark:text-slate-100 hover:bg-slate-400 hover:bg-slate-600"
+            className="rounded-md border border-slate-200 dark:border-slate-700 bg-slate-300 dark:bg-slate-700 px-4 py-1 text-sm font-medium text-slate-900 dark:text-slate-100 hover:bg-slate-400 hover:bg-slate-600"
             onClick={onClose2}>
             Fechar
           </button>}

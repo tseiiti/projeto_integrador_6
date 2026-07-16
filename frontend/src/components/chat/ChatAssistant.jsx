@@ -10,13 +10,13 @@ const ChatAssistant = ({message, setDetail, setLike}) => {
   return (
     <div className="flex flex-col items-start group mb-6" id={message?.id}>
       <div className="max-w-[95%] sm:max-w-[85%] sm:flex sm:items-start gap-2 space-y-2">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-blue-400 flex items-center justify-center flex-shrink-0 mt-1 shadow-md shadow-slate-300 dark:shadow-slate-500">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-600 to-blue-400 flex items-center justify-center flex-shrink-0 mt-1 shadow-[2px_4px_20px_rgba(0,0,0,0.1)] dark:shadow-[2px_4px_20px_rgba(255,255,255,0.1)]">
           <span className="material-symbols-outlined text-white"
             style={{fontVariationSettings: "'FILL' 1"}}>auto_awesome</span>
         </div>
-        <div className="rounded-xl rounded-tl-none p-4 space-y-4 shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+        <div className="rounded-xl rounded-tl-none p-4 space-y-4 shadow-[2px_4px_20px_rgba(0,0,0,0.1)] dark:shadow-[2px_4px_20px_rgba(255,255,255,0.1)] border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
           <div className="prose prose-sm max-w-none text-justify">
-            <div className="text-slate-700 dark:text-slate-200 content [&>*]:pb-2 [&>ul]:list-disc [&_ul]:pl-5 [&>ul]:[&_ul]:list-['⮞'] [&_ol]:list-decimal [&_ol]:pl-5 assistant-content" dangerouslySetInnerHTML={{ __html: markdown(message.content) }}/>
+            <div className="text-slate-600 dark:text-slate-300 content [&>*]:pb-2 [&>ul]:list-disc [&_ul]:pl-5 [&>ul]:[&_ul]:list-['⮞'] [&_ol]:list-decimal [&_ol]:pl-5 assistant-content" dangerouslySetInnerHTML={{ __html: markdown(message.content) }}/>
           </div>
           <div className="flex items-center gap-3 transition-colors">
             <button className="cursor-pointer focus:outline-none px-1 pt-1.5 rounded-md hover:text-slate-600 hover:bg-slate-200 hover:dark:text-slate-300 hover:dark:bg-slate-700" onClick={() => setLike(message, 1)} title="Gostei">

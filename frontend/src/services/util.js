@@ -111,24 +111,31 @@ const showToast = (title = '', text = '', time = 3) => {
 const bottomToast = (title = '', text = '', color = '', time = 1) => {
   clearTimeout(savId);
 
-  let toast = qs('#bottom-toast');
-  if (!toast) return;
+  let e = qs('#bottom-toast');
+  if (!e) return;
 
-  if (title.length > 0)
-    toast.querySelector('.bottom-toast-title').innerHTML = title;
+  color = color || 'green';
+  e.classList.remove(e.classList.value.split(' ').findLast(e => e.includes('bg')));
+  e.classList.add(`bg-${color}-50`);
 
-  if (text.length > 0)
-    toast.querySelector('.bottom-toast-text').innerHTML = text;
+  e = qs('.bottom-toast-icon');
+  e.classList.remove(e.classList.value.split(' ').findLast(e => e.includes('text')));
+  e.classList.add(`text-${color}-400`);
+  
+  e = qs('.bottom-toast-title');
+  e.classList.remove(e.classList.value.split(' ').find(e => e.includes('text')));
+  e.classList.add(`text-${color}-600/70`);
+  e.innerHTML = title.length > 0 ? title : 'Sucesso!';
 
-  if (color.length > 0)
-    toast.querySelector('span').classList.add(`text-$(color)-400`);
+  qs('.bottom-toast-text').innerHTML = text.length > 0 ? text : 'Suas configurações foram atualizadas.';
 
-  toast.classList.remove('translate-y-20', 'opacity-0');
-  toast.classList.add('translate-y-0', 'opacity-80');
+  e = qs('#bottom-toast');
+  e.classList.remove('translate-y-20', 'opacity-0');
+  e.classList.add('translate-y-0', 'opacity-80');
   
   savId = setTimeout(() => {
-    toast.classList.add('translate-y-20', 'opacity-0');
-    toast.classList.remove('translate-y-0', 'opacity-80');
+    e.classList.add('translate-y-20', 'opacity-0');
+    e.classList.remove('translate-y-0', 'opacity-80');
   }, time * 1000);
 }
 

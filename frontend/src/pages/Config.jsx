@@ -82,6 +82,7 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
   }
 
   const titChat = async (id) => {
+    bottomToast('Título', 'Criando um título para a conversa', 'indigo', 2);
     const msg = backup
                 .find(b => b.id == id)
                 .messages
@@ -171,7 +172,7 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
   const getTheme = () => {
     return (
       <Card title='Aparência Visual' icon='palette'>
-        <p className="text-xs text-gray-450 dark:text-gray-400 leading-relaxed font-sans">
+        <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
           Alterne o visual de layout completo de acordo com o conforto de iluminação de seu monitor.
         </p>
         <div className="grid grid-cols-2 gap-2">
@@ -179,8 +180,8 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
             onClick={() => setTheme('light')}
             className={`p-3 border rounded-xl flex flex-col items-center justify-center transition space-y-1.5 cursor-pointer ${
               theme === 'light'
-                ? 'border-blue-500 bg-blue-50/50 dark:bg-zinc-900 text-blue-600 font-semibold'
-                : 'border-gray-200 dark:border-zinc-800 text-gray-550 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-zinc-850'
+                ? 'border-indigo-500 bg-indigo-50 dark:bg-slate-900 text-indigo-600 font-semibold'
+                : 'border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}>
             <span className="material-symbols-rounded select-none text-[22px]">light_mode</span>
             <span className="text-xs">Tema Claro</span>
@@ -189,8 +190,8 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
             onClick={() => setTheme('dark')}
             className={`p-3 border rounded-xl flex flex-col items-center justify-center transition space-y-1.5 cursor-pointer ${
               theme === 'dark'
-                ? 'border-blue-500 bg-zinc-800 text-blue-400 font-semibold'
-                : 'border-gray-200 dark:border-zinc-800 text-gray-550 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-zinc-855'
+                ? 'border-indigo-500 bg-slate-800 text-indigo-400 font-semibold'
+                : 'border-slate-200 dark:border-slate-800 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900'
             }`}>
             <span className="material-symbols-rounded select-none text-[22px]">dark_mode</span>
             <span className="text-xs">Tema Escuro</span>
@@ -210,16 +211,18 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
 
   const getHistItem = (chat, i) => {
     return (
-      <div key={`chat-${i}`} className={`p-4 rounded-xl ${chat.id == chatId ? 'bg-blue-50 border border-blue-100' : 'hover:bg-blue-300 transition-colors'}`}>
+      <div key={`chat-${i}`} className={`px-3 py-2 rounded-xl transition-colors ${chat.id == chatId ? 'bg-slate-100 dark:bg-slate-800' : 'cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700'}`}>
         <div className="flex items-center space-x-1 sm:space-x-2">
-          <p className="flex items-center text-sm text-gray-500 cursor-pointer truncate" onClick={() => selChat(chat.id)}>
-            <span className={`material-symbols-outlined text-${chat.id == chatId ? 'blue-500' : 'gray-500'} mr-1 sm:mr-2`}>chat_bubble</span>
-            {`${chat.id}: ${chat.title || chat.messages.at(-1).content}`}
-          </p>
+          <div className=" w-full" onClick={() => selChat(chat.id)}>
+            <p className="flex items-center text-sm text-slate-500 truncate">
+              <span className={`material-symbols-outlined text-${chat.id == chatId ? 'indigo-500' : 'slate-500'} mr-1 sm:mr-2`}>chat_bubble</span>
+              {`${chat.id}: ${chat.title || chat.messages.at(-1).content}`}
+            </p>
+            <p className="text-[11px] italic">{(new Date(chat.updated_at)).toLocaleString()}</p>
+          </div>
           <span className="material-symbols-outlined text-green-400 cursor-pointer" onClick={() => titChat(chat.id)} title="cria um título">label</span>
           <span className="material-symbols-outlined text-red-400 cursor-pointer" onClick={() => deleteChat(chat.id)} title="excluir a conversa">delete</span>
         </div>
-        <p className="text-[12px] italic">{(new Date(chat.updated_at)).toLocaleString()}</p>
       </div>
     );
   }
@@ -227,17 +230,15 @@ const Config = ({desktop, setActive, theme, setTheme}) => {
   const getHistory = () => {
     return (
       <Card title='Conversas' icon='chat'>
-        <div className="bg-red-500 bg-green-600 bg-blue-600 hover:bg-red-500 hover:bg-green-600 hover:bg-blue-600" />
+        <div className="bg-red-500 bg-green-600 bg-indigo-600 bg-red-500/60 bg-green-600/60 bg-indigo-600/60" />
         <div className="flex items-center justify-end space-x-2 sm:space-x-4">
           {getHistBtn('red-500', clrChat, 'Limpar conversa atual', 'mop', 'Limpar')}
           {getHistBtn('green-600', savChat, 'Salvar conversa atual', 'keep', 'Salvar')}
-          {getHistBtn('blue-600', newChat, 'Salvar a atual e criar uma nova conversa', 'add', 'Novo Chat')}
+          {getHistBtn('indigo-600', newChat, 'Salvar a atual e criar uma nova conversa', 'add', 'Novo Chat')}
         </div>
-        <div className="flex-grow overflow-y-auto px-2 space-y-xs">
-          <div className="px-4 py-2">
-            <h3 className="text-sm text-gray-500 uppercase tracking-wider">Histórico</h3>
-          </div>
-          <div className="history">
+        <div className="flex-grow overflow-y-auto space-y-2">
+          <h3 className="pl-3 text-sm text-slate-500 uppercase tracking-wider">Histórico</h3>
+          <div className="history space-y-2">
             { backup.map((chat, i) => {return getHistItem(chat, i)}) }
           </div>
         </div>

@@ -12,13 +12,14 @@ const Toast = () => {
 
 const BottomToast = () => {
   return (
-      <div className="fixed bottom-8 right-8 transform translate-y-20 opacity-0 transition-all duration-300 bg-gray-100 text-gray-600 px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4" id="bottom-toast">
-        <span className="material-symbols-outlined text-green-400">check_circle</span>
-        <div>
-          <p className="text-md font-bold bottom-toast-title">Sucesso!</p>
-          <p className="text-sm opacity-80 bottom-toast-text">Suas configurações foram atualizadas.</p>
-        </div>
+    <div className="fixed bottom-8 right-8 transform translate-y-20 opacity-0 transition-all duration-300 text-slate-600 px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 bg-green-50" id="bottom-toast">
+      <span className="material-symbols-outlined bottom-toast-icon text-green-400">check_circle</span>
+      <div>
+        <p className="text-md font-bold bottom-toast-title text-green-600/70">Sucesso!</p>
+        <p className="text-sm opacity-80 bottom-toast-text">Suas configurações foram atualizadas.</p>
       </div>
+      <div className="text-green-600/70 text-indigo-600/70" />
+    </div>
   );
 }
 
