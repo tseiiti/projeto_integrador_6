@@ -26,17 +26,19 @@ services:
     depends_on:
       - ollama
       
-  frontend:
+  react:
     build:
       dockerfile: ./dockerfile
-      context: ./frontend
+      context: ./react
     ports:
       - 5173:5173
+    networks:
+      - internal_network
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    stdin_open: true
-    tty: true
+    # stdin_open: true
+    # tty: true
 
   nginx:
     image: nginx
@@ -45,9 +47,9 @@ services:
       - ./webpages:/home
     ports:
       - 80:80
-      - 443:443
-      - 8000:8000
-      - 11434:11434
+      # - 443:443
+      # - 8000:8000
+      # - 11434:11434
     networks:
       - internal_network
       - internet_access
