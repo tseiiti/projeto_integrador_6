@@ -1,6 +1,6 @@
 const BASE = ['192.168.', 'localhos'].includes(window.location.hostname.substring(0, 8)) ?
   `${window.location.protocol}//${window.location.hostname}` :
-  'https://tseiiti.duckdns.org';
+  `${window.location.protocol}//tseiiti.duckdns.org`;
 
 const KEYS = {
   BACKUP:         'backup',

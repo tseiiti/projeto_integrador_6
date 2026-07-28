@@ -13,5 +13,11 @@ export default defineConfig({
     watch: {
       usePolling: true,
     },
+
+    hmr: {
+      host: 'tseiiti.duckdns.org',
+      // clientPort: 80, // Use 443 if you are using HTTPS/WSS
+    },
+    allowedHosts: ['tseiiti.duckdns.org'],
   },
 })

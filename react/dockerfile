@@ -5,6 +5,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+RUN npm install -g serve
+# RUN npm install -g http-serve
+
 RUN echo "alias ll='ls -AFoqv --color --group-directories-first'" >> ~/.bashrc
 
-CMD ["npm", "run", "dev"]
+# CMD ["npm", "run", "dev"]
+CMD ["serve", "-s", "build", "-l", "80"]
